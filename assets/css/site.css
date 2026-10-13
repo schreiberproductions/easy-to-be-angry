@@ -637,6 +637,10 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
    trackpads is native; the buttons just scroll the viewport. */
 .carousel { position: relative; }
 
+/* The controls anchor to the card area, not the whole carousel — otherwise
+   the dots row below drags them over the card's bottom edge. */
+.carousel__stage { position: relative; }
+
 .carousel__viewport {
   display: flex;
   overflow-x: auto;
@@ -664,8 +668,9 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
   flex-direction: column;
   justify-content: center;
   gap: 1.25rem;
-  min-height: clamp(360px, 46vw, 520px);
-  padding: clamp(1.75rem, 5vw, 3.5rem) clamp(1.5rem, 8vw, 6rem);
+  min-height: clamp(320px, 38vw, 430px);
+  /* extra room at the bottom for the carousel controls sitting over the card */
+  padding: clamp(1.75rem, 5vw, 3.25rem) clamp(1.5rem, 8vw, 6rem) clamp(4.25rem, 6.5vw, 5.25rem);
   background-size: cover;
   background-position: center;
   color: var(--white);
@@ -681,32 +686,37 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
   background: rgba(0, 0, 0, .34);
 }
 
-.carousel__btn {
+/* The controls sit inside the card, where the source button used to be */
+.carousel__nav {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  left: 50%;
+  bottom: clamp(1.5rem, 3.5vw, 2.5rem);
+  transform: translateX(-50%);
   z-index: 2;
+  display: flex;
+  gap: .75rem;
+}
+
+.carousel__btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2.25rem;
+  height: 2.25rem;
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: rgba(255, 255, 255, .92);
-  color: var(--charcoal);
-  font-size: 1.1rem;
+  background: var(--accent);
+  color: var(--white);
+  font-size: 1.05rem;
+  line-height: 1;
   cursor: pointer;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, .2);
   transition: background .15s linear, transform .18s var(--ease), opacity .2s linear;
 }
 
-.carousel__btn:hover { background: var(--white); transform: translateY(-50%) scale(1.08); }
-.carousel__btn--prev { left: clamp(.5rem, 2vw, 1rem); }
-.carousel__btn--next { right: clamp(.5rem, 2vw, 1rem); }
+.carousel__btn:hover { background: var(--accent-deep); transform: scale(1.12); }
 .carousel__btn[disabled] { opacity: .35; cursor: default; }
-.carousel__btn[disabled]:hover { transform: translateY(-50%); background: rgba(255, 255, 255, .92); }
+.carousel__btn[disabled]:hover { background: var(--accent); transform: none; }
 
 .carousel__status {
   display: flex;
@@ -714,27 +724,6 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
   justify-content: space-between;
   gap: 1rem;
   margin-top: 1rem;
-}
-
-.carousel__nav { display: contents; }
-
-/* Below this width the arrows would sit on top of the card text, so they drop
-   out of the overlay and into the status row instead. */
-@media (max-width: 760px) {
-  .carousel__nav { display: flex; gap: .5rem; }
-  .carousel__count { order: -1; }
-
-  .carousel__btn {
-    position: static;
-    transform: none;
-    width: 2.5rem;
-    height: 2.5rem;
-    background: rgba(26, 26, 26, .07);
-    box-shadow: none;
-  }
-
-  .carousel__btn:hover { transform: none; background: rgba(26, 26, 26, .14); }
-  .carousel__btn[disabled]:hover { background: rgba(26, 26, 26, .07); }
 }
 
 .carousel__dots { display: flex; flex-wrap: wrap; gap: .5rem; }
@@ -774,22 +763,37 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
   opacity: .92;
 }
 
-.quote-card__link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 50%;
-  background: var(--accent);
-  color: var(--white);
-  font-size: 1.1rem;
+/* Same behaviour as the Resources links — no underline at rest, slides right
+   with an arrow on hover — but tuned to read on a dark card. */
+.quote-card__cite a {
+  display: inline-block;
+  color: inherit;
   text-decoration: none;
-  transition: transform .18s var(--ease), background .15s linear;
+  transition: color .15s linear, transform .18s var(--ease);
 }
 
-.quote-card__link:hover { background: var(--accent-deep); transform: scale(1.12); }
+.quote-card__cite a::after {
+  content: '↗';
+  display: inline-block;
+  margin-left: .32em;
+  font-size: .9em;
+  opacity: 0;
+  transform: translate(-3px, 2px);
+  transition: opacity .18s var(--ease), transform .18s var(--ease);
+}
+
+.quote-card__cite a:hover,
+.quote-card__cite a:focus-visible {
+  color: #ffc2e8;
+  transform: translateX(5px);
+}
+
+.quote-card__cite a:hover::after,
+.quote-card__cite a:focus-visible::after { opacity: 1; transform: none; }
+
+@media (hover: none) {
+  .quote-card__cite a::after { opacity: .7; transform: none; }
+}
 
 /* More / Less shift list */
 .shift-list { list-style: none; margin: 0; padding: 0; max-width: 52rem; }
