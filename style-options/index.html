@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Link list options — Easy to Be Angry</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/assets/css/site.css?v=2">
+<style>
+.opt-head { background: var(--offwhite); border-bottom: 1px solid rgba(0,0,0,.08); }
+.opt-head h1 { font-size: var(--step-hero); margin-bottom: .4rem; }
+.opt-head p { color: var(--ink-soft); max-width: 62ch; }
+.opt-label {
+  position: sticky; top: var(--nav-h); z-index: 20;
+  background: var(--charcoal); color: #fff;
+  font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+}
+.opt-label .container { padding-block: .7rem; display: flex; gap: 1rem; align-items: baseline; }
+.opt-label span { font-weight: 400; letter-spacing: .02em; text-transform: none; opacity: .75; }
+
+/* tone colours shared by all three variants */
+[data-tone='a'] { --tone: #c73d96; }
+[data-tone='b'] { --tone: #34716f; }
+[data-tone='c'] { --tone: #b8601f; }
+[data-tone='d'] { --tone: #5b4bb8; }
+[data-tone='e'] { --tone: #b03a2e; }
+
+/* ---------- Variant 1 : columns ---------- */
+.v1-group { margin-bottom: 2.5rem; break-inside: avoid; }
+.v1-cat {
+  display: flex; align-items: baseline; gap: .5rem;
+  font-size: .8125rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--tone); margin-bottom: .85rem;
+  padding-bottom: .5rem; border-bottom: 2px solid color-mix(in srgb, var(--tone) 28%, transparent);
+}
+.v1-count { font-size: .6875rem; font-weight: 500; letter-spacing: 0; opacity: .6; }
+.v1-list { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 2.75rem; }
+@media (max-width: 760px) { .v1-list { columns: 1; } }
+.v1-list li { break-inside: avoid; margin-bottom: .5rem; }
+.v1-list a {
+  display: block; font-size: .9375rem; font-weight: 500; line-height: 1.45;
+  color: var(--ink); text-decoration: none; padding-left: .95rem; position: relative;
+  transition: color .15s linear;
+}
+.v1-list a::before {
+  content: ''; position: absolute; left: 0; top: .62em;
+  width: 5px; height: 5px; border-radius: 50%; background: var(--tone);
+  transition: transform .18s var(--ease);
+}
+.v1-list a:hover { color: var(--tone); }
+.v1-list a:hover::before { transform: scale(1.7); }
+
+/* ---------- Variant 2 : chips ---------- */
+.v2-group { margin-bottom: 2.25rem; }
+.v2-cat {
+  font-size: .8125rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--tone); margin-bottom: .8rem;
+}
+.v2-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.v2-chips a {
+  display: inline-block; max-width: 100%;
+  padding: .42rem .85rem; border-radius: 999px;
+  background: color-mix(in srgb, var(--tone) 9%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tone) 22%, transparent);
+  color: var(--ink); font-size: .875rem; font-weight: 500; line-height: 1.35;
+  text-decoration: none;
+  transition: background .15s linear, border-color .15s linear, color .15s linear;
+}
+.v2-chips a:hover { background: var(--tone); border-color: var(--tone); color: #fff; }
+
+/* ---------- Variant 3 : numbered index ---------- */
+.v3-group { margin-bottom: 2.5rem; }
+.v3-cat {
+  font-size: .8125rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--tone); margin-bottom: .25rem;
+}
+.v3-list { list-style: none; margin: 0; padding: 0; }
+.v3-list li { border-bottom: 1px solid rgba(0,0,0,.08); }
+.v3-list a {
+  display: grid; grid-template-columns: 2.1rem 1fr 1.4rem; align-items: baseline; gap: .4rem;
+  padding: .62rem .5rem .62rem 0; text-decoration: none; color: var(--ink);
+  transition: background .15s linear, padding-left .18s var(--ease), color .15s linear;
+}
+.v3-num { font-size: .75rem; font-weight: 600; color: var(--tone); font-variant-numeric: tabular-nums; }
+.v3-title { font-size: .9375rem; font-weight: 500; line-height: 1.4; }
+.v3-arrow { opacity: 0; transform: translateX(-4px); transition: opacity .18s, transform .18s; color: var(--tone); }
+.v3-list a:hover { background: color-mix(in srgb, var(--tone) 6%, transparent); padding-left: .5rem; color: var(--tone); }
+.v3-list a:hover .v3-arrow { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <nav class="nav__inner" aria-label="Main">
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-list">
+      <span class="nav__burger" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span class="nav__toggle-label">Menu</span>
+    </button>
+    <ul class="nav__list" id="nav-list" data-open="false">
+      <li class="nav__item"><a class="nav__link" href="/resources/">Resources</a></li>
+      <li class="nav__item"><a class="nav__link" href="/style-options/" aria-current="page">Options</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="section opt-head">
+    <div class="container">
+      <h1>Three ways to list the links</h1>
+      <p>Same content in all three, including the long book titles. Smaller type
+      throughout, one typeface, colour-coded by category. Scroll through and tell
+      me which one you want &mdash; mixing bits of different ones is fine too.</p>
+    </div>
+  </section>
+
+  <div class="opt-label"><div class="container">Option 1 <span>Two columns, coloured dots</span></div></div>
+  <section class="section">
+    <div class="container">
+      <div class="v1-group">
+        <h3 class="v1-cat" data-tone="a">Videos <span class="v1-count">4</span></h3>
+        <ul class="v1-list">
+        <li><a target="_blank" rel="noopener external" href="https://youtu.be/fiokzfCz7vg?si=6wMIFHQcYvUBj7YF">Dopamine: The Thrill and the Lie</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.youtube.com/watch?v=6fL09e8Tm9c&amp;t=328s">How to Raise Emotionally Intelligent Children</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.youtube.com/watch?v=nsu0netaABw">Kids (And Employees) Know More Than You Think</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.youtube.com/watch?v=-EvvPZFdjyk">Why You Will Marry the Wrong Person</a></li>
+        </ul>
+      </div>
+      <div class="v1-group">
+        <h3 class="v1-cat" data-tone="b">Articles <span class="v1-count">8</span></h3>
+        <ul class="v1-list">
+        <li><a target="_blank" rel="noopener external" href="https://substack.com/@kathleentrobinson">Hey, Did I Tell You?</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.salon.com/1998/10/29/29lamo_2/">Mother Rage: Theory and Practice</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.theschooloflife.com/article/on-pessimism/">On Pessimism</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.gottman.com/blog/the-dark-side-of-anger-what-every-couple-should-know/">The Dark Side of Anger: What Every Couple Should Know</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://advancedpsychiatryassociates.com/resources/blog/the-effects-of-anxiety-and-depression-on-your-physical-health">The Effects of Anxiety and Depression on Your Physical Health</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://web.archive.org/web/20220324145940/https://www.pastemagazine.com/movies/the-lost-daughter-review/"><cite>The Lost Daughter</cite> Understands That Womanhood Is Profoundly Complicated</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.newyorker.com/magazine/2023/09/25/mom-rage-the-everyday-crisis-of-modern-motherhood-minna-dubin-book-review">The Mother Trap: &ldquo;Mom Rage&rdquo; reviewed</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.thecut.com/2022/01/mom-rage-leda-the-lost-daughter.html">The Perpetual Rage of Motherhood</a></li>
+        </ul>
+      </div>
+      <div class="v1-group">
+        <h3 class="v1-cat" data-tone="c">Sermons <span class="v1-count">1</span></h3>
+        <ul class="v1-list">
+        <li><a target="_blank" rel="noopener external" href="https://www.ucg.org/sermons/love-not-provoked-agape-love-series-part-8">Love Is Not Provoked: Agape Love Series, Part 8</a></li>
+        </ul>
+      </div>
+      <div class="v1-group">
+        <h3 class="v1-cat" data-tone="d">Podcasts <span class="v1-count">3</span></h3>
+        <ul class="v1-list">
+        <li><a target="_blank" rel="noopener external" href="https://simonsinek.com/podcast/">A Bit of Optimism</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.goodinside.com/podcast/">Good Inside</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://brenebrown.com/podcast-show/unlocking-us/">Unlocking Us</a></li>
+        </ul>
+      </div>
+      <div class="v1-group">
+        <h3 class="v1-cat" data-tone="e">Apps <span class="v1-count">2</span></h3>
+        <ul class="v1-list">
+        <li><a target="_blank" rel="noopener external" href="https://bibleproject.com/app/">Bible Project</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://apps.apple.com/us/app/the-school-of-life/id1533269731">School of Life</a></li>
+        </ul>
+      </div>
+      <div class="v1-group">
+        <h3 class="v1-cat" data-tone="a">Books <span class="v1-count">13</span></h3>
+        <ul class="v1-list">
+        <li><a target="_blank" rel="noopener external" href="https://brenebrown.com/book/atlas-of-the-heart/">Atlas of the Heart: Mapping Meaningful Connection and the Language of Human Experience</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.penguinrandomhouse.com/books/311787/behave-by-robert-m-sapolsky/">Behave: The Biology of Humans at Our Best and Worst</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.annalembke.com/dopamine-nation">Dopamine Nation: Finding Balance in the Age of Indulgence</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.susandavid.com/book/">Emotional Agility: Get Unstuck, Embrace Change, and Thrive in Work and Life</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://how-to-talk.com/how-to-talk-so-little-kids-will-listen-book/">How to Talk So Little Kids Will Listen: A Survival Guide to Life with Children Ages 2&ndash;7</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://adrvantage.com/wp-content/uploads/2023/02/Mindset-The-New-Psychology-of-Success-Dweck.pdf">Mindset: The New Psychology of Success</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.bookhampton.com/book/9781250308351">Never Get Angry Again: The Foolproof Way to Stay Calm and in Control in Any Conversation or Situation</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.christianbook.com/more-anger-hope-out-control-mom/kathy-miller/9781946638564/pd/638564">No More Anger: Hope for the Out-of-Control Mom</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.cnvc.org/store/nonviolent-communication-a-language-of-life">Nonviolent Communication: A Language of Life</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.routledge.com/Philosophy-of-Emotion-A-Contemporary-Introduction/Tappolet/p/book/9781138687455">Philosophy of Emotion: A Contemporary Introduction</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.harvesthousepublishers.com/books/shes-gonna-blow-9780736915526">She&rsquo;s Gonna Blow! Real Help for Moms Dealing with Anger</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://www.penguinrandomhouse.com/books/720405/shift-by-ethan-kross/">Shift: Managing Your Emotions&mdash;So They Don&rsquo;t Manage You</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://modernfarmhousefamily.com/well-said/">Well Said: Choosing Words that Speak Life, Give Grace, and Strengthen Your Faith and Family</a></li>
+        </ul>
+      </div>
+      <div class="v1-group">
+        <h3 class="v1-cat" data-tone="b">Studies <span class="v1-count">2</span></h3>
+        <ul class="v1-list">
+        <li><a target="_blank" rel="noopener external" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8883707/">Correlates of Canadian mothers&rsquo; anger during the postpartum period: a cross-sectional survey</a></li>
+        <li><a target="_blank" rel="noopener external" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8848120/">The Importance of Emotional Regulation in Mental Health</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="opt-label"><div class="container">Option 2 <span>Chips / tags</span></div></div>
+  <section class="section section--cream">
+    <div class="container">
+      <div class="v2-group">
+        <h3 class="v2-cat" data-tone="a">Videos</h3>
+        <ul class="v2-chips">
+          <li><a target="_blank" rel="noopener external" href="https://youtu.be/fiokzfCz7vg?si=6wMIFHQcYvUBj7YF">Dopamine: The Thrill and the Lie</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.youtube.com/watch?v=6fL09e8Tm9c&amp;t=328s">How to Raise Emotionally Intelligent Children</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.youtube.com/watch?v=nsu0netaABw">Kids (And Employees) Know More Than You Think</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.youtube.com/watch?v=-EvvPZFdjyk">Why You Will Marry the Wrong Person</a></li>
+        </ul>
+      </div>
+      <div class="v2-group">
+        <h3 class="v2-cat" data-tone="b">Articles</h3>
+        <ul class="v2-chips">
+          <li><a target="_blank" rel="noopener external" href="https://substack.com/@kathleentrobinson">Hey, Did I Tell You?</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.salon.com/1998/10/29/29lamo_2/">Mother Rage: Theory and Practice</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.theschooloflife.com/article/on-pessimism/">On Pessimism</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.gottman.com/blog/the-dark-side-of-anger-what-every-couple-should-know/">The Dark Side of Anger: What Every Couple Should Know</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://advancedpsychiatryassociates.com/resources/blog/the-effects-of-anxiety-and-depression-on-your-physical-health">The Effects of Anxiety and Depression on Your Physical Health</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://web.archive.org/web/20220324145940/https://www.pastemagazine.com/movies/the-lost-daughter-review/"><cite>The Lost Daughter</cite> Understands That Womanhood Is Profoundly Complicated</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.newyorker.com/magazine/2023/09/25/mom-rage-the-everyday-crisis-of-modern-motherhood-minna-dubin-book-review">The Mother Trap: &ldquo;Mom Rage&rdquo; reviewed</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.thecut.com/2022/01/mom-rage-leda-the-lost-daughter.html">The Perpetual Rage of Motherhood</a></li>
+        </ul>
+      </div>
+      <div class="v2-group">
+        <h3 class="v2-cat" data-tone="c">Sermons</h3>
+        <ul class="v2-chips">
+          <li><a target="_blank" rel="noopener external" href="https://www.ucg.org/sermons/love-not-provoked-agape-love-series-part-8">Love Is Not Provoked: Agape Love Series, Part 8</a></li>
+        </ul>
+      </div>
+      <div class="v2-group">
+        <h3 class="v2-cat" data-tone="d">Podcasts</h3>
+        <ul class="v2-chips">
+          <li><a target="_blank" rel="noopener external" href="https://simonsinek.com/podcast/">A Bit of Optimism</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.goodinside.com/podcast/">Good Inside</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://brenebrown.com/podcast-show/unlocking-us/">Unlocking Us</a></li>
+        </ul>
+      </div>
+      <div class="v2-group">
+        <h3 class="v2-cat" data-tone="e">Apps</h3>
+        <ul class="v2-chips">
+          <li><a target="_blank" rel="noopener external" href="https://bibleproject.com/app/">Bible Project</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://apps.apple.com/us/app/the-school-of-life/id1533269731">School of Life</a></li>
+        </ul>
+      </div>
+      <div class="v2-group">
+        <h3 class="v2-cat" data-tone="a">Books</h3>
+        <ul class="v2-chips">
+          <li><a target="_blank" rel="noopener external" href="https://brenebrown.com/book/atlas-of-the-heart/">Atlas of the Heart: Mapping Meaningful Connection and the Language of Human Experience</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.penguinrandomhouse.com/books/311787/behave-by-robert-m-sapolsky/">Behave: The Biology of Humans at Our Best and Worst</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.annalembke.com/dopamine-nation">Dopamine Nation: Finding Balance in the Age of Indulgence</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.susandavid.com/book/">Emotional Agility: Get Unstuck, Embrace Change, and Thrive in Work and Life</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://how-to-talk.com/how-to-talk-so-little-kids-will-listen-book/">How to Talk So Little Kids Will Listen: A Survival Guide to Life with Children Ages 2&ndash;7</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://adrvantage.com/wp-content/uploads/2023/02/Mindset-The-New-Psychology-of-Success-Dweck.pdf">Mindset: The New Psychology of Success</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.bookhampton.com/book/9781250308351">Never Get Angry Again: The Foolproof Way to Stay Calm and in Control in Any Conversation or Situation</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.christianbook.com/more-anger-hope-out-control-mom/kathy-miller/9781946638564/pd/638564">No More Anger: Hope for the Out-of-Control Mom</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.cnvc.org/store/nonviolent-communication-a-language-of-life">Nonviolent Communication: A Language of Life</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.routledge.com/Philosophy-of-Emotion-A-Contemporary-Introduction/Tappolet/p/book/9781138687455">Philosophy of Emotion: A Contemporary Introduction</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.harvesthousepublishers.com/books/shes-gonna-blow-9780736915526">She&rsquo;s Gonna Blow! Real Help for Moms Dealing with Anger</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.penguinrandomhouse.com/books/720405/shift-by-ethan-kross/">Shift: Managing Your Emotions&mdash;So They Don&rsquo;t Manage You</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://modernfarmhousefamily.com/well-said/">Well Said: Choosing Words that Speak Life, Give Grace, and Strengthen Your Faith and Family</a></li>
+        </ul>
+      </div>
+      <div class="v2-group">
+        <h3 class="v2-cat" data-tone="b">Studies</h3>
+        <ul class="v2-chips">
+          <li><a target="_blank" rel="noopener external" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8883707/">Correlates of Canadian mothers&rsquo; anger during the postpartum period: a cross-sectional survey</a></li>
+          <li><a target="_blank" rel="noopener external" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8848120/">The Importance of Emotional Regulation in Mental Health</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="opt-label"><div class="container">Option 3 <span>Numbered index rows</span></div></div>
+  <section class="section">
+    <div class="container">
+      <div class="v3-group">
+        <h3 class="v3-cat" data-tone="a">Videos</h3>
+        <ul class="v3-list">
+          <li><a target="_blank" rel="noopener external" href="https://youtu.be/fiokzfCz7vg?si=6wMIFHQcYvUBj7YF">
+            <span class="v3-num">01</span>
+            <span class="v3-title">Dopamine: The Thrill and the Lie</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.youtube.com/watch?v=6fL09e8Tm9c&amp;t=328s">
+            <span class="v3-num">02</span>
+            <span class="v3-title">How to Raise Emotionally Intelligent Children</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.youtube.com/watch?v=nsu0netaABw">
+            <span class="v3-num">03</span>
+            <span class="v3-title">Kids (And Employees) Know More Than You Think</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.youtube.com/watch?v=-EvvPZFdjyk">
+            <span class="v3-num">04</span>
+            <span class="v3-title">Why You Will Marry the Wrong Person</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+        </ul>
+      </div>
+      <div class="v3-group">
+        <h3 class="v3-cat" data-tone="b">Articles</h3>
+        <ul class="v3-list">
+          <li><a target="_blank" rel="noopener external" href="https://substack.com/@kathleentrobinson">
+            <span class="v3-num">01</span>
+            <span class="v3-title">Hey, Did I Tell You?</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.salon.com/1998/10/29/29lamo_2/">
+            <span class="v3-num">02</span>
+            <span class="v3-title">Mother Rage: Theory and Practice</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.theschooloflife.com/article/on-pessimism/">
+            <span class="v3-num">03</span>
+            <span class="v3-title">On Pessimism</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.gottman.com/blog/the-dark-side-of-anger-what-every-couple-should-know/">
+            <span class="v3-num">04</span>
+            <span class="v3-title">The Dark Side of Anger: What Every Couple Should Know</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://advancedpsychiatryassociates.com/resources/blog/the-effects-of-anxiety-and-depression-on-your-physical-health">
+            <span class="v3-num">05</span>
+            <span class="v3-title">The Effects of Anxiety and Depression on Your Physical Health</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://web.archive.org/web/20220324145940/https://www.pastemagazine.com/movies/the-lost-daughter-review/">
+            <span class="v3-num">06</span>
+            <span class="v3-title"><cite>The Lost Daughter</cite> Understands That Womanhood Is Profoundly Complicated</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.newyorker.com/magazine/2023/09/25/mom-rage-the-everyday-crisis-of-modern-motherhood-minna-dubin-book-review">
+            <span class="v3-num">07</span>
+            <span class="v3-title">The Mother Trap: &ldquo;Mom Rage&rdquo; reviewed</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.thecut.com/2022/01/mom-rage-leda-the-lost-daughter.html">
+            <span class="v3-num">08</span>
+            <span class="v3-title">The Perpetual Rage of Motherhood</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+        </ul>
+      </div>
+      <div class="v3-group">
+        <h3 class="v3-cat" data-tone="c">Sermons</h3>
+        <ul class="v3-list">
+          <li><a target="_blank" rel="noopener external" href="https://www.ucg.org/sermons/love-not-provoked-agape-love-series-part-8">
+            <span class="v3-num">01</span>
+            <span class="v3-title">Love Is Not Provoked: Agape Love Series, Part 8</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+        </ul>
+      </div>
+      <div class="v3-group">
+        <h3 class="v3-cat" data-tone="d">Podcasts</h3>
+        <ul class="v3-list">
+          <li><a target="_blank" rel="noopener external" href="https://simonsinek.com/podcast/">
+            <span class="v3-num">01</span>
+            <span class="v3-title">A Bit of Optimism</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.goodinside.com/podcast/">
+            <span class="v3-num">02</span>
+            <span class="v3-title">Good Inside</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://brenebrown.com/podcast-show/unlocking-us/">
+            <span class="v3-num">03</span>
+            <span class="v3-title">Unlocking Us</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+        </ul>
+      </div>
+      <div class="v3-group">
+        <h3 class="v3-cat" data-tone="e">Apps</h3>
+        <ul class="v3-list">
+          <li><a target="_blank" rel="noopener external" href="https://bibleproject.com/app/">
+            <span class="v3-num">01</span>
+            <span class="v3-title">Bible Project</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://apps.apple.com/us/app/the-school-of-life/id1533269731">
+            <span class="v3-num">02</span>
+            <span class="v3-title">School of Life</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+        </ul>
+      </div>
+      <div class="v3-group">
+        <h3 class="v3-cat" data-tone="a">Books</h3>
+        <ul class="v3-list">
+          <li><a target="_blank" rel="noopener external" href="https://brenebrown.com/book/atlas-of-the-heart/">
+            <span class="v3-num">01</span>
+            <span class="v3-title">Atlas of the Heart: Mapping Meaningful Connection and the Language of Human Experience</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.penguinrandomhouse.com/books/311787/behave-by-robert-m-sapolsky/">
+            <span class="v3-num">02</span>
+            <span class="v3-title">Behave: The Biology of Humans at Our Best and Worst</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.annalembke.com/dopamine-nation">
+            <span class="v3-num">03</span>
+            <span class="v3-title">Dopamine Nation: Finding Balance in the Age of Indulgence</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.susandavid.com/book/">
+            <span class="v3-num">04</span>
+            <span class="v3-title">Emotional Agility: Get Unstuck, Embrace Change, and Thrive in Work and Life</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://how-to-talk.com/how-to-talk-so-little-kids-will-listen-book/">
+            <span class="v3-num">05</span>
+            <span class="v3-title">How to Talk So Little Kids Will Listen: A Survival Guide to Life with Children Ages 2&ndash;7</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://adrvantage.com/wp-content/uploads/2023/02/Mindset-The-New-Psychology-of-Success-Dweck.pdf">
+            <span class="v3-num">06</span>
+            <span class="v3-title">Mindset: The New Psychology of Success</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.bookhampton.com/book/9781250308351">
+            <span class="v3-num">07</span>
+            <span class="v3-title">Never Get Angry Again: The Foolproof Way to Stay Calm and in Control in Any Conversation or Situation</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.christianbook.com/more-anger-hope-out-control-mom/kathy-miller/9781946638564/pd/638564">
+            <span class="v3-num">08</span>
+            <span class="v3-title">No More Anger: Hope for the Out-of-Control Mom</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.cnvc.org/store/nonviolent-communication-a-language-of-life">
+            <span class="v3-num">09</span>
+            <span class="v3-title">Nonviolent Communication: A Language of Life</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.routledge.com/Philosophy-of-Emotion-A-Contemporary-Introduction/Tappolet/p/book/9781138687455">
+            <span class="v3-num">10</span>
+            <span class="v3-title">Philosophy of Emotion: A Contemporary Introduction</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.harvesthousepublishers.com/books/shes-gonna-blow-9780736915526">
+            <span class="v3-num">11</span>
+            <span class="v3-title">She&rsquo;s Gonna Blow! Real Help for Moms Dealing with Anger</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://www.penguinrandomhouse.com/books/720405/shift-by-ethan-kross/">
+            <span class="v3-num">12</span>
+            <span class="v3-title">Shift: Managing Your Emotions&mdash;So They Don&rsquo;t Manage You</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://modernfarmhousefamily.com/well-said/">
+            <span class="v3-num">13</span>
+            <span class="v3-title">Well Said: Choosing Words that Speak Life, Give Grace, and Strengthen Your Faith and Family</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+        </ul>
+      </div>
+      <div class="v3-group">
+        <h3 class="v3-cat" data-tone="b">Studies</h3>
+        <ul class="v3-list">
+          <li><a target="_blank" rel="noopener external" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8883707/">
+            <span class="v3-num">01</span>
+            <span class="v3-title">Correlates of Canadian mothers&rsquo; anger during the postpartum period: a cross-sectional survey</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+          <li><a target="_blank" rel="noopener external" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8848120/">
+            <span class="v3-num">02</span>
+            <span class="v3-title">The Importance of Emotional Regulation in Mental Health</span>
+            <span class="v3-arrow" aria-hidden="true">&rarr;</span>
+          </a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <span class="footer__brand">Easy to Anger</span>
+    <a class="footer__link" href="/resources/">Back to Resources</a>
+  </div>
+</footer>
+
+<script src="/assets/js/site.js?v=2" defer></script>
+</body>
+</html>
