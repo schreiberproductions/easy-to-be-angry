@@ -524,3 +524,309 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
 }
 
 [id] { scroll-margin-top: calc(var(--nav-h) + 1.5rem); }
+
+/* ---------------------------------------------------------------
+   Learn page
+---------------------------------------------------------------- */
+
+/* Hero over artwork */
+.hero--art {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: min(78svh, 620px);
+  background: #e9d9e4 url('/assets/img/hero-gradient.webp') center / cover no-repeat;
+  padding-bottom: clamp(3.5rem, 8vw, 5rem);
+}
+
+.hero--art .hero__title {
+  font-size: clamp(2.5rem, calc(1.4rem + 4.7vw), 4.5rem);
+  margin-bottom: .75rem;
+}
+
+.hero__standfirst {
+  max-width: 44ch;
+  font-size: clamp(1rem, calc(.93rem + .3vw), 1.1875rem);
+  line-height: 1.5;
+}
+
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1rem, 3vw, 2rem);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .3rem;
+  font-size: .8125rem;
+  letter-spacing: .06em;
+  color: var(--ink);
+  opacity: .75;
+  text-decoration: none;
+}
+
+.scroll-cue::after {
+  content: '';
+  width: 1px;
+  height: 26px;
+  background: currentColor;
+  animation: cue 1.8s var(--ease) infinite;
+  transform-origin: top;
+}
+
+@keyframes cue {
+  0%, 100% { transform: scaleY(.45); opacity: .4; }
+  50%      { transform: scaleY(1);   opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) { .scroll-cue::after { animation: none; } }
+
+/* Section artwork — decorative, sits on the section's solid colour */
+.section--art {
+  position: relative;
+  background-repeat: no-repeat;
+  background-position: var(--art-pos, 50% 0%);
+  background-size: var(--art-size, 90%) auto;
+}
+
+.section--art > .container { position: relative; z-index: 1; }
+
+/* On narrow screens the artwork scales up behind the text and can swallow it.
+   A wash in the section's own colour keeps the art visible but the words
+   readable. `inherit` picks up whichever section colour is in play. */
+@media (max-width: 860px) {
+  .section--art::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: inherit;
+    opacity: .62;
+  }
+}
+
+.section--tan   { background-color: #e4af63; }
+.section--cream { background-color: var(--cream); }
+
+/* Opening epigraphs */
+.epigraph { max-width: 52ch; margin-bottom: 2rem; }
+.epigraph:last-child { margin-bottom: 0; }
+.epigraph p { font-weight: 700; margin-bottom: .2rem; }
+.epigraph cite { font-style: normal; opacity: .75; font-size: .9375em; }
+
+/* "You are not alone" question list */
+.question-list { list-style: none; margin: 0; padding: 0; max-width: 62ch; }
+.question-list li { margin-bottom: .85rem; }
+.question-list strong { font-weight: 700; }
+
+/* Quote cards over gradient artwork */
+.quote-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+@media (max-width: 460px) {
+  .quote-cards { grid-template-columns: 1fr; }
+}
+
+.quote-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  min-height: clamp(320px, 42vw, 440px);
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  border-radius: 4px;
+  background-size: cover;
+  background-position: center;
+  color: var(--white);
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Keeps the white text legible whatever the gradient does underneath */
+.quote-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .22);
+}
+
+.quote-card > * { position: relative; }
+
+.quote-card blockquote {
+  margin: 0;
+  font-size: clamp(.9375rem, calc(.88rem + .25vw), 1.0625rem);
+  line-height: 1.5;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, .35);
+}
+
+.quote-card blockquote p:first-child { font-weight: 700; }
+
+.quote-card__cite {
+  display: block;
+  margin-top: .75rem;
+  font-size: .875em;
+  font-style: normal;
+  opacity: .92;
+}
+
+.quote-card__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--white);
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: transform .18s var(--ease), background .15s linear;
+}
+
+.quote-card__link:hover { background: var(--accent-deep); transform: scale(1.12); }
+
+/* More / Less shift list */
+.shift-list { list-style: none; margin: 0; padding: 0; max-width: 40rem; }
+
+.shift-list li {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: clamp(.75rem, 2vw, 1.5rem);
+  padding-block: .5rem;
+  font-size: var(--step-body);
+}
+
+.shift-list li > span:last-child { text-align: right; }
+.shift-list img { width: clamp(44px, 7vw, 78px); height: auto; opacity: .85; }
+
+@media (max-width: 560px) {
+  .shift-list li { grid-template-columns: 1fr auto 1fr; gap: .5rem; font-size: .9375rem; }
+}
+
+/* Scripture block */
+.scripture {
+  position: relative;
+  max-width: 46rem;
+  margin-block: 1.5rem;
+  padding: clamp(1.1rem, 2.5vw, 1.6rem) clamp(1.1rem, 3vw, 2.4rem);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+}
+
+.scripture p { font-weight: 700; margin-bottom: .35rem; }
+.scripture p:last-of-type { margin-bottom: 0; }
+.scripture cite { font-style: italic; font-weight: 700; font-size: .9375em; }
+
+.scripture__icon {
+  position: absolute;
+  top: -.9rem;
+  right: clamp(1rem, 3vw, 2rem);
+  width: clamp(28px, 4vw, 40px);
+  height: auto;
+}
+
+/* Pull quote */
+.pullquote {
+  max-width: 34ch;
+  margin: clamp(1.5rem, 4vw, 2.5rem) 0;
+  font-size: clamp(1.125rem, calc(1rem + .55vw), 1.5rem);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.pullquote cite { display: block; margin-top: .5rem; font-size: .7em; font-style: normal; font-weight: 500; opacity: .7; }
+
+/* Contributor voice — the one place the handwritten face is used */
+.contributor {
+  max-width: 48rem;
+  margin-inline: auto;
+  font-family: 'Handlee', 'DM Sans', cursive;
+  font-style: italic;
+  font-size: clamp(1rem, calc(.92rem + .35vw), 1.2rem);
+  line-height: 1.65;
+}
+
+.contributor strong { font-weight: 700; }
+.contributor__attrib { display: block; margin-top: .75rem; font-weight: 700; }
+
+/* Journal prompt */
+.prompt {
+  max-width: 46rem;
+  margin-block: clamp(1.5rem, 4vw, 2.5rem);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background: #e4af63;
+  border-radius: 3px;
+}
+
+.prompt p { font-weight: 700; text-align: center; margin-bottom: 1.25rem; }
+
+.prompt__line {
+  height: 1px;
+  margin-block: 1.6rem;
+  background: rgba(0, 0, 0, .45);
+}
+
+/* Responsive third-party embed (Flourish) */
+.embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--embed-ratio, 10 / 9);
+  margin-block: 1rem;
+}
+
+.embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.embed__caption { font-size: .875rem; opacity: .75; margin-top: .5rem; }
+
+/* Two-column prose split */
+.split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.split h3 { font-size: var(--step-h3); font-weight: 700; margin-bottom: .5rem; }
+
+/* Figure with decorative arrow */
+.annotated {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(.75rem, 2vw, 1.5rem);
+}
+
+.annotated img.annotated__arrow { width: clamp(50px, 8vw, 94px); height: auto; }
+
+@media (max-width: 760px) {
+  .annotated { grid-template-columns: 1fr; }
+  .annotated img.annotated__arrow { display: none; }
+}
+
+/* Next-page call to action */
+.cta-next {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .85rem 1.6rem;
+  border-radius: 999px;
+  background: var(--charcoal);
+  color: var(--white);
+  font-size: var(--step-link);
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .15s linear, transform .18s var(--ease);
+}
+
+.cta-next:hover { background: var(--accent-deep); transform: translateX(4px); }
