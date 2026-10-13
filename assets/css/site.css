@@ -534,7 +534,7 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: min(78svh, 620px);
+  min-height: min(58svh, 420px);
   background: #e9d9e4 url('/assets/img/hero-gradient.webp') center / cover no-repeat;
   padding-bottom: clamp(3.5rem, 8vw, 5rem);
 }
@@ -627,6 +627,21 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
 .epigraph:last-child { margin-bottom: 0; }
 .epigraph p { font-weight: 700; margin-bottom: .2rem; }
 .epigraph cite { font-style: normal; opacity: .75; font-size: .9375em; }
+
+/* The epigraphs lead straight into the intro rather than forming their own
+   scroll stop, so they sit as a band above it with a rule between. */
+.quote-band {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: clamp(1rem, 3vw, 2.5rem);
+  padding-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
+  border-bottom: 1px solid rgba(0, 0, 0, .12);
+}
+
+.quote-band .epigraph { margin: 0; max-width: none; }
+.quote-band .epigraph p { font-size: .9375rem; line-height: 1.5; margin-bottom: .15rem; }
+.quote-band .epigraph cite { font-size: .875rem; }
 
 /* "You are not alone" question list */
 .question-list { list-style: none; margin: 0; padding: 0; max-width: none; }
