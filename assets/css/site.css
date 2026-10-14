@@ -1228,19 +1228,73 @@ main > .section + .section:not(.section--no-rule)::after {
   .aim { grid-template-columns: 1fr; gap: .4rem; }
 }
 
-/* Figure with decorative arrow */
+/* Figure with decorative arrow.
+
+   Three rows. The chart and arrow span rows 1-2 and are centred, so grid
+   splits that height between the two rows and the boundary falls on the
+   chart's middle. The heading sits at the bottom of row 1 and the disclosure's
+   summary at the top of row 2, so the pair meets on that line and reads as
+   centred beside the chart. The open list is row 3, which nothing else
+   occupies — so opening it only grows downward and the chart, arrow, heading
+   and summary all stay exactly where they are.
+
+   The list spans the full width on purpose: eleven rows of trigger text would
+   be cramped in a third of the measure. */
 .annotated {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  align-items: center;
+  grid-template-rows: auto auto auto;
   gap: clamp(.75rem, 2vw, 1.5rem);
 }
+
+.annotated > .bubbles,
+.annotated > .arrow--annot {
+  grid-row: 1 / span 2;
+  align-self: center;
+}
+
+.annotated > .bubbles { grid-column: 1; }
+.annotated > .arrow--annot { grid-column: 2; }
+
+.annotated > .section__subtitle {
+  grid-row: 1;
+  grid-column: 3;
+  align-self: end;
+  margin: 0;
+}
+
+.annotated > .trigger-key {
+  grid-row: 2 / span 2;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-template-rows: subgrid;
+  margin-top: 0;
+}
+
+.annotated > .trigger-key > summary {
+  grid-row: 1;
+  grid-column: 3;
+  align-self: start;
+}
+
+/* Chrome wraps everything after the summary in a ::details-content box, so
+   that pseudo-element is the real grid item and placing the list itself does
+   nothing. Place both: the pseudo where it exists, the list where it doesn't. */
+.annotated > .trigger-key::details-content { grid-row: 2; grid-column: 1 / -1; }
+.annotated > .trigger-key > .trigger-key__list { grid-column: 1 / -1; }
 
 /* width is set on .arrow / .arrow--annot above */
 
 @media (max-width: 760px) {
   .annotated { grid-template-columns: 1fr; }
   .annotated .arrow--annot { display: none; }
+  /* single column, so drop the explicit placement or everything piles into row 1 */
+  .annotated > .bubbles,
+  .annotated > .section__subtitle,
+  .annotated > .trigger-key { grid-row: auto; grid-column: 1; }
+  .annotated > .section__subtitle { align-self: auto; }
+  .annotated > .trigger-key { display: block; }
 }
 
 /* Next-page call to action */
