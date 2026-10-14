@@ -157,12 +157,17 @@
     function place(x, y) {
       var cb = root.getBoundingClientRect();
       var tw = tip.offsetWidth, th = tip.offsetHeight;
-      var left = x - cb.left + 16;
-      var top = y - cb.top + 16;
-      if (left + tw > cb.width) left = x - cb.left - tw - 16;
-      if (top + th > cb.height) top = y - cb.top - th - 16;
-      tip.style.left = Math.max(0, left) + 'px';
-      tip.style.top = Math.max(0, top) + 'px';
+      var pad = 14;
+      // Clamped to the viewport, not to the chart box — the chart is barely
+      // bigger than the bubbles, so clamping to it flipped the tooltip back
+      // over the circles on almost every hover.
+      var vx = x + 18, vy = y + 18;
+      if (vx + tw > window.innerWidth - pad) vx = x - tw - 18;
+      if (vx < pad) vx = pad;
+      if (vy + th > window.innerHeight - pad) vy = y - th - 18;
+      if (vy < pad) vy = pad;
+      tip.style.left = (vx - cb.left) + 'px';
+      tip.style.top = (vy - cb.top) + 'px';
     }
 
     function clear() {
@@ -183,6 +188,9 @@
             p.el.style.setProperty('--s', '1.07');
             return;
           }
+          // clear the scale from whichever bubble was hovered before, or it
+          // stays enlarged and they accumulate as the pointer moves around
+          p.el.style.removeProperty('--s');
           var dx = p.x - hit.x, dy = p.y - hit.y;
           var d = Math.hypot(dx, dy) || 1;
           var push = 16 * Math.exp(-d / 150);          // only near neighbours shift

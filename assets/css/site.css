@@ -982,9 +982,9 @@ main > .section + .section:not(.section--no-rule)::after {
 
 .closing-question p {
   margin: 0;
-  font-size: clamp(1.125rem, calc(1rem + .55vw), 1.5rem);
+  font-size: var(--step-body);
   font-weight: 500;
-  line-height: 1.35;
+  line-height: 1.6;
 }
 
 .closing-question strong { font-weight: 700; }
