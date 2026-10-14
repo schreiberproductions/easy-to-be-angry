@@ -1390,7 +1390,6 @@ main > .section + .section:not(.section--no-rule)::after {
   font-weight: 700;
   line-height: 1;
   color: var(--accent);
-  opacity: .65;
 }
 
 .quote-pair { counter-reset: qp; }
@@ -1422,40 +1421,66 @@ main > .section + .section:not(.section--no-rule)::after {
   .swap .arrow { transform: rotate(90deg); margin-inline: auto; }
 }
 
-/* The loop that keeps physical neglect and anger feeding each other. The
-   arrows are decorative; the list order carries the meaning for a reader who
-   cannot see them, and the label says it repeats. */
-.loop {
-  display: grid;
-  gap: clamp(.5rem, 1.6vw, .9rem);
-  margin: var(--block-gap) 0;
-  padding: 0;
-  list-style: none;
-  counter-reset: loop;
-  justify-items: start;
+/* The physical-neglect cycle, drawn as a ring the way the original did.
+   Three steps sit at 12, 4 and 8 o'clock on one circle, joined by three arcs
+   of that same circle so the path really is circular rather than three
+   separate arrows. The ring turns slowly, which is the point of the diagram. */
+.cycle {
+  position: relative;
+  aspect-ratio: 1;
+  width: min(100%, 30rem);
+  margin: var(--block-gap) auto;
 }
 
-.loop__step {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: clamp(.6rem, 1.8vw, 1rem);
-  max-width: 44ch;
-  padding: clamp(.7rem, 1.8vw, .95rem) clamp(.9rem, 2.2vw, 1.25rem);
-  border: 1px solid rgba(0, 0, 0, .12);
-  border-radius: 6px;
+.cycle__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--accent);
+  overflow: visible;
+}
+
+.cycle__arc {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 3 4;
+  animation: cycle-turn 2.4s linear infinite;
+}
+
+@keyframes cycle-turn { to { stroke-dashoffset: -14; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .cycle__arc { animation: none; stroke-dasharray: none; }
+}
+
+.cycle__step {
+  position: absolute;
+  width: 40%;
+  padding: clamp(.6rem, 1.8vw, .85rem) clamp(.7rem, 2vw, 1rem);
+  border-radius: 10px;
   background: var(--white);
-  font-size: var(--step-body);
-  line-height: 1.45;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, .10);
+  text-align: center;
+  font-size: clamp(.8125rem, calc(.77rem + .19vw), .9375rem);
+  line-height: 1.35;
 }
 
-.loop__step::before {
-  counter-increment: loop;
-  content: counter(loop);
+.cycle__step p { margin: .35rem 0 0; }
+
+/* 12, 4 and 8 o'clock on a circle of radius 45 in a 100-unit box */
+.cycle__step--a { left: 50%; top: 5%;  transform: translate(-50%, -50%); }
+.cycle__step--b { left: 89%; top: 72%; transform: translate(-50%, -50%); }
+.cycle__step--c { left: 11%; top: 72%; transform: translate(-50%, -50%); }
+
+.cycle__num {
   display: grid;
   place-items: center;
-  width: 1.65rem;
-  height: 1.65rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin: 0 auto;
   border-radius: 999px;
   background: var(--accent);
   color: var(--white);
@@ -1463,50 +1488,54 @@ main > .section + .section:not(.section--no-rule)::after {
   font-weight: 700;
 }
 
-/* the arrow between steps, and the longer one returning to the top */
-.loop__link {
-  display: block;
-  width: clamp(38px, 5.5vw, 52px);
-  height: auto;
-  aspect-ratio: 80 / 16;
-  margin-left: clamp(.9rem, 2.4vw, 1.4rem);
-  color: var(--accent);
-  transform: rotate(90deg);
-  fill: none;
-  stroke: currentColor;
-}
+/* Below phone width the ring has no room, so the steps become a plain column
+   and a bracket carries the return instead. */
+@media (max-width: 560px) {
+  .cycle {
+    aspect-ratio: auto;
+    width: 100%;
+    display: grid;
+    gap: clamp(1.5rem, 6vw, 2rem);
+    padding-left: clamp(1.5rem, 7vw, 2.25rem);
+  }
+  .cycle__ring { display: none; }
+  .cycle__step {
+    position: static;
+    width: auto;
+    transform: none;
+    text-align: left;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: .75rem;
+  }
+  .cycle__step p { margin: 0; }
+  .cycle__num { margin: 0; }
 
-/* What makes the three steps read as a cycle rather than a list is the return:
-   a bracket down the left that runs from the last step back up to the first,
-   with a head at the top. Drawn in borders so it stretches with the steps
-   however the text wraps. The offsets are half a step's height, so the bracket
-   meets the first and last steps on their centre lines. */
-.loop { position: relative; padding-left: clamp(1.5rem, 4vw, 2.25rem); }
+  .cycle::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 1.9rem;
+    bottom: 2.6rem;
+    width: clamp(.9rem, 3.5vw, 1.4rem);
+    border: 1.5px solid var(--accent);
+    border-right: 0;
+    border-radius: 10px 0 0 10px;
+  }
 
-.loop::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 1.65rem;
-  bottom: 2.4rem;
-  width: clamp(.9rem, 2.4vw, 1.4rem);
-  border: 1.5px solid var(--accent);
-  border-right: 0;
-  border-radius: 10px 0 0 10px;
-}
-
-/* the head, sitting on the top end of the bracket and pointing into step 1 */
-.loop::after {
-  content: '';
-  position: absolute;
-  left: clamp(.9rem, 2.4vw, 1.4rem);
-  top: 1.65rem;
-  width: 0;
-  height: 0;
-  border-top: 4.5px solid transparent;
-  border-bottom: 4.5px solid transparent;
-  border-left: 7px solid var(--accent);
-  transform: translate(-1px, -4.5px);
+  .cycle::after {
+    content: '';
+    position: absolute;
+    left: clamp(.9rem, 3.5vw, 1.4rem);
+    top: 1.9rem;
+    width: 0;
+    height: 0;
+    border-top: 4.5px solid transparent;
+    border-bottom: 4.5px solid transparent;
+    border-left: 7px solid var(--accent);
+    transform: translate(-1px, -4.5px);
+  }
 }
 
 /* Numbered tips */
@@ -1531,18 +1560,6 @@ main > .section + .section:not(.section--no-rule)::after {
   align-items: center;
   gap: clamp(.65rem, 1.8vw, 1.1rem);
 }
-
-/* Line-drawn icons, same weight and colour as the arrows */
-.ico {
-  display: block;
-  width: clamp(40px, 6vw, 54px);
-  height: auto;
-  aspect-ratio: 48 / 34;
-  color: var(--accent);
-  flex: none;
-}
-
-.aim > .ico { margin-top: .15em; }
 
 /* These stay side by side at every width, unlike .aim — the questions are
    short enough that the arrow costs one extra wrapped line at most, and
@@ -1577,4 +1594,23 @@ main > .section + .section:not(.section--no-rule)::after {
   font-size: .8125rem;
   text-align: center;
   opacity: .65;
+}
+
+/* The chart and the sentence that reads it. Side by side while there is room,
+   stacked below phone width where a half-width chart would be unreadable. */
+.chart-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2.5rem);
+}
+
+.chart-row__note {
+  font-size: var(--step-h3);
+  font-weight: 400;
+  margin: 0;
+}
+
+@media (max-width: 720px) {
+  .chart-row { grid-template-columns: 1fr; }
 }
