@@ -263,6 +263,78 @@
     });
   });
 
+  // Stacked column chart. Each block is one logged event; hovering dims the
+  // rest and names the need behind that one. Same tooltip behaviour as the
+  // bubble chart, including clamping to the viewport rather than the figure.
+  document.querySelectorAll('[data-bars]').forEach(function (root) {
+    var svg = root.querySelector('.bars__svg');
+    var tip = root.querySelector('.bars__tip');
+    var head = tip.querySelector('.bars__tip-head');
+    var need = tip.querySelector('.bars__tip-need');
+    var segs = Array.prototype.slice.call(root.querySelectorAll('.bars__seg'));
+    if (!segs.length) return;
+
+    var lastX = 0, lastY = 0, queued = false;
+
+    function place(x, y) {
+      var cb = root.getBoundingClientRect();
+      var tw = tip.offsetWidth, th = tip.offsetHeight, pad = 14;
+      var vx = x + 18, vy = y + 18;
+      if (vx + tw > window.innerWidth - pad) vx = x - tw - 18;
+      if (vx < pad) vx = pad;
+      if (vy + th > window.innerHeight - pad) vy = y - th - 18;
+      if (vy < pad) vy = pad;
+      tip.style.left = (vx - cb.left) + 'px';
+      tip.style.top = (vy - cb.top) + 'px';
+    }
+
+    function activate(seg) {
+      segs.forEach(function (s) { s.removeAttribute('data-on'); });
+      seg.setAttribute('data-on', '');
+      root.classList.add('is-focused');
+      head.textContent = seg.dataset.when;
+      need.innerHTML = '<b>Underlying need:</b> ' +
+        seg.dataset.need.replace(/[&<>]/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c];
+        });
+      tip.hidden = false;
+      tip.setAttribute('data-show', 'true');
+      place(lastX, lastY);
+    }
+
+    function deactivate() {
+      segs.forEach(function (s) { s.removeAttribute('data-on'); });
+      root.classList.remove('is-focused');
+      tip.setAttribute('data-show', 'false');
+    }
+
+    var canHover = window.matchMedia('(hover: hover)').matches;
+
+    segs.forEach(function (seg) {
+      if (canHover) seg.addEventListener('pointerenter', function () { activate(seg); });
+      seg.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (e.clientX || e.clientY) { lastX = e.clientX; lastY = e.clientY; }
+        if (tip.getAttribute('data-show') === 'true' && seg.hasAttribute('data-on')) deactivate();
+        else activate(seg);
+      });
+    });
+
+    if (canHover) {
+      svg.addEventListener('pointerleave', deactivate);
+      svg.addEventListener('pointermove', function (e) {
+        lastX = e.clientX; lastY = e.clientY;
+        if (tip.getAttribute('data-show') !== 'true' || queued) return;
+        queued = true;
+        requestAnimationFrame(function () { queued = false; place(lastX, lastY); });
+      }, { passive: true });
+    }
+    document.addEventListener('click', function () { if (!canHover) deactivate(); });
+    tip.addEventListener('transitionend', function () {
+      if (tip.getAttribute('data-show') !== 'true') tip.hidden = true;
+    });
+  });
+
   // Scroll reveal. The class is added here so content stays visible without JS.
   // A position sweep (rather than IntersectionObserver) is used deliberately: it
   // also reveals anything the reader jumped straight past via an anchor link, so

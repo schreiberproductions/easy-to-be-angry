@@ -1126,7 +1126,8 @@ main > .section + .section:not(.section--no-rule)::after {
 
 /* Tooltip is anchored to its bubble rather than chasing the pointer, which
    keeps it from jittering as the cursor moves inside a circle. */
-.bubbles__tip {
+.bubbles__tip,
+.bars__tip {
   position: absolute;
   z-index: 3;
   /* An absolutely positioned shrink-to-fit box is limited by the containing
@@ -1149,10 +1150,14 @@ main > .section + .section:not(.section--no-rule)::after {
   transition: opacity .18s var(--ease);
 }
 
-.bubbles__tip[data-show='true'] { opacity: 1; }
-.bubbles__tip p { margin: 0; }
-.bubbles__tip-head { font-weight: 700; margin-bottom: .3rem !important; }
-.bubbles__tip-needs { opacity: .75; }
+.bubbles__tip[data-show='true'],
+.bars__tip[data-show='true'] { opacity: 1; }
+.bubbles__tip p,
+.bars__tip p { margin: 0; }
+.bubbles__tip-head,
+.bars__tip-head { font-weight: 700; margin-bottom: .3rem !important; }
+.bubbles__tip-needs,
+.bars__tip-need { opacity: .75; }
 
 /* The same detail as the tooltip, but reachable by keyboard and screen
    reader — SVG groups never fire focus events, so the chart itself cannot
@@ -1542,3 +1547,34 @@ main > .section + .section:not(.section--no-rule)::after {
 /* These stay side by side at every width, unlike .aim — the questions are
    short enough that the arrow costs one extra wrapped line at most, and
    stacking left the arrow marooned on a row of its own. */
+
+/* Stacked column chart — one block per logged event, so the column height is
+   literally a count and the blocks stay individually hoverable. */
+.bars { position: relative; margin: var(--block-gap) 0; }
+.bars__svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+.bars__seg { cursor: default; transition: fill-opacity .12s linear; }
+/* driven by a class rather than :hover, so a tap dims the rest on touch too */
+.bars.is-focused .bars__seg { fill-opacity: .3; }
+.bars.is-focused .bars__seg[data-on] { fill-opacity: 1; }
+
+.bars__grid { stroke: rgba(0, 0, 0, .08); stroke-width: 1; }
+.bars__axis { stroke: rgba(0, 0, 0, .25); stroke-width: 1; }
+
+.bars__ytick,
+.bars__xtick,
+.bars__total {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  fill: var(--ink);
+}
+
+.bars__ytick { font-size: 10px; opacity: .55; }
+.bars__xtick { font-size: 12px; font-weight: 700; }
+.bars__total { font-size: 11px; font-weight: 700; opacity: .75; }
+
+.bars__caption {
+  margin-top: .6rem;
+  font-size: .8125rem;
+  text-align: center;
+  opacity: .65;
+}
