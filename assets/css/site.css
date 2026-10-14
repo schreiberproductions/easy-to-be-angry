@@ -473,12 +473,20 @@ main > .section + .section:not(.section--no-rule)::after {
 
 .resource-list a::after {
   content: '↗';
-  display: inline-block;
+  /* inline, not inline-block. An inline-block is a line-break opportunity, so
+     a title that filled its line exactly pushed the arrow onto a line of its
+     own and left what read as a blank line under the link. As plain inline
+     text the arrow stays glued to the last word and wraps down with it. */
+  display: inline;
   margin-left: .32em;
   font-size: .85em;
   opacity: 0;
-  transform: translate(-3px, 2px);
-  transition: opacity .18s var(--ease), transform .18s var(--ease);
+  /* relative offsets, not a transform — transform does nothing on a
+     non-replaced inline box, and these shift paint without reflowing text */
+  position: relative;
+  left: -3px;
+  top: 2px;
+  transition: opacity .18s var(--ease), left .18s var(--ease), top .18s var(--ease);
 }
 
 .resource-list a:hover,
@@ -491,12 +499,12 @@ main > .section + .section:not(.section--no-rule)::after {
 .resource-list li:focus-within::before { transform: scale(1.8); }
 
 .resource-list a:hover::after,
-.resource-list a:focus-visible::after { opacity: .8; transform: none; }
+.resource-list a:focus-visible::after { opacity: .8; left: 0; top: 0; }
 
 /* Touch devices get no hover, so without the underline the arrow is the only
    thing marking these as links — keep it visible there permanently. */
 @media (hover: none) {
-  .resource-list a::after { opacity: .55; transform: none; }
+  .resource-list a::after { opacity: .55; left: 0; top: 0; }
 }
 
 .resource-list cite { font-style: italic; }
