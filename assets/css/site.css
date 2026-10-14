@@ -558,12 +558,31 @@ main > .section + .section:not(.section--no-rule)::after {
 
 /* Hero over artwork */
 .hero--art {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-height: min(58svh, 420px);
-  background: #e9d9e4 url('/assets/img/hero-gradient.webp') center / cover no-repeat;
-  padding-bottom: clamp(3.5rem, 8vw, 5rem);
+  /* Pure CSS mesh — nothing to download, no banding, and no artwork to
+     re-flatten if the palette moves. Red stands in for the anger theme. */
+  background:
+    radial-gradient(54% 72% at 16% 24%, rgba(201, 42, 30, .95) 0%, rgba(208, 48, 34, .88) 22%, rgba(214, 48, 34, 0) 72%),
+    radial-gradient(42% 58% at 78% 8%, rgba(232, 137, 189, .80) 0%, rgba(232, 137, 189, 0) 70%),
+    radial-gradient(52% 70% at 62% 98%, rgba(92, 232, 222, .90) 0%, rgba(92, 232, 222, 0) 68%),
+    radial-gradient(40% 56% at 22% 92%, rgba(173, 151, 240, .72) 0%, rgba(173, 151, 240, 0) 70%),
+    #f5f4f3;
+  padding-top: calc(var(--nav-h) + clamp(2.5rem, 8vw, 6rem));
+  padding-bottom: clamp(3.5rem, 9vw, 7rem);
+}
+
+/* faint grain, the one thing the old bitmap hero gave that flat CSS doesn't */
+.hero--art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .45;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.3'/%3E%3C/svg%3E");
 }
 
 /* Light wash so the dark title holds against the busiest parts of the gradient */
@@ -655,16 +674,28 @@ main > .section + .section:not(.section--no-rule)::after {
 
 /* The epigraphs lead straight into the intro rather than forming their own
    scroll stop, so they sit as a band above it with a rule between. */
-.quote-band-wrap {
-  background: var(--grey-light);
-  padding-block: clamp(1.75rem, 4vw, 2.75rem);
+.quote-overlap {
+  position: relative;
+  z-index: 2;
+  margin-top: calc(-1 * clamp(2rem, 5vw, 3.5rem));
 }
 
-.quote-band {
+.quote-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: clamp(1rem, 3vw, 2.5rem);
+  gap: clamp(1rem, 2.5vw, 1.75rem);
 }
+
+.qcard {
+  margin: 0;
+  padding: clamp(1rem, 2.4vw, 1.4rem) clamp(1.1rem, 2.6vw, 1.6rem);
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, .12);
+}
+
+.qcard p { margin: 0 0 .25rem; font-size: .9375rem; font-weight: 700; line-height: 1.5; }
+.qcard cite { font-style: normal; font-size: .8125rem; opacity: .7; }
 
 .quote-band .epigraph { margin: 0; max-width: none; }
 .quote-band .epigraph p { font-size: .9375rem; line-height: 1.5; margin-bottom: .15rem; }
