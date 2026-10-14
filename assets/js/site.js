@@ -127,6 +127,115 @@
     sync();
   });
 
+  // Bubble chart. Hovering lifts the bubble under the pointer and eases its
+  // neighbours gently aside; the tooltip anchors to the bubble rather than the
+  // cursor so it doesn't jitter while the pointer moves inside a circle.
+  document.querySelectorAll('[data-bubbles]').forEach(function (root) {
+    var svg = root.querySelector('.bubbles__svg');
+    var tip = root.querySelector('.bubbles__tip');
+    var head = tip.querySelector('.bubbles__tip-head');
+    var needs = tip.querySelector('.bubbles__tip-needs');
+    var bubbles = Array.prototype.slice.call(root.querySelectorAll('.bub'));
+    if (!bubbles.length) return;
+
+    var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // centres in viewBox units, read once from the packing values
+    var pts = bubbles.map(function (b) {
+      return {
+        el: b,
+        x: parseFloat(b.style.getPropertyValue('--bx')),
+        y: parseFloat(b.style.getPropertyValue('--by')),
+        r: parseFloat(b.querySelector('circle').getAttribute('r'))
+      };
+    });
+
+    function clear() {
+      pts.forEach(function (p) {
+        p.el.style.removeProperty('--dx');
+        p.el.style.removeProperty('--dy');
+        p.el.style.removeProperty('--s');
+      });
+    }
+
+    function activate(target) {
+      var hit = pts.find(function (p) { return p.el === target; });
+      if (!hit) return;
+
+      if (!calm) {
+        pts.forEach(function (p) {
+          if (p === hit) {
+            p.el.style.setProperty('--s', '1.07');
+            return;
+          }
+          var dx = p.x - hit.x, dy = p.y - hit.y;
+          var d = Math.hypot(dx, dy) || 1;
+          var push = 16 * Math.exp(-d / 150);          // only near neighbours shift
+          p.el.style.setProperty('--dx', (dx / d * push).toFixed(2) + 'px');
+          p.el.style.setProperty('--dy', (dy / d * push).toFixed(2) + 'px');
+        });
+      }
+
+      head.textContent = target.dataset.label + ' · ' + target.dataset.count +
+        (target.dataset.count === '1' ? ' mention' : ' mentions');
+      needs.textContent = target.dataset.needs;
+
+      // Sits just under the chart, tracking the bubble horizontally. Anchoring
+      // it to the bubble itself meant it covered the neighbouring circles.
+      var cb = root.getBoundingClientRect();
+      var sb = svg.getBoundingClientRect();
+      var bb = target.getBoundingClientRect();
+      tip.hidden = false;
+      tip.setAttribute('data-show', 'true');
+      var tw = tip.offsetWidth;
+      var left = bb.left - cb.left + bb.width / 2 - tw / 2;
+      tip.style.left = Math.max(0, Math.min(left, cb.width - tw)) + 'px';
+      tip.style.top = (sb.bottom - cb.top + 8) + 'px';
+    }
+
+    function deactivate() {
+      clear();
+      tip.setAttribute('data-show', 'false');
+    }
+
+    // Hover drives this on a mouse; on touch there is no hover at all, so a tap
+    // has to open the tooltip or the underlying needs are unreachable on a phone.
+    var canHover = window.matchMedia('(hover: hover)').matches;
+
+    bubbles.forEach(function (b) {
+      if (canHover) {
+        b.addEventListener('pointerenter', function () { activate(b); });
+      }
+      b.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (tip.getAttribute('data-show') === 'true' && tip.dataset.for === b.dataset.label) {
+          deactivate();
+        } else {
+          tip.dataset.for = b.dataset.label;
+          activate(b);
+        }
+      });
+    });
+
+    // focus/blur don't reliably reach listeners bound to SVG groups, but
+    // focusin/focusout bubble, so delegate from the svg instead.
+    svg.addEventListener('focusin', function (e) {
+      var b = e.target.closest && e.target.closest('.bub');
+      if (b) activate(b);
+    });
+    svg.addEventListener('focusout', function (e) {
+      if (!svg.contains(e.relatedTarget)) deactivate();
+    });
+
+    if (canHover) svg.addEventListener('pointerleave', deactivate);
+    document.addEventListener('click', function () {
+      if (!canHover) deactivate();
+    });
+    tip.addEventListener('transitionend', function () {
+      if (tip.getAttribute('data-show') !== 'true') tip.hidden = true;
+    });
+  });
+
   // Scroll reveal. The class is added here so content stays visible without JS.
   // A position sweep (rather than IntersectionObserver) is used deliberately: it
   // also reveals anything the reader jumped straight past via an anchor link, so

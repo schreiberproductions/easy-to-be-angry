@@ -1030,6 +1030,100 @@ main > .section + .section:not(.section--no-rule)::after {
   background: rgba(0, 0, 0, .45);
 }
 
+/* ---------------------------------------------------------------
+   Triggers bubble chart (replaces the old Flourish embed)
+---------------------------------------------------------------- */
+.bubbles { position: relative; }
+
+.bubbles__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;   /* bubbles lift slightly past the viewBox on hover */
+}
+
+.bub {
+  /* --bx/--by come from the packing; --dx/--dy are the live hover nudge */
+  transform-box: view-box;
+  transform-origin: 0 0;
+  transform:
+    translate(calc(var(--bx) + var(--dx, 0px)), calc(var(--by) + var(--dy, 0px)))
+    scale(var(--s, 1));
+  transition: transform .45s var(--ease);
+  cursor: pointer;
+}
+
+.bub circle { transition: filter .25s var(--ease); }
+.bub:is(:hover, :focus-visible) circle { filter: drop-shadow(0 4px 14px rgba(0, 0, 0, .22)); }
+.bub:focus { outline: none; }
+.bub:focus-visible circle { stroke: var(--charcoal); stroke-width: 2; }
+
+.bub__label {
+  fill: #1a1a1a;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-weight: 500;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bub { transition: none; }
+}
+
+/* Tooltip is anchored to its bubble rather than chasing the pointer, which
+   keeps it from jittering as the cursor moves inside a circle. */
+.bubbles__tip {
+  position: absolute;
+  z-index: 3;
+  max-width: min(22rem, 86%);
+  padding: .7rem .85rem;
+  border-radius: 6px;
+  background: rgba(26, 26, 26, .95);
+  color: #fff;
+  font-size: .8125rem;
+  line-height: 1.45;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity .2s var(--ease), transform .2s var(--ease);
+}
+
+.bubbles__tip[data-show='true'] { opacity: 1; transform: none; }
+.bubbles__tip p { margin: 0; }
+.bubbles__tip-head { font-weight: 700; margin-bottom: .3rem !important; }
+.bubbles__tip-needs { opacity: .85; }
+
+/* The same detail as the tooltip, but reachable by keyboard and screen
+   reader — SVG groups never fire focus events, so the chart itself cannot
+   carry this content on its own. */
+.trigger-key { margin-top: 1rem; font-size: .875rem; }
+
+.trigger-key summary {
+  cursor: pointer;
+  color: var(--accent-deep);
+  font-weight: 700;
+}
+
+.trigger-key summary:hover { text-decoration: underline; }
+
+.trigger-key__list { margin: .9rem 0 0; }
+
+.trigger-key__row {
+  display: grid;
+  grid-template-columns: 11rem 1fr;
+  gap: .25rem 1rem;
+  padding-block: .5rem;
+  border-top: 1px solid rgba(0, 0, 0, .09);
+}
+
+.trigger-key__row dt { font-weight: 700; }
+.trigger-key__row dt span { display: block; font-weight: 500; opacity: .55; font-size: .8125rem; }
+.trigger-key__row dd { margin: 0; opacity: .8; line-height: 1.5; }
+
+@media (max-width: 640px) {
+  .trigger-key__row { grid-template-columns: 1fr; }
+}
+
 /* Responsive third-party embed (Flourish) */
 .embed {
   position: relative;
