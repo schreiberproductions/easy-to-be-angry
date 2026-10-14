@@ -1058,6 +1058,8 @@ main > .section + .section:not(.section--no-rule)::after {
 .bub:focus { outline: none; }
 .bub:focus-visible circle { stroke: var(--charcoal); stroke-width: 2; }
 
+.bub__label--out { fill: var(--ink); font-weight: 600; }
+
 .bub__label {
   fill: #1a1a1a;
   font-family: 'DM Sans', system-ui, sans-serif;
@@ -1084,11 +1086,10 @@ main > .section + .section:not(.section--no-rule)::after {
   line-height: 1.45;
   pointer-events: none;
   opacity: 0;
-  transform: translateY(4px);
-  transition: opacity .2s var(--ease), transform .2s var(--ease);
+  transition: opacity .18s var(--ease);
 }
 
-.bubbles__tip[data-show='true'] { opacity: 1; transform: none; }
+.bubbles__tip[data-show='true'] { opacity: 1; }
 .bubbles__tip p { margin: 0; }
 .bubbles__tip-head { font-weight: 700; margin-bottom: .3rem !important; }
 .bubbles__tip-needs { opacity: .85; }

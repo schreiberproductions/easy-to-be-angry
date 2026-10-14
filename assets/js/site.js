@@ -150,6 +150,21 @@
       };
     });
 
+    var lastX = 0, lastY = 0, queued = false;
+
+    // Follows the pointer. Position is written straight to the element rather
+    // than transitioned, so it tracks instead of lagging behind the cursor.
+    function place(x, y) {
+      var cb = root.getBoundingClientRect();
+      var tw = tip.offsetWidth, th = tip.offsetHeight;
+      var left = x - cb.left + 16;
+      var top = y - cb.top + 16;
+      if (left + tw > cb.width) left = x - cb.left - tw - 16;
+      if (top + th > cb.height) top = y - cb.top - th - 16;
+      tip.style.left = Math.max(0, left) + 'px';
+      tip.style.top = Math.max(0, top) + 'px';
+    }
+
     function clear() {
       pts.forEach(function (p) {
         p.el.style.removeProperty('--dx');
@@ -176,21 +191,15 @@
         });
       }
 
-      head.textContent = target.dataset.label + ' · ' + target.dataset.count +
-        (target.dataset.count === '1' ? ' mention' : ' mentions');
-      needs.textContent = target.dataset.needs;
+      head.textContent = target.dataset.label;
+      needs.innerHTML = '<b>Underlying Needs:</b> ' +
+        target.dataset.needs.replace(/[&<>]/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c];
+        });
 
-      // Sits just under the chart, tracking the bubble horizontally. Anchoring
-      // it to the bubble itself meant it covered the neighbouring circles.
-      var cb = root.getBoundingClientRect();
-      var sb = svg.getBoundingClientRect();
-      var bb = target.getBoundingClientRect();
       tip.hidden = false;
       tip.setAttribute('data-show', 'true');
-      var tw = tip.offsetWidth;
-      var left = bb.left - cb.left + bb.width / 2 - tw / 2;
-      tip.style.left = Math.max(0, Math.min(left, cb.width - tw)) + 'px';
-      tip.style.top = (sb.bottom - cb.top + 8) + 'px';
+      place(lastX, lastY);
     }
 
     function deactivate() {
@@ -208,6 +217,8 @@
       }
       b.addEventListener('click', function (e) {
         e.stopPropagation();
+        // a tap has no prior pointermove, so seed the position from the tap
+        if (e.clientX || e.clientY) { lastX = e.clientX; lastY = e.clientY; }
         if (tip.getAttribute('data-show') === 'true' && tip.dataset.for === b.dataset.label) {
           deactivate();
         } else {
@@ -227,7 +238,15 @@
       if (!svg.contains(e.relatedTarget)) deactivate();
     });
 
-    if (canHover) svg.addEventListener('pointerleave', deactivate);
+    if (canHover) {
+      svg.addEventListener('pointerleave', deactivate);
+      svg.addEventListener('pointermove', function (e) {
+        lastX = e.clientX; lastY = e.clientY;
+        if (tip.getAttribute('data-show') !== 'true' || queued) return;
+        queued = true;
+        requestAnimationFrame(function () { queued = false; place(lastX, lastY); });
+      }, { passive: true });
+    }
     document.addEventListener('click', function () {
       if (!canHover) deactivate();
     });
