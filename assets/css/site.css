@@ -973,13 +973,28 @@ main > .section + .section:not(.section--no-rule)::after {
 
 /* Closing questions — the authors speaking, so no quote furniture */
 .closing-question {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: clamp(.75rem, 2vw, 1.4rem);
   margin: var(--block-gap) var(--inset);
+}
+
+.closing-question p {
+  margin: 0;
   font-size: clamp(1.125rem, calc(1rem + .55vw), 1.5rem);
   font-weight: 500;
   line-height: 1.35;
 }
 
 .closing-question strong { font-weight: 700; }
+
+/* mirrored so the head points at the question rather than away from it */
+.arrow--flip { transform: scaleX(-1); }
+
+@media (max-width: 560px) {
+  .closing-question { grid-template-columns: 1fr; gap: .4rem; }
+}
 
 /* Topic subheads that open a named idea */
 .subhead-major {
@@ -988,15 +1003,6 @@ main > .section + .section:not(.section--no-rule)::after {
   font-size: clamp(1.5rem, calc(1.25rem + 1vw), 2.125rem);
   font-weight: 500;
   letter-spacing: -0.035em;
-}
-
-.subhead-major::before {
-  content: '';
-  display: block;
-  width: 2.5rem;
-  height: 3px;
-  margin-bottom: .9rem;
-  background: var(--accent);
 }
 
 /* Contributor voice — the one place the handwritten face is used.
