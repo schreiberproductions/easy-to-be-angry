@@ -993,6 +993,11 @@ main > .section + .section:not(.section--no-rule)::after {
   line-height: 1.45;
 }
 
+/* A quotation running over two paragraphs: each paragraph opens with a quote
+   mark, only the last one closes. Kill the UA margins and space them by hand. */
+.pullquote p { margin: 0; }
+.pullquote p + p { margin-top: .7rem; }
+
 .pullquote cite {
   display: block;
   margin-top: .5rem;
