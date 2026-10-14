@@ -269,10 +269,12 @@
   document.querySelectorAll('[data-bars]').forEach(function (root) {
     var svg = root.querySelector('.bars__svg');
     var tip = root.querySelector('.bars__tip');
-    var head = tip.querySelector('.bars__tip-head');
-    var need = tip.querySelector('.bars__tip-need');
+    var head = tip && tip.querySelector('.bars__tip-head');
+    var need = tip && tip.querySelector('.bars__tip-need');
     var segs = Array.prototype.slice.call(root.querySelectorAll('.bars__seg'));
-    if (!segs.length) return;
+    // bail rather than throw: a missing tooltip used to take down every
+    // listener set up after this block, including the scroll reveal
+    if (!segs.length || !svg || !tip || !head || !need) return;
 
     var lastX = 0, lastY = 0, queued = false;
 

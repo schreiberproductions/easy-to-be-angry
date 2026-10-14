@@ -1441,19 +1441,38 @@ main > .section + .section:not(.section--no-rule)::after {
   overflow: visible;
 }
 
-.cycle__arc {
+/* The same curved arrow the rest of the site uses, placed three times around
+   the ring. Each one draws itself on: the line first, then the head, and the
+   three stagger clockwise so the eye follows the cycle round. */
+.cycle__arrow {
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.6;
+  stroke-width: 1.5;
   stroke-linecap: round;
-  stroke-dasharray: 3 4;
-  animation: cycle-turn 2.4s linear infinite;
+  stroke-linejoin: round;
 }
 
-@keyframes cycle-turn { to { stroke-dashoffset: -14; } }
+/* Without JS nothing adds .is-visible, so the arrows must be drawn already —
+   the dash offset is only applied once the reveal script is running. */
+body.js-reveal .cycle__line { stroke-dasharray: 92; stroke-dashoffset: 92; }
+body.js-reveal .cycle__head { stroke-dasharray: 32; stroke-dashoffset: 32; }
+
+body.js-reveal .cycle.is-visible .cycle__line { animation: cycle-draw .55s ease forwards; }
+body.js-reveal .cycle.is-visible .cycle__head { animation: cycle-draw .22s ease forwards; }
+
+/* These have to outrank the shorthand above, which resets animation-delay */
+body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(1) .cycle__line { animation-delay: .05s; }
+body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(1) .cycle__head { animation-delay: .55s; }
+body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(2) .cycle__line { animation-delay: .75s; }
+body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(2) .cycle__head { animation-delay: 1.25s; }
+body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__line { animation-delay: 1.45s; }
+body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { animation-delay: 1.95s; }
+
+@keyframes cycle-draw { to { stroke-dashoffset: 0; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .cycle__arc { animation: none; stroke-dasharray: none; }
+  body.js-reveal .cycle__line,
+  body.js-reveal .cycle__head { stroke-dashoffset: 0; animation: none; }
 }
 
 .cycle__step {
@@ -1461,8 +1480,8 @@ main > .section + .section:not(.section--no-rule)::after {
   width: 40%;
   padding: clamp(.6rem, 1.8vw, .85rem) clamp(.7rem, 2vw, 1rem);
   border-radius: 10px;
-  background: var(--white);
-  box-shadow: 0 4px 18px rgba(0, 0, 0, .10);
+  background: var(--step-tint, var(--white));
+  box-shadow: 0 4px 18px rgba(0, 0, 0, .08);
   text-align: center;
   font-size: clamp(.8125rem, calc(.77rem + .19vw), .9375rem);
   line-height: 1.35;
@@ -1471,22 +1490,10 @@ main > .section + .section:not(.section--no-rule)::after {
 .cycle__step p { margin: .35rem 0 0; }
 
 /* 12, 4 and 8 o'clock on a circle of radius 45 in a 100-unit box */
-.cycle__step--a { left: 50%; top: 5%;  transform: translate(-50%, -50%); }
-.cycle__step--b { left: 89%; top: 72%; transform: translate(-50%, -50%); }
-.cycle__step--c { left: 11%; top: 72%; transform: translate(-50%, -50%); }
+.cycle__step--a { left: 50%; top: 5%;  transform: translate(-50%, -50%); --step-tint: #fde4d2; }
+.cycle__step--b { left: 89%; top: 72%; transform: translate(-50%, -50%); --step-tint: #fbd8e8; }
+.cycle__step--c { left: 11%; top: 72%; transform: translate(-50%, -50%); --step-tint: #e3e0fb; }
 
-.cycle__num {
-  display: grid;
-  place-items: center;
-  width: 1.6rem;
-  height: 1.6rem;
-  margin: 0 auto;
-  border-radius: 999px;
-  background: var(--accent);
-  color: var(--white);
-  font-size: .8125rem;
-  font-weight: 700;
-}
 
 /* Below phone width the ring has no room, so the steps become a plain column
    and a bracket carries the return instead. */
@@ -1504,13 +1511,8 @@ main > .section + .section:not(.section--no-rule)::after {
     width: auto;
     transform: none;
     text-align: left;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: center;
-    gap: .75rem;
   }
   .cycle__step p { margin: 0; }
-  .cycle__num { margin: 0; }
 
   .cycle::before {
     content: '';

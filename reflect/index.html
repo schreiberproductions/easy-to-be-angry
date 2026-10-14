@@ -15,7 +15,7 @@
 <link rel="icon" href="/assets/img/favicon-32x32.png" type="image/png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/DMSans-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/site.css?v=48">
+<link rel="stylesheet" href="/assets/css/site.css?v=50">
 </head>
 <body>
 
@@ -338,12 +338,12 @@
             <text class="bars__total" x="314.8" y="174.6" text-anchor="middle">3</text>
             <text class="bars__xtick" x="314.8" y="244.0" text-anchor="middle">Night</text>
           </svg>
+          <div class="bars__tip" role="status" aria-live="polite" hidden>
+            <p class="bars__tip-head"></p>
+            <p class="bars__tip-need"></p>
+          </div>
           <figcaption class="bars__caption">Number of anger-triggering events, by time of day</figcaption>
         </figure>
-        <div class="bars__tip" role="status" aria-live="polite" hidden>
-          <p class="bars__tip-head"></p>
-          <p class="bars__tip-need"></p>
-        </div>
         <h3 class="chart-row__note">Based on the <strong>5 moms</strong> who contributed to this survey project, <strong>anger-triggering events build during the day</strong> and outbursts are more likely to happen in the evening.</h3>
       </div>
 
@@ -354,28 +354,27 @@
 
       <div class="cycle" data-reveal role="list" aria-label="A cycle: each step feeds the next and returns to the first">
         <svg class="cycle__ring" viewBox="0 0 100 100" aria-hidden="true">
-          <defs>
-            <marker id="cyc-head" viewBox="0 0 10 10" refX="7" refY="5"
-                    markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-              <path d="M0 1.2 L9 5 L0 8.8 Z" fill="currentColor"></path>
-            </marker>
-          </defs>
-          <!-- three arcs of one circle, gapped where the steps sit -->
-          <path class="cycle__arc" d="M 69.3 10.8 A 45 45 0 0 1 84.6 70.2" marker-end="url(#cyc-head)"></path>
-          <path class="cycle__arc" d="M 66.4 88.6 A 45 45 0 0 1 33.6 88.6" marker-end="url(#cyc-head)"></path>
-          <path class="cycle__arc" d="M 15.4 70.2 A 45 45 0 0 1 30.7 10.8" marker-end="url(#cyc-head)"></path>
+          <g class="cycle__arrow" transform="translate(69.49,38.75) rotate(-106.6) scale(.38) translate(-52,-27)">
+            <path class="cycle__line" d="M100 10C78 3 36 8 16 30"></path>
+            <path class="cycle__head" d="M11 18c1.2 4.6 2.6 8.6 4.2 12.4 4-1.4 8.2-2.4 12.6-3"></path>
+          </g>
+          <g class="cycle__arrow" transform="translate(50.00,72.50) rotate(13.4) scale(.38) translate(-52,-27)">
+            <path class="cycle__line" d="M100 10C78 3 36 8 16 30"></path>
+            <path class="cycle__head" d="M11 18c1.2 4.6 2.6 8.6 4.2 12.4 4-1.4 8.2-2.4 12.6-3"></path>
+          </g>
+          <g class="cycle__arrow" transform="translate(30.51,38.75) rotate(-226.6) scale(.38) translate(-52,-27)">
+            <path class="cycle__line" d="M100 10C78 3 36 8 16 30"></path>
+            <path class="cycle__head" d="M11 18c1.2 4.6 2.6 8.6 4.2 12.4 4-1.4 8.2-2.4 12.6-3"></path>
+          </g>
         </svg>
 
         <div class="cycle__step cycle__step--a" role="listitem">
-          <span class="cycle__num">1</span>
           <p>Not taking care of physical needs</p>
         </div>
         <div class="cycle__step cycle__step--b" role="listitem">
-          <span class="cycle__num">2</span>
           <p>Feel more anger more often</p>
         </div>
         <div class="cycle__step cycle__step--c" role="listitem">
-          <span class="cycle__num">3</span>
           <p>More tired and less motivated to take care of physical needs</p>
         </div>
       </div>
@@ -421,6 +420,6 @@
   </div>
 </footer>
 
-<script src="/assets/js/site.js?v=33" defer></script>
+<script src="/assets/js/site.js?v=34" defer></script>
 </body>
 </html>
