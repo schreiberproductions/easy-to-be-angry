@@ -1124,7 +1124,13 @@ main > .section + .section:not(.section--no-rule)::after {
 .bubbles__tip {
   position: absolute;
   z-index: 3;
-  max-width: min(22rem, 86%);
+  /* An absolutely positioned shrink-to-fit box is limited by the containing
+     block's width minus its own left offset, so the tooltip narrowed into a
+     tall column as the pointer approached the right edge. max-content ignores
+     the available space, so the box keeps one shape wherever it is placed and
+     the JS flips it to the other side of the cursor instead. */
+  width: max-content;
+  max-width: min(22rem, 70vw);
   padding: .7rem .85rem;
   border: 1px solid rgba(0, 0, 0, .16);
   border-radius: 6px;
