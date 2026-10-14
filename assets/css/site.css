@@ -21,6 +21,12 @@
   --container: 1020px;
   --gutter: clamp(1.25rem, 5vw, 5.5rem);
 
+  /* set-apart blocks (quotes, scripture, contributor voice) step in from the
+     body measure on both sides so they read as interruptions in the text */
+  --inset: clamp(1rem, 6vw, 7rem);
+  /* vertical rhythm between a block and the prose around it */
+  --block-gap: clamp(1.75rem, 3.5vw, 2.75rem);
+
   /* Each step interpolates linearly between its size at 375px and at 1200px,
      so mid-range widths get a real value instead of sitting on the floor. */
   --step-hero: clamp(1.875rem, calc(1.4773rem + 1.697vw), 2.75rem);   /* 30 → 44 */
@@ -895,7 +901,7 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
   gap: .45rem clamp(1rem, 2.5vw, 1.75rem);
   align-items: baseline;
   max-width: none;
-  margin: clamp(1.5rem, 3vw, 2rem) 0;
+  margin: var(--block-gap) var(--inset);
   padding: 0;
   border: 0;
 }
@@ -929,8 +935,7 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
 
 /* Pull quote — accent rule down the left */
 .pullquote {
-  max-width: 54ch;
-  margin: clamp(1.5rem, 4vw, 2.5rem) 0;
+  margin: var(--block-gap) var(--inset);
   padding-left: clamp(1rem, 2.5vw, 1.75rem);
   border-left: 3px solid var(--accent);
   /* deliberately a step below body copy — the rule and weight carry it */
@@ -952,8 +957,7 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
    Caveat runs small and is already slanted, so it is sized up and set
    upright rather than italic. */
 .contributor {
-  max-width: none;
-  margin-inline: auto;
+  margin: var(--block-gap) var(--inset);
   font-family: 'Caveat', 'DM Sans', cursive;
   font-size: clamp(1.2rem, calc(1rem + .62vw), 1.6rem);
   line-height: 1.5;
@@ -1006,6 +1010,27 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
 }
 
 .split h3 { font-size: var(--step-h3); font-weight: 700; margin-bottom: .5rem; }
+
+/* Shared spacing helpers, so vertical rhythm comes from two values rather
+   than ad-hoc margins scattered through the markup. */
+.block-gap { margin-top: var(--block-gap); }
+.topic-break { margin-top: clamp(2.5rem, 5vw, 3.75rem); }
+.cta-wrap { margin-top: clamp(2.25rem, 4.5vw, 3rem); }
+
+/* Aim rows — arrow sits right against its text */
+.aim {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: clamp(.65rem, 1.6vw, 1.1rem);
+  margin-top: var(--block-gap);
+}
+
+.aim .arrow { margin-top: .45em; }
+
+@media (max-width: 560px) {
+  .aim { grid-template-columns: 1fr; gap: .4rem; }
+}
 
 /* Figure with decorative arrow */
 .annotated {
