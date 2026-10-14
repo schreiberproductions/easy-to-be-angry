@@ -16,6 +16,7 @@
   --teal: #0e7169;        /* scripture; brightest teal clearing AA on white, cream and gold */
   --gold-light: #f8ebd8;   /* the gold at ~25% over white */
   --white: #fff;
+  --grey-light: #f4f4f3;
 
   --nav-h: 56px;
   --container: 1020px;
@@ -307,10 +308,14 @@ a { color: inherit; }
    bar. Any page whose first block isn't a hero gets the clearance instead. */
 main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 4rem)); }
 
-.section { padding-block: clamp(2.75rem, 7vw, 5.5rem); }
-.section--light { background: var(--offwhite); }
-.section--cream { background: var(--cream); }
-.section--white { background: var(--white); }
+.section {
+  padding-block: clamp(2.75rem, 7vw, 5.5rem);
+  background: var(--white);
+}
+/* The modifier classes are kept as no-ops: the artwork wash inherits its
+   colour from the section, and that colour is now white everywhere. */
+
+main > .section + .section { border-top: 1px solid rgba(0, 0, 0, .09); }
 
 .hero {
   position: relative;
@@ -628,8 +633,6 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
   .section--art::before { opacity: .88; }
 }
 
-.section--tan   { background-color: var(--gold-light); }
-.section--cream { background-color: var(--cream); }
 
 /* Opening epigraphs */
 .epigraph { max-width: 52ch; margin-bottom: 2rem; }
@@ -643,9 +646,10 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: clamp(1rem, 3vw, 2.5rem);
-  padding-bottom: clamp(1.5rem, 3vw, 2.25rem);
-  margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
-  border-bottom: 1px solid rgba(0, 0, 0, .12);
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  padding: clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 3vw, 2rem);
+  background: var(--grey-light);
+  border-radius: 4px;
 }
 
 .quote-band .epigraph { margin: 0; max-width: none; }
@@ -854,7 +858,7 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
   column-gap: clamp(.5rem, 1.5vw, .9rem);
   row-gap: .15rem;
   list-style: none;
-  margin: 0;
+  margin: var(--block-gap) 0;
   padding: 0;
 }
 
@@ -1054,7 +1058,7 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
   gap: .6rem;
   padding: .85rem 1.6rem;
   border-radius: 999px;
-  background: var(--charcoal);
+  background: var(--accent);
   color: var(--white);
   font-size: var(--step-link);
   font-weight: 700;
