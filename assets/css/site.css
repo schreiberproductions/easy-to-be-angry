@@ -1030,9 +1030,6 @@ main > .section + .section:not(.section--no-rule)::after {
 
 .closing-question strong { font-weight: 700; }
 
-/* mirrored so the head points at the question rather than away from it */
-.arrow--flip { transform: scaleX(-1); }
-
 @media (max-width: 560px) {
   .closing-question { grid-template-columns: 1fr; gap: .4rem; }
 }
