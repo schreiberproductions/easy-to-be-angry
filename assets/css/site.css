@@ -12,6 +12,8 @@
   --cream: #f6e4cb;
   --offwhite: #f8f8f7;
   --brick: #d82713;
+  --gold: #e4af63;
+  --gold-light: #f8ebd8;   /* the gold at ~25% over white */
   --white: #fff;
 
   --nav-h: 56px;
@@ -619,7 +621,7 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
   .section--art::before { opacity: .65; }
 }
 
-.section--tan   { background-color: #e4af63; }
+.section--tan   { background-color: var(--gold-light); }
 .section--cream { background-color: var(--cream); }
 
 /* Opening epigraphs */
@@ -642,6 +644,29 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
 .quote-band .epigraph { margin: 0; max-width: none; }
 .quote-band .epigraph p { font-size: .9375rem; line-height: 1.5; margin-bottom: .15rem; }
 .quote-band .epigraph cite { font-size: .875rem; }
+
+/* "You are not alone" — the artwork sits behind the questions rather than
+   below them, scaled down and softened so the text stays the focus. */
+.not-alone { position: relative; }
+
+.not-alone::before {
+  content: '';
+  position: absolute;
+  right: -3%;
+  top: 50%;
+  translate: 0 -50%;
+  width: clamp(240px, 42%, 460px);
+  aspect-ratio: 1200 / 901;
+  background: url('/assets/img/blob-not-alone.webp') center / contain no-repeat;
+  opacity: .5;
+  pointer-events: none;
+}
+
+.not-alone > * { position: relative; }
+
+@media (max-width: 700px) {
+  .not-alone::before { width: 78%; right: -12%; opacity: .32; }
+}
 
 /* "You are not alone" question list */
 .question-list { list-style: none; margin: 0; padding: 0; max-width: none; }
@@ -882,7 +907,8 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
   max-width: none;
   margin-block: clamp(1.5rem, 4vw, 2.5rem);
   padding: clamp(1.25rem, 3vw, 2rem);
-  background: #e4af63;
+  background: var(--gold-light);
+  border: 1px solid rgba(180, 130, 50, .3);
   border-radius: 3px;
 }
 
