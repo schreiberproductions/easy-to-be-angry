@@ -1310,3 +1310,205 @@ main > .section + .section:not(.section--no-rule)::after {
 }
 
 .cta-next:hover { background: var(--accent-deep); transform: translateX(4px); }
+
+/* ===========================================================================
+   Reflect page
+   ======================================================================== */
+
+/* The Vev original opened with a 6.5MB rainbow star. These gradients take its
+   palette — magenta, violet, blue, yellow, orange — so the page keeps its own
+   identity without the download. */
+.hero--reflect {
+  background:
+    radial-gradient(44% 60% at 26% 6%, rgba(233, 56, 140, .82) 0%, rgba(233, 56, 140, 0) 70%),
+    radial-gradient(46% 64% at 84% 24%, rgba(138, 94, 232, .74) 0%, rgba(138, 94, 232, 0) 70%),
+    radial-gradient(44% 62% at 70% 102%, rgba(78, 170, 240, .72) 0%, rgba(78, 170, 240, 0) 68%),
+    radial-gradient(42% 58% at 14% 94%, rgba(248, 206, 74, .80) 0%, rgba(248, 206, 74, 0) 70%),
+    radial-gradient(38% 54% at 2% 48%, rgba(242, 130, 48, .70) 0%, rgba(242, 130, 48, 0) 72%),
+    #f5f4f3;
+}
+
+.hero__eyebrow {
+  margin-bottom: .5rem;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+}
+
+/* A figure carried by one number. */
+.statline {
+  margin: var(--block-gap) var(--inset);
+  font-size: var(--step-body);
+  line-height: 1.5;
+}
+
+.statline__figure {
+  display: block;
+  margin-bottom: .2rem;
+  font-size: clamp(2.25rem, calc(1.6rem + 2.8vw), 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--accent-deep);
+}
+
+.statline__figure a { color: inherit; text-decoration: none; }
+.statline__figure a:hover { text-decoration: underline; }
+.statline cite { display: block; margin-top: .5rem; font-style: normal; font-size: .8125rem; opacity: .7; }
+
+/* Two quotes set against each other. The number is the only furniture that
+   says they are a pair, so it sits in the margin rather than in the text. */
+.quote-pair { margin: var(--block-gap) 0; }
+
+.quote-pair .pullquote {
+  display: grid;
+  grid-template-columns: 2.25rem 1fr;
+  gap: 0 clamp(.5rem, 1.5vw, .9rem);
+  border-left: 0;
+  padding-left: 0;
+}
+
+.quote-pair .pullquote::before {
+  content: counter(qp);
+  grid-row: 1 / span 2;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent);
+  opacity: .65;
+}
+
+.quote-pair { counter-reset: qp; }
+.quote-pair .pullquote { counter-increment: qp; }
+.quote-pair .pullquote + .pullquote { margin-top: var(--block-gap); }
+
+@media (max-width: 560px) {
+  .quote-pair .pullquote { grid-template-columns: 1.5rem 1fr; }
+}
+
+/* Tendency on the left, the correction on the right. Unlike .shift-list both
+   sides here run to several lines, so the columns are fluid, not max-content. */
+.swap {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: clamp(.65rem, 2vw, 1.25rem);
+  margin: var(--block-gap) 0;
+}
+
+.swap + .swap { margin-top: calc(-1 * var(--block-gap) + clamp(1rem, 2.5vw, 1.75rem)); }
+.swap p { margin: 0; font-size: var(--step-body); line-height: 1.5; }
+
+@media (max-width: 640px) {
+  .swap { grid-template-columns: 1fr; gap: .4rem; }
+  /* pointing down is the only honest direction once the columns stack */
+  .swap .arrow { transform: rotate(90deg); margin-inline: auto; }
+}
+
+/* The loop that keeps physical neglect and anger feeding each other. The
+   arrows are decorative; the list order carries the meaning for a reader who
+   cannot see them, and the label says it repeats. */
+.loop {
+  display: grid;
+  gap: clamp(.5rem, 1.6vw, .9rem);
+  margin: var(--block-gap) 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: loop;
+  justify-items: start;
+}
+
+.loop__step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: clamp(.6rem, 1.8vw, 1rem);
+  max-width: 44ch;
+  padding: clamp(.7rem, 1.8vw, .95rem) clamp(.9rem, 2.2vw, 1.25rem);
+  border: 1px solid rgba(0, 0, 0, .12);
+  border-radius: 6px;
+  background: var(--white);
+  font-size: var(--step-body);
+  line-height: 1.45;
+}
+
+.loop__step::before {
+  counter-increment: loop;
+  content: counter(loop);
+  display: grid;
+  place-items: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--white);
+  font-size: .8125rem;
+  font-weight: 700;
+}
+
+/* the arrow between steps, and the longer one returning to the top */
+.loop__link {
+  display: block;
+  width: clamp(38px, 5.5vw, 52px);
+  height: auto;
+  aspect-ratio: 80 / 16;
+  margin-left: clamp(.9rem, 2.4vw, 1.4rem);
+  color: var(--accent);
+  transform: rotate(90deg);
+  fill: none;
+  stroke: currentColor;
+}
+
+/* What makes the three steps read as a cycle rather than a list is the return:
+   a bracket down the left that runs from the last step back up to the first,
+   with a head at the top. Drawn in borders so it stretches with the steps
+   however the text wraps. The offsets are half a step's height, so the bracket
+   meets the first and last steps on their centre lines. */
+.loop { position: relative; padding-left: clamp(1.5rem, 4vw, 2.25rem); }
+
+.loop::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1.65rem;
+  bottom: 2.4rem;
+  width: clamp(.9rem, 2.4vw, 1.4rem);
+  border: 1.5px solid var(--accent);
+  border-right: 0;
+  border-radius: 10px 0 0 10px;
+}
+
+/* the head, sitting on the top end of the bracket and pointing into step 1 */
+.loop::after {
+  content: '';
+  position: absolute;
+  left: clamp(.9rem, 2.4vw, 1.4rem);
+  top: 1.65rem;
+  width: 0;
+  height: 0;
+  border-top: 4.5px solid transparent;
+  border-bottom: 4.5px solid transparent;
+  border-left: 7px solid var(--accent);
+  transform: translate(-1px, -4.5px);
+}
+
+/* Numbered tips */
+.tip-list { margin: var(--block-gap) 0; padding-left: 1.3rem; }
+.tip-list li { margin-bottom: .6rem; font-size: var(--step-body); line-height: 1.55; }
+.tip-list li::marker { font-weight: 700; color: var(--accent-deep); }
+
+/* A row of verse references to look up, rather than a quoted verse — teal to
+   match scripture, but without the hanging-citation grid. */
+.verse-refs {
+  margin: var(--block-gap) var(--inset);
+  color: var(--teal);
+  font-size: var(--step-body);
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+/* The sprite's curve points left, which is right for the chart annotation on
+   Learn but backwards here, where the arrow introduces the text beside it. */
+.aim > .arrow--curve { transform: scaleX(-1); }
