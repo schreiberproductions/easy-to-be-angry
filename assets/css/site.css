@@ -836,19 +836,30 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
   .quote-card__cite a::after { opacity: .7; transform: none; }
 }
 
-/* More / Less shift list */
-.shift-list { list-style: none; margin: 0; padding: 0; max-width: 52rem; }
-
-.shift-list li {
+/* More / Less shift list. The grid lives on the <ul> with the <li>s set to
+   display:contents, so all three columns line up across rows — sizing each
+   row independently would stagger the arrows. */
+.shift-list {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: max-content auto max-content;
+  justify-content: start;
   align-items: center;
-  gap: clamp(.75rem, 2vw, 1.5rem);
-  padding-block: .5rem;
-  font-size: var(--step-body);
+  column-gap: clamp(.5rem, 1.5vw, .9rem);
+  row-gap: .15rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.shift-list li > span:last-child { text-align: right; }
+.shift-list li { display: contents; }
+
+.shift-list li > span {
+  padding-block: .4rem;
+  font-size: var(--step-body);
+  text-align: right;          /* left column ends flush at the arrow */
+}
+
+.shift-list li > span:last-child { text-align: left; }
 
 /* Arrows are an inline SVG sprite rather than images, so they stay crisp at
    any size and take their colour from here. */
@@ -871,7 +882,8 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
 }
 
 @media (max-width: 560px) {
-  .shift-list li { grid-template-columns: 1fr auto 1fr; gap: .5rem; font-size: .9375rem; }
+  .shift-list { column-gap: .45rem; }
+  .shift-list li > span { font-size: .9375rem; }
 }
 
 /* Scripture block */
@@ -885,7 +897,12 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
   border-radius: 3px;
 }
 
-.scripture p { font-weight: 700; margin-bottom: .35rem; }
+.scripture p {
+  font-weight: 700;
+  font-size: clamp(.9375rem, calc(.909rem + .121vw), 1rem);   /* matches .pullquote */
+  line-height: 1.45;
+  margin-bottom: .35rem;
+}
 .scripture p:last-of-type { margin-bottom: 0; }
 .scripture cite { font-style: italic; font-weight: 700; font-size: .9375em; }
 
@@ -903,9 +920,10 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
   margin: clamp(1.5rem, 4vw, 2.5rem) 0;
   padding-left: clamp(1rem, 2.5vw, 1.75rem);
   border-left: 3px solid var(--accent);
-  font-size: clamp(1.125rem, calc(1rem + .55vw), 1.5rem);
+  /* deliberately a step below body copy — the rule and weight carry it */
+  font-size: clamp(.9375rem, calc(.909rem + .121vw), 1rem);
   font-weight: 700;
-  line-height: 1.35;
+  line-height: 1.45;
 }
 
 .pullquote cite {
