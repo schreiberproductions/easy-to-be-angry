@@ -13,7 +13,7 @@
   --offwhite: #f8f8f7;
   --brick: #d82713;
   --gold: #e4af63;
-  --teal: #0f766e;        /* scripture references; AA on white and on gold */
+  --teal: #0e7169;        /* scripture; brightest teal clearing AA on white, cream and gold */
   --gold-light: #f8ebd8;   /* the gold at ~25% over white */
   --white: #fff;
 
@@ -615,11 +615,11 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
   position: absolute;
   inset: 0;
   background-color: inherit;
-  opacity: .45;
+  opacity: .82;
 }
 
 @media (max-width: 860px) {
-  .section--art::before { opacity: .65; }
+  .section--art::before { opacity: .88; }
 }
 
 .section--tan   { background-color: var(--gold-light); }
@@ -659,14 +659,14 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
   width: clamp(240px, 42%, 460px);
   aspect-ratio: 1200 / 901;
   background: url('/assets/img/blob-not-alone.webp') center / contain no-repeat;
-  opacity: .5;
+  opacity: .3;
   pointer-events: none;
 }
 
 .not-alone > * { position: relative; }
 
 @media (max-width: 700px) {
-  .not-alone::before { width: 78%; right: -12%; opacity: .32; }
+  .not-alone::before { width: 78%; right: -12%; opacity: .22; }
 }
 
 /* "You are not alone" question list */
@@ -914,6 +914,7 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 6vw, 
 .scripture p {
   grid-column: 2;
   margin: 0;
+  color: var(--teal);
   font-size: clamp(.9375rem, calc(.909rem + .121vw), 1rem);
   font-weight: 500;
   line-height: 1.55;
