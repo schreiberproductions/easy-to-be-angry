@@ -260,7 +260,8 @@ a { color: inherit; }
     transition: opacity .25s var(--ease), transform .25s var(--ease), visibility .25s;
   }
 
-  .nav__list[data-open='true'] { opacity: 1; visibility: visible; transform: none; }
+  .nav__list { pointer-events: none; }
+  .nav__list[data-open='true'] { opacity: 1; visibility: visible; transform: none; pointer-events: auto; }
 
   .nav__item { border-bottom: 1px solid rgba(0, 0, 0, .07); }
   .nav__item:last-child { border-bottom: 0; }
@@ -285,9 +286,14 @@ a { color: inherit; }
     border-radius: 0;
     box-shadow: none;
     opacity: 1;
-    visibility: visible;
     display: none;
   }
+
+  /* The submenu's visibility is tied to the menu being open. Declared on the
+     submenu itself it would override the closed menu's own visibility:hidden —
+     a child can always declare itself visible inside a hidden parent — and the
+     links then sat over the page, swallowing taps meant for the content. */
+  .nav__list[data-open='true'] .nav__submenu { visibility: visible; }
 
   /* Must match the desktop hover/focus selectors' specificity, or the
      translate(-50%) centering from those rules drags the panel off-screen. */
@@ -715,24 +721,6 @@ main > .section + .section:not(.section--no-rule)::after {
 /* "You are not alone" — the artwork sits behind the questions rather than
    below them, scaled down and softened so the text stays the focus. */
 .not-alone { position: relative; }
-
-.not-alone::before {
-  content: '';
-  position: absolute;
-  right: -3%;
-  top: 50%;
-  translate: 0 -50%;
-  width: clamp(240px, 42%, 460px);
-  aspect-ratio: 1200 / 901;
-  background: url('/assets/img/blob-not-alone.webp') center / contain no-repeat;
-  opacity: .3;
-  pointer-events: none;
-}
-
-.not-alone > * { position: relative; }
-
-@media (max-width: 700px) {
-  .not-alone::before { width: 78%; right: -12%; opacity: .22; }
 }
 
 /* "You are not alone" question list */
@@ -1042,7 +1030,7 @@ main > .section + .section:not(.section--no-rule)::after {
 .closing-question strong { font-weight: 700; }
 
 @media (max-width: 560px) {
-  .closing-question { grid-template-columns: 1fr; gap: .4rem; }
+  .closing-question { gap: clamp(.6rem, 2.5vw, 1.1rem); }
 }
 
 /* Topic subheads that open a named idea */
