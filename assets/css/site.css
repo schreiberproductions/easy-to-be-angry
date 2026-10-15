@@ -1804,7 +1804,7 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 
 .share__link:hover { border-color: var(--accent); color: var(--accent-deep); }
 
-.section--close { background: var(--grey-light); }
+
 
 /* A cartoon we point to rather than reproduce. The drawing is Sofia Warren's
    and belongs to The New Yorker, so the frame carries only the caption, the
@@ -1865,9 +1865,10 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 .steps { margin-top: var(--block-gap); }
 
 .step { border-top: 1px solid rgba(0, 0, 0, .14); scroll-margin-top: 5rem; }
-/* no closing rule on the last one: the accordion ends the section here, and the
-   section divider below it was reading as a second bar */
-.step:last-of-type { border-bottom: 0; }
+/* the last step closes the group at the same rhythm as the rules between the
+   others; the section after it carries .section--no-rule so the divider that
+   used to sit below this doesn't read as a second bar */
+.step:last-of-type { border-bottom: 1px solid rgba(0, 0, 0, .14); }
 
 .step > summary {
   display: flex;
@@ -1906,3 +1907,44 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 
 /* the step that was jumped to, so the link above clearly landed somewhere */
 .step.is-target > summary { background: var(--gold-light); }
+
+/* The two dopamine cycles read against each other: the first is the one to get
+   out of, the second the one to move toward. Warm reds for the first, cool
+   blues and violets for the second, in the ring's backdrop and its cards. */
+.cycle--hot,
+.cycle--calm {
+  padding: clamp(1rem, 3vw, 2rem);
+  border-radius: 50%;
+}
+
+.cycle--hot {
+  background: radial-gradient(circle at 50% 50%,
+    rgba(232, 96, 72, .20) 0%,
+    rgba(238, 140, 110, .13) 45%,
+    rgba(240, 180, 150, 0) 72%);
+}
+
+.cycle--calm {
+  background: radial-gradient(circle at 50% 50%,
+    rgba(120, 150, 232, .20) 0%,
+    rgba(150, 140, 230, .13) 45%,
+    rgba(170, 170, 235, 0) 72%);
+}
+
+.cycle--hot .cycle__step--n { --step-tint: #fbd9cc; }
+.cycle--hot .cycle__step--e { --step-tint: #f9cbbb; }
+.cycle--hot .cycle__step--s { --step-tint: #f7bdab; }
+.cycle--hot .cycle__step--w { --step-tint: #f5b0a0; }
+
+.cycle--calm .cycle__step--n { --step-tint: #dfe3fb; }
+.cycle--calm .cycle__step--e { --step-tint: #d9ddfa; }
+.cycle--calm .cycle__step--s { --step-tint: #d4e2f6; }
+.cycle--calm .cycle__step--w { --step-tint: #cfe6f2; }
+
+/* a circular wash needs no shape once the ring is gone */
+@media (max-width: 560px) {
+  .cycle--hot, .cycle--calm { border-radius: 14px; padding: clamp(1rem, 4vw, 1.5rem); }
+}
+
+/* the second cycle leads straight into body copy, so it needs its own room */
+.cycle--calm { margin-bottom: calc(var(--block-gap) * 1.8); }
