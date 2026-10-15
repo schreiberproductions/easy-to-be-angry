@@ -1626,9 +1626,9 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 
 .masking.is-tabbed .masking__tabs { display: flex; }
 .masking.is-tabbed .masking__lead { display: block; }
-/* the panel heading repeats the tab, so it only shows when there are no tabs */
-.masking.is-tabbed .masking__panel .subhead-major { position: absolute; width: 1px; height: 1px;
-  margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* the panel keeps its full heading; it just sits tight under the strip rather
+   than carrying .subhead-major's usual space above it */
+.masking.is-tabbed .masking__panel .subhead-major { margin-top: 0; margin-bottom: 1rem; }
 
 .masking__tab {
   border: 1px solid rgba(0, 0, 0, .18);
