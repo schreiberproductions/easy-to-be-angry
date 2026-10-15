@@ -1477,7 +1477,9 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 
 .cycle__step {
   position: absolute;
-  width: 40%;
+  /* 40% left the two lower cards almost touching, which squeezed the bottom
+     arrow against one of them while the other two sat clear */
+  width: 32%;
   padding: clamp(.6rem, 1.8vw, .85rem) clamp(.7rem, 2vw, 1rem);
   border-radius: 10px;
   background: var(--step-tint, var(--white));
@@ -1602,10 +1604,13 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
    stacked below phone width where a half-width chart would be unreadable. */
 .chart-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+  grid-template-columns: minmax(0, 1.15fr) auto minmax(0, .85fr);
   align-items: center;
-  gap: clamp(1rem, 3vw, 2.5rem);
+  gap: clamp(.75rem, 2.5vw, 1.75rem);
 }
+
+/* points back at the chart the sentence is reading */
+.chart-row__arrow { align-self: center; }
 
 .chart-row__note {
   font-size: var(--step-h3);
@@ -1615,6 +1620,7 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 
 @media (max-width: 720px) {
   .chart-row { grid-template-columns: 1fr; }
+  .chart-row__arrow { display: none; }
 }
 
 /* The four "masking" sections as tabs. The strip is built by JS and starts
@@ -1622,7 +1628,7 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
    content in a row — nothing is lost, and nothing has to be kept in sync
    between the markup and the labels. */
 .masking__tabs { display: none; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.6rem; }
-.masking__lead { display: none; font-size: var(--step-body); opacity: .6; margin-bottom: .6rem; }
+.masking__lead { display: none; margin-top: clamp(2.25rem, 5vw, 3.5rem); font-size: var(--step-body); opacity: .6; margin-bottom: .6rem; }
 
 .masking.is-tabbed .masking__tabs { display: flex; }
 .masking.is-tabbed .masking__lead { display: block; }
