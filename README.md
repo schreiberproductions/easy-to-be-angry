@@ -21,7 +21,6 @@ assets/fonts/            DM Sans (variable) + Caveat (variable)
 assets/js/site.js        Nav, scroll reveal, carousel, charts, tabs, accordion
 assets/img/              Section artwork and favicons
 
-CNAME                    The custom domain. Pages will not answer without it.
 .nojekyll                Serve the files as they are; don't run Jekyll.
 ```
 
@@ -37,9 +36,15 @@ same network.
 
 ## Things worth knowing before changing anything
 
-**All internal links are absolute** (`/assets/…`, `/reflect/`). The site
-therefore only works when served from the root of a domain — it will break if
-served from a subpath such as `user.github.io/repo/`.
+**Internal links are relative**, so the site works both at the root of a
+domain and from a subpath such as `user.github.io/repo/`. Pages one level down
+reach shared assets with `../`. If you add a page at a new depth, its paths
+have to match that depth.
+
+`404.html` is the exception: its links are root-absolute, because GitHub Pages
+serves it for any missing path and a relative link would resolve against
+whatever that path happened to be. It is therefore only styled correctly once
+the site is at a domain root.
 
 **Assets are cache-busted by hand.** `site.css?v=NN` and `site.js?v=NN` appear
 in all five HTML files. Bump every one of them together or you will be looking
@@ -77,5 +82,11 @@ than copied, so it stays attributed and under her control.
 GitHub Pages, served from the repository root, so `/reflect/index.html`
 resolves at `/reflect/` and the URLs match the original site.
 
-To move the live domain over, point the `anger` CNAME at GitHub Pages in
-Squarespace's DNS — it currently points at `domain.vev.page`.
+Two steps, in this order:
+
+1. Copy `deploy/CNAME` (kept outside this repository) into the repository root
+   and push it. It holds `anger.kayleenschreiber.com`. It is deliberately not
+   committed yet: with a CNAME present, Pages redirects the `github.io` URL to
+   the custom domain, which would break the preview before DNS exists.
+2. Point the `anger` CNAME at GitHub Pages in Squarespace's DNS — it currently
+   points at `domain.vev.page`.

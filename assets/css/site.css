@@ -2044,4 +2044,4 @@ p, li, dd, figcaption, blockquote, .prose, .says__line { text-wrap: pretty; }
    single gap between them instead of each contributing its own — and a smaller
    one than usual, so the top of the cards shows before the reader scrolls. */
 main > .section + .section--continues { padding-top: 0; }
-main > .section:has(+ .section--continues) { padding-bottom: clamp(1.75rem, 5.6vw, 4.6875rem); }
+main > .section:has(+ .section--continues) { padding-bottom: clamp(1.25rem, 4vw, 3.375rem); }
