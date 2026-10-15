@@ -2060,3 +2060,93 @@ h1, h2, h3, h4,
    flow-root makes the container its own formatting context, so nothing escapes
    and the padding is the only thing setting the distance. */
 .section > .container { display: flow-root; }
+
+/* The accordion draws its own rule at the bottom of the last step, and that
+   rule reads as the break between sections. So the section ends there and the
+   next one supplies the usual single gap, rather than both adding their half. */
+.section--ends-on-rule { padding-bottom: 0; }
+
+/* The caret only means something where a submenu can be toggled. */
+@media (max-width: 860px) {
+  .nav__caret { display: none; }
+}
+
+/* Arrows stay beside their text at every width — stacking left the arrow
+   stranded on a line of its own. */
+@media (max-width: 560px) {
+  .aim { grid-template-columns: auto 1fr; gap: clamp(.6rem, 2.5vw, 1.1rem); }
+}
+
+/* Background artwork should read as background on a phone, not as a stray
+   picture, so it spans the full width there. The per-section size is an inline
+   custom property, which no rule can outrank, so this sets background-size
+   itself. .section--art-keep opts a section out. */
+@media (max-width: 760px) {
+  .section--art:not(.section--art-keep) { background-size: 150% auto; }
+}
+
+/* The tendency/consider pairs: an arrow pointing sideways makes no sense once
+   the two halves stack, so on a phone the correction hangs off a bar instead. */
+@media (max-width: 640px) {
+  .swap { grid-template-columns: 1fr; gap: 0; }
+  .swap .arrow { display: none; }
+  .swap__from { font-weight: 500; }
+  .swap > p:last-child {
+    margin-top: .55rem;
+    padding-left: clamp(.8rem, 3.5vw, 1.1rem);
+    border-left: 3px solid var(--accent);
+    font-weight: 700;
+  }
+}
+
+/* Stacked cycles need the connectors the ring normally provides. */
+@media (max-width: 560px) {
+  /* relative so the connector can hang off it — left/top have to go with it,
+     or the ring's own offsets come back the moment the box stops being static */
+  .cycle__step { position: relative; left: auto; top: auto; }
+  .cycle__step + .cycle__step::before {
+    content: '';
+    position: absolute;
+    left: clamp(1.1rem, 5vw, 1.6rem);
+    top: calc(-1 * clamp(1.5rem, 6vw, 2rem));
+    width: 2px;
+    height: clamp(1.5rem, 6vw, 2rem);
+    background: var(--accent);
+  }
+  .cycle__step + .cycle__step::after {
+    content: '';
+    position: absolute;
+    left: clamp(1.1rem, 5vw, 1.6rem);
+    top: -7px;
+    width: 0;
+    height: 0;
+    border-left: 4.5px solid transparent;
+    border-right: 4.5px solid transparent;
+    border-top: 7px solid var(--accent);
+    transform: translateX(-3.5px);
+  }
+}
+
+/* A soft red wash behind the two trope headings — the anger they name, sitting
+   behind the words rather than around them. */
+.subhead-major--blob { position: relative; isolation: isolate; }
+
+.subhead-major--blob::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: -6%;
+  top: 50%;
+  translate: 0 -50%;
+  width: min(26rem, 72%);
+  aspect-ratio: 1.9 / 1;
+  background: radial-gradient(ellipse at 42% 50%,
+    rgba(214, 48, 34, .26) 0%,
+    rgba(222, 86, 60, .14) 45%,
+    rgba(230, 120, 90, 0) 72%);
+  pointer-events: none;
+}
+
+@media (max-width: 560px) {
+  .subhead-major--blob::before { width: min(20rem, 110%); }
+}

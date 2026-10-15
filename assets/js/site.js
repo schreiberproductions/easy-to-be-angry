@@ -26,28 +26,23 @@
     setMenu(list.getAttribute('data-open') !== 'true');
   });
 
-  // Submenu triggers: hover/focus on desktop (CSS), tap to expand on mobile.
-  nav.querySelectorAll('.nav__item--has-menu').forEach(function (item) {
-    var trigger = item.querySelector('.nav__link');
-    var submenu = item.querySelector('.nav__submenu');
-
-    trigger.addEventListener('click', function (e) {
-      if (!mq.matches) return; // desktop keeps the link navigable
-      e.preventDefault();
-      var open = submenu.getAttribute('data-open') === 'true';
-      submenu.setAttribute('data-open', String(!open));
-      trigger.setAttribute('aria-expanded', String(!open));
+  // Submenus open on hover/focus on desktop (CSS). On mobile they are simply
+  // shown, so tapping "Learn" goes to the Learn page rather than being eaten
+  // by a toggle — the sections underneath are still one tap away.
+  function syncSubmenus() {
+    nav.querySelectorAll('.nav__item--has-menu').forEach(function (item) {
+      var trigger = item.querySelector('.nav__link');
+      var submenu = item.querySelector('.nav__submenu');
+      submenu.setAttribute('data-open', String(mq.matches));
+      trigger.setAttribute('aria-expanded', String(mq.matches));
     });
-  });
+  }
 
-  // Close everything when leaving mobile width
+  syncSubmenus();
+
   mq.addEventListener('change', function (e) {
-    if (!e.matches) {
-      setMenu(false);
-      nav.querySelectorAll('.nav__submenu').forEach(function (s) {
-        s.setAttribute('data-open', 'false');
-      });
-    }
+    if (!e.matches) setMenu(false);
+    syncSubmenus();
   });
 
   document.addEventListener('keydown', function (e) {
@@ -407,6 +402,19 @@
   // The shift list doubles as the way into the steps below it. The rows are
   // real anchors, so without JS they still jump to the right step; this only
   // opens that step first and flags it briefly so the jump is visible.
+  // One step open at a time, so choosing another doesn't leave a long scroll
+  // behind it. Done on the group rather than with the name attribute, which
+  // would also stop a reader closing the one they have open.
+  document.querySelectorAll('[data-steps]').forEach(function (group) {
+    var steps = Array.prototype.slice.call(group.querySelectorAll('.step'));
+    steps.forEach(function (step) {
+      step.addEventListener('toggle', function () {
+        if (!step.open) return;
+        steps.forEach(function (other) { if (other !== step) other.open = false; });
+      });
+    });
+  });
+
   document.querySelectorAll('[data-step-jump] a[href^="#"]').forEach(function (a) {
     a.addEventListener('click', function () {
       var step = document.querySelector(a.getAttribute('href'));
