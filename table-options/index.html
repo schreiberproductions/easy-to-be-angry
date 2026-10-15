@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Judgment vs neutral — layout options</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/assets/css/site.css?v=61">
+<style>
+  .opt-label { position: sticky; top: 0; z-index: 30; background: var(--charcoal); color: #fff; }
+  .opt-label .container { padding-block: .7rem; display: flex; gap: .9rem; align-items: baseline; flex-wrap: wrap; }
+  .opt-label b { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+  .opt-label span { font-size: .8125rem; opacity: .8; }
+  .demo { padding-block: clamp(1.75rem,4vw,2.75rem); border-bottom: 3px solid var(--charcoal); }
+
+  /* ---- T1 speech bubbles ---- */
+  .bub-row + .bub-row { margin-top: clamp(1.5rem,3.5vw,2.25rem); }
+  .bub-row__scene { font-size: .8125rem; font-weight: 700; letter-spacing: .04em;
+                    text-transform: uppercase; opacity: .55; margin: 0 0 .7rem; }
+  .bub-row__pair { display: grid; gap: .6rem; }
+  .bubble { position: relative; margin: 0; padding: .8rem 1.1rem; border-radius: 16px;
+            font-size: var(--step-link); line-height: 1.45; max-width: 36rem; }
+  .bubble--no  { background: #efeeec; border-bottom-left-radius: 4px; }
+  .bubble--yes { background: #fbdcea; border-bottom-left-radius: 4px; margin-left: clamp(1rem,4vw,3rem); }
+  .bubble::after { position: absolute; top: 50%; transform: translateY(-50%);
+                   font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .bubble--no::after  { content: 'judging'; right: calc(100% + .6rem); color: #8a8a8a; }
+  .bubble--yes::after { content: 'neutral';  right: calc(100% + .6rem); color: var(--accent-deep); }
+  @media (max-width: 700px) {
+    .bubble::after { position: static; transform: none; display: block; margin-top: .3rem; opacity: .8; }
+    .bubble--yes { margin-left: 0; }
+  }
+
+  /* ---- T2 before / after ---- */
+  .tswap + .tswap { margin-top: clamp(1.5rem,3.5vw,2.25rem); }
+  .tswap__scene { font-size: .8125rem; font-weight: 700; letter-spacing: .04em;
+                  text-transform: uppercase; opacity: .55; margin: 0 0 .6rem; }
+  .tswap__pair { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+                 gap: clamp(.65rem,2vw,1.25rem); }
+  .tswap__from { margin: 0; font-size: var(--step-link); line-height: 1.45; opacity: .5; }
+  .tswap__to   { margin: 0; font-size: var(--step-link); line-height: 1.45; font-weight: 700; }
+  @media (max-width: 640px) {
+    .tswap__pair { grid-template-columns: 1fr; gap: .4rem; }
+    .tswap__pair .arrow { transform: rotate(90deg); margin-inline: auto; }
+  }
+
+  /* ---- T3 flip to reveal ---- */
+  .flip { border-top: 1px solid rgba(0,0,0,.12); }
+  .flip:last-of-type { border-bottom: 1px solid rgba(0,0,0,.12); }
+  .flip > summary { cursor: pointer; list-style: none; padding: 1rem 0; display: grid; gap: .3rem; }
+  .flip > summary::-webkit-details-marker { display: none; }
+  .flip__scene { font-size: .75rem; font-weight: 700; letter-spacing: .04em;
+                 text-transform: uppercase; opacity: .55; }
+  .flip__said { font-size: var(--step-link); }
+  .flip__cue { font-size: .8125rem; font-weight: 700; color: var(--accent-deep); }
+  .flip[open] .flip__cue { display: none; }
+  .flip__answer { margin: 0 0 1.1rem; padding: .8rem 1.1rem; border-radius: 10px;
+                  background: #fbdcea; font-size: var(--step-link); font-weight: 700; line-height: 1.45; }
+</style>
+</head>
+<body>
+
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="arr-right" viewBox="0 0 80 16" fill="none" stroke="currentColor"
+          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 9.5c14-3.4 36-5 72-2.2"/>
+    <path d="M66 2.6c3.2 2 6 3.4 8 4.6-2.6 1.4-5 3.2-7.4 5.6"/>
+  </symbol>
+</svg>
+
+<main id="main">
+  <section class="section" style="padding-block:2.25rem 1.25rem">
+    <div class="container">
+      <h1 style="font-size:var(--step-hero);margin-bottom:.4rem">Judgment vs neutral language</h1>
+      <p style="max-width:66ch">Four ways to lay out the five examples. All use the real content.
+      T4 is what is on the page now, for comparison.</p>
+    </div>
+  </section>
+
+  <div class="opt-label"><div class="container"><b>T1</b><span>Speech bubbles — it is dialogue, so it looks like dialogue</span></div></div>
+  <div class="demo"><div class="container">
+    <div class="bub-row">
+      <p class="bub-row__scene">Child crying for unknown reason</p>
+      <div class="bub-row__pair">
+        <p class="bubble bubble--no">“There’s no need to cry right now.”</p>
+        <p class="bubble bubble--yes">“I see that you’re upset.”</p>
+      </div>
+    </div>
+    <div class="bub-row">
+      <p class="bub-row__scene">Child pulled the cheese off her pizza slice</p>
+      <div class="bub-row__pair">
+        <p class="bubble bubble--no">“But the cheese on pizza is the best part!”</p>
+        <p class="bubble bubble--yes">“Cheese doesn’t taste good to you right now.”</p>
+      </div>
+    </div>
+    <div class="bub-row">
+      <p class="bub-row__scene">Child wanting to show parent a jump</p>
+      <div class="bub-row__pair">
+        <p class="bubble bubble--no">“That was amazing!”</p>
+        <p class="bubble bubble--yes">“You jumped with both feet off the ground for the first time!”</p>
+      </div>
+    </div>
+    <div class="bub-row">
+      <p class="bub-row__scene">Child left her stuffed animal at home on accident</p>
+      <div class="bub-row__pair">
+        <p class="bubble bubble--no">“It’s okay”</p>
+        <p class="bubble bubble--yes">“It looks like you’re feeling disappointed that your stuffie was left at home.”</p>
+      </div>
+    </div>
+    <div class="bub-row">
+      <p class="bub-row__scene">Child messes up something the parent knows they can do</p>
+      <div class="bub-row__pair">
+        <p class="bubble bubble--no">“You can do better.”</p>
+        <p class="bubble bubble--yes">“I would love to see you explore/try…”</p>
+      </div>
+    </div>
+  </div></div>
+
+  <div class="opt-label"><div class="container"><b>T2</b><span>Before and after — the judgment fades, the neutral version carries</span></div></div>
+  <div class="demo"><div class="container">
+    <div class="tswap">
+      <p class="tswap__scene">Child crying for unknown reason</p>
+      <div class="tswap__pair">
+        <p class="tswap__from">“There’s no need to cry right now.”</p>
+        <svg class="arrow" aria-hidden="true"><use href="#arr-right"/></svg>
+        <p class="tswap__to">“I see that you’re upset.”</p>
+      </div>
+    </div>
+    <div class="tswap">
+      <p class="tswap__scene">Child pulled the cheese off her pizza slice</p>
+      <div class="tswap__pair">
+        <p class="tswap__from">“But the cheese on pizza is the best part!”</p>
+        <svg class="arrow" aria-hidden="true"><use href="#arr-right"/></svg>
+        <p class="tswap__to">“Cheese doesn’t taste good to you right now.”</p>
+      </div>
+    </div>
+    <div class="tswap">
+      <p class="tswap__scene">Child wanting to show parent a jump</p>
+      <div class="tswap__pair">
+        <p class="tswap__from">“That was amazing!”</p>
+        <svg class="arrow" aria-hidden="true"><use href="#arr-right"/></svg>
+        <p class="tswap__to">“You jumped with both feet off the ground for the first time!”</p>
+      </div>
+    </div>
+    <div class="tswap">
+      <p class="tswap__scene">Child left her stuffed animal at home on accident</p>
+      <div class="tswap__pair">
+        <p class="tswap__from">“It’s okay”</p>
+        <svg class="arrow" aria-hidden="true"><use href="#arr-right"/></svg>
+        <p class="tswap__to">“It looks like you’re feeling disappointed that your stuffie was left at home.”</p>
+      </div>
+    </div>
+    <div class="tswap">
+      <p class="tswap__scene">Child messes up something the parent knows they can do</p>
+      <div class="tswap__pair">
+        <p class="tswap__from">“You can do better.”</p>
+        <svg class="arrow" aria-hidden="true"><use href="#arr-right"/></svg>
+        <p class="tswap__to">“I would love to see you explore/try…”</p>
+      </div>
+    </div>
+  </div></div>
+
+  <div class="opt-label"><div class="container"><b>T3</b><span>Flip to reveal — a small exercise rather than a reference</span></div></div>
+  <div class="demo"><div class="container">
+    <details class="flip">
+      <summary>
+        <span class="flip__scene">Child crying for unknown reason</span>
+        <span class="flip__said">“There’s no need to cry right now.”</span>
+        <span class="flip__cue">Show a neutral version</span>
+      </summary>
+      <p class="flip__answer">“I see that you’re upset.”</p>
+    </details>
+    <details class="flip">
+      <summary>
+        <span class="flip__scene">Child pulled the cheese off her pizza slice</span>
+        <span class="flip__said">“But the cheese on pizza is the best part!”</span>
+        <span class="flip__cue">Show a neutral version</span>
+      </summary>
+      <p class="flip__answer">“Cheese doesn’t taste good to you right now.”</p>
+    </details>
+    <details class="flip">
+      <summary>
+        <span class="flip__scene">Child wanting to show parent a jump</span>
+        <span class="flip__said">“That was amazing!”</span>
+        <span class="flip__cue">Show a neutral version</span>
+      </summary>
+      <p class="flip__answer">“You jumped with both feet off the ground for the first time!”</p>
+    </details>
+    <details class="flip">
+      <summary>
+        <span class="flip__scene">Child left her stuffed animal at home on accident</span>
+        <span class="flip__said">“It’s okay”</span>
+        <span class="flip__cue">Show a neutral version</span>
+      </summary>
+      <p class="flip__answer">“It looks like you’re feeling disappointed that your stuffie was left at home.”</p>
+    </details>
+    <details class="flip">
+      <summary>
+        <span class="flip__scene">Child messes up something the parent knows they can do</span>
+        <span class="flip__said">“You can do better.”</span>
+        <span class="flip__cue">Show a neutral version</span>
+      </summary>
+      <p class="flip__answer">“I would love to see you explore/try…”</p>
+    </details>
+  </div></div>
+
+  <div class="opt-label"><div class="container"><b>T4</b><span>The table that is on the page now</span></div></div>
+  <div class="demo"><div class="container">
+    <div class="table-wrap">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th scope="col"><span class="visually-hidden">Situation</span></th>
+            <th scope="col">Language that makes a judgment</th>
+            <th scope="col">Neutral, descriptive language</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Child crying for unknown reason</th>
+            <td data-label="Language that makes a judgment">“There’s no need to cry right now.”</td>
+            <td data-label="Neutral, descriptive language">“I see that you’re upset.”</td>
+          </tr>
+          <tr>
+            <th scope="row">Child pulled the cheese off her pizza slice</th>
+            <td data-label="Language that makes a judgment">“But the cheese on pizza is the best part!”</td>
+            <td data-label="Neutral, descriptive language">“Cheese doesn’t taste good to you right now.”</td>
+          </tr>
+          <tr>
+            <th scope="row">Child wanting to show parent a jump</th>
+            <td data-label="Language that makes a judgment">“That was amazing!”</td>
+            <td data-label="Neutral, descriptive language">“You jumped with both feet off the ground for the first time!”</td>
+          </tr>
+          <tr>
+            <th scope="row">Child left her stuffed animal at home on accident</th>
+            <td data-label="Language that makes a judgment">“It’s okay”</td>
+            <td data-label="Neutral, descriptive language">“It looks like you’re feeling disappointed that your stuffie was left at home.”</td>
+          </tr>
+          <tr>
+            <th scope="row">Child messes up something the parent knows they can do</th>
+            <td data-label="Language that makes a judgment">“You can do better.”</td>
+            <td data-label="Neutral, descriptive language">“I would love to see you explore/try…”</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div></div>
+
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <span class="footer__brand">Easy to Anger</span>
+    <a class="footer__link" href="/try/">Back to Try</a>
+  </div>
+</footer>
+</body>
+</html>
