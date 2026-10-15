@@ -614,7 +614,7 @@ main > .section + .section:not(.section--no-rule)::after {
 }
 
 .hero__standfirst {
-  max-width: 58ch;
+  max-width: min(72ch, 100%);
   font-size: clamp(1rem, calc(.93rem + .3vw), 1.1875rem);
   line-height: 1.5;
 }
@@ -1495,9 +1495,9 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 .cycle__step p { margin: .35rem 0 0; }
 
 /* 12, 4 and 8 o'clock on a circle of radius 45 in a 100-unit box */
-.cycle__step--a { left: 50%; top: 5%;  transform: translate(-50%, -50%); --step-tint: #fde4d2; }
-.cycle__step--b { left: 89%; top: 72%; transform: translate(-50%, -50%); --step-tint: #fbd8e8; }
-.cycle__step--c { left: 11%; top: 72%; transform: translate(-50%, -50%); --step-tint: #e3e0fb; }
+.cycle__step--a { left: 50%; top: 5%;  --pos: translate(-50%, -50%); --step-tint: #fde4d2; }
+.cycle__step--b { left: 89%; top: 72%; --pos: translate(-50%, -50%); --step-tint: #fbd8e8; }
+.cycle__step--c { left: 11%; top: 72%; --pos: translate(-50%, -50%); --step-tint: #e3e0fb; }
 
 
 /* Below phone width the ring has no room, so the steps become a plain column
@@ -1514,7 +1514,7 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
   .cycle__step {
     position: static;
     width: auto;
-    transform: none;
+    --pos: translate(0, 0);
     text-align: left;
   }
   .cycle__step p { margin: 0; }
@@ -1774,16 +1774,16 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 }
 
 /* Four-step variant of the cycle: steps at 12, 3, 6 and 9 o'clock. */
-.cycle--4 .cycle__step--n { left: 50%; top: 4%;  transform: translate(-50%, -50%); --step-tint: #fde4d2; }
-.cycle--4 .cycle__step--e { left: 96%; top: 50%; transform: translate(-50%, -50%); --step-tint: #fbd8e8; }
-.cycle--4 .cycle__step--s { left: 50%; top: 96%; transform: translate(-50%, -50%); --step-tint: #e3e0fb; }
-.cycle--4 .cycle__step--w { left: 4%;  top: 50%; transform: translate(-50%, -50%); --step-tint: #d6eef0; }
+.cycle--4 .cycle__step--n { left: 50%; top: 4%;  --pos: translate(-50%, -50%); --step-tint: #fde4d2; }
+.cycle--4 .cycle__step--e { left: 96%; top: 50%; --pos: translate(-50%, -50%); --step-tint: #fbd8e8; }
+.cycle--4 .cycle__step--s { left: 50%; top: 96%; --pos: translate(-50%, -50%); --step-tint: #e3e0fb; }
+.cycle--4 .cycle__step--w { left: 4%;  top: 50%; --pos: translate(-50%, -50%); --step-tint: #d6eef0; }
 
 @media (max-width: 560px) {
   .cycle--4 .cycle__step--n,
   .cycle--4 .cycle__step--e,
   .cycle--4 .cycle__step--s,
-  .cycle--4 .cycle__step--w { left: auto; top: auto; transform: none; }
+  .cycle--4 .cycle__step--w { left: auto; top: auto; --pos: translate(0, 0); }
 }
 
 /* Counselor directories and the like: the resource-list look, laid out inline */
@@ -1964,8 +1964,12 @@ main > .section + .section--tight-top { padding-top: clamp(1.5rem, 3.5vw, 2.75re
 p, li, dd, figcaption, blockquote, .prose, .says__line { text-wrap: pretty; }
 
 h1, h2, h3, h4,
-.hero__title, .hero__standfirst, .section__title, .section__subtitle,
+.hero__title, .section__title, .section__subtitle,
 .subhead-major, .step__title, .masking__head, .chart-row__note { text-wrap: balance; }
+
+/* the standfirst is a paragraph, not a heading: balance would even the lines
+   by narrowing the measure, which is the opposite of what it wants */
+.hero__standfirst { text-wrap: pretty; }
 
 /* The Grove invitation */
 .grove {
@@ -2002,3 +2006,46 @@ h1, h2, h3, h4,
 }
 
 .grove__cta:hover { background: var(--accent-deep); transform: translateY(-2px); }
+
+/* Embedded clip, cued to the passage the text points at */
+.clip { margin: var(--block-gap) 0; }
+
+.clip__frame {
+  max-width: 44rem;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--charcoal);
+}
+
+.clip__embed { display: block; width: 100%; height: 100%; border: 0; }
+
+.clip__credit {
+  max-width: 44rem;
+  margin: .7rem auto 0;
+  font-size: .8125rem;
+  text-align: center;
+  opacity: .75;
+}
+
+/* Cards lift a little under the pointer. `scale` is its own property, so it
+   composes with the translate that positions each card on the ring instead of
+   overwriting it. */
+.cycle__step {
+  /* position and hover ride in one chain, so the card grows about its own
+     centre instead of drifting off the ring */
+  transform: var(--pos, translate(0, 0)) scale(var(--lift, 1));
+  transition: transform .18s var(--ease), box-shadow .18s var(--ease);
+}
+
+.cycle__step:hover {
+  --lift: 1.05;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, .15);
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cycle__step { transition: none; }
+  .cycle__step:hover { --lift: 1; }
+}
