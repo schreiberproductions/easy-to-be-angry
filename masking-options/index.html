@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Masking sections — layout options</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/assets/css/site.css?v=50">
+<style>
+  .opt-label { position: sticky; top: 0; z-index: 30; background: var(--charcoal); color: #fff; }
+  .opt-label .container { padding-block: .7rem; display: flex; gap: .9rem; align-items: baseline; flex-wrap: wrap; }
+  .opt-label b { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+  .opt-label span { font-size: .8125rem; opacity: .8; }
+  .demo { padding-block: clamp(1.75rem,4vw,2.75rem); border-bottom: 3px solid var(--charcoal); }
+  .masking__head { font-size: clamp(1.25rem, calc(1.1rem + .6vw), 1.6rem); font-weight: 500;
+                   letter-spacing: -.03em; margin: 0 0 1rem; }
+  .lead-in { font-size: var(--step-body); margin-bottom: .75rem; opacity: .6; }
+
+  .mtabs__list { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
+  .mtab { border: 1px solid rgba(0,0,0,.18); background: #fff; border-radius: 999px;
+          padding: .5rem 1rem; font: inherit; font-size: .875rem; cursor: pointer;
+          transition: background .15s linear, color .15s linear, border-color .15s linear; }
+  .mtab:hover { border-color: var(--accent); color: var(--accent-deep); }
+  .mtab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
+  .mtabs-panel > *:first-child { margin-top: 0; }
+
+  .macc { border-top: 1px solid rgba(0,0,0,.14); }
+  .macc:last-of-type { border-bottom: 1px solid rgba(0,0,0,.14); }
+  .macc summary { cursor: pointer; padding: 1rem 0; font-size: 1.0625rem; list-style: none;
+                  display: flex; gap: .3rem; flex-wrap: wrap; align-items: baseline; }
+  .macc summary::-webkit-details-marker { display: none; }
+  .macc summary::after { content: '+'; margin-left: auto; color: var(--accent); font-weight: 700; font-size: 1.3rem; line-height: 1; }
+  .macc[open] summary::after { content: '–'; }
+  .macc__pre { opacity: .5; }
+  .macc summary b { color: var(--accent-deep); }
+  .macc__body { padding-bottom: 1.25rem; }
+  .macc__body > *:first-child { margin-top: 0; }
+  .macc .masking__head { display: none; }
+
+  .mcar__nav { display: flex; flex-wrap: wrap; gap: .5rem 1.1rem; margin-bottom: 1.25rem; }
+  .mcar__jump { border: 0; background: none; font: inherit; font-size: .875rem; cursor: pointer;
+                padding: .35rem .1rem; border-bottom: 2px solid transparent; color: var(--ink-soft); }
+  .mcar__jump[aria-current="true"] { border-bottom-color: var(--accent); color: var(--ink); font-weight: 700; }
+  .mcar__viewport { display: flex; gap: clamp(1rem,3vw,2rem); overflow-x: auto;
+                    scroll-snap-type: x mandatory; scroll-behavior: smooth;
+                    scrollbar-width: none; }
+  .mcar__viewport::-webkit-scrollbar { display: none; }
+  .mslide { flex: 0 0 100%; scroll-snap-align: start; min-width: 0; }
+  .mslide > *:first-child { margin-top: 0; }
+
+  .mchips { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2rem; }
+  .mchip { border: 1px solid rgba(0,0,0,.18); border-radius: 999px; padding: .45rem 1rem;
+           font-size: .875rem; text-decoration: none; color: var(--ink); }
+  .mchip:hover { border-color: var(--accent); color: var(--accent-deep); }
+  .m4block { scroll-margin-top: 4rem; }
+  .m4block + .m4block { margin-top: clamp(2rem,4vw,3rem); padding-top: clamp(2rem,4vw,3rem); border-top: 1px solid rgba(0,0,0,.1); }
+</style>
+</head>
+<body>
+
+<main id="main">
+  <section class="section" style="padding-block:2.25rem 1.25rem">
+    <div class="container">
+      <h1 style="font-size:var(--step-hero);margin-bottom:.4rem">The “masking” sections</h1>
+      <p style="max-width:66ch">Four ways to show all four headings at once and let someone jump to
+      whichever fits them. Every option uses the real content. Because all four headings begin
+      “When your anger is masking…”, the endings alone work as labels — no new wording invented.</p>
+    </div>
+  </section>
+
+  <div class="opt-label"><div class="container"><b>M1</b><span>Tabs — one at a time, every heading on show</span></div></div>
+  <div class="demo"><div class="container">
+    <p class="lead-in">When your anger is masking…</p>
+    <div class="mtabs" data-mtabs>
+      <div class="mtabs__list" role="tablist" aria-label="What your anger may be masking">
+          <button class="mtab" type="button" role="tab" id="mtabs-t0" aria-controls="mtabs-0" aria-selected="true">grief, sadness, depression</button>
+          <button class="mtab" type="button" role="tab" id="mtabs-t1" aria-controls="mtabs-1" aria-selected="false">fear or feeling threatened</button>
+          <button class="mtab" type="button" role="tab" id="mtabs-t2" aria-controls="mtabs-2" aria-selected="false">a sense of dread or general anxiety</button>
+          <button class="mtab" type="button" role="tab" id="mtabs-t3" aria-controls="mtabs-3" aria-selected="false">embarrassment</button>
+      </div>
+        <div class="mtabs-panel" id="mtabs-0" role="tabpanel" aria-labelledby="mtabs-t0">
+          <h3 class="masking__head">When your anger is masking grief, sadness, depression</h3>
+
+
+      <div class="prose" data-reveal>
+        <p>Many of us, especially men, learned in childhood that it was safer to hide feelings of sadness than express them and be rejected. Most parents probably say “Don’t cry” or “You don’t need to cry” as kind of a strange way of trying to make their kids feel better. Parents don’t want to see their kids sad (and often the crying is about something so small).</p>
+        <p>However, even if we learn to not show the emotion externally, it’s still there internally and will find a way to get expressed eventually. A lot of times <strong>anger feels like a safer expression</strong> than the vulnerability of crying.</p>
+        <p>As adults we end up saying “You always let me down” instead of <strong>“I feel very sad and disappointed that happened.”</strong> Or saying “How dare you say that to me!” instead of <strong>“That really hurt me.”</strong></p>
+      </div>
+
+      <blockquote class="pullquote" data-reveal>
+        “A lot of us go around feeling quite enraged, angry, privately, about the way our love lives have gone. My task…is to turn that anger into sadness. If we manage to turn rage into grief, we will have made psychological progress.”
+        <cite>Alain de Botton, <a class="inline-link" target="_blank" rel="noopener external" href="https://www.youtube.com/watch?v=-EvvPZFdjyk">Why You Will Marry the Wrong Person</a></cite>
+      </blockquote>
+
+      <div class="prose" data-reveal>
+        <p>Ask yourself: Is it easier for you to yell than to cry? We’ve all heard “Don’t cry over spilled milk.” But do we need to add a maxim for ourselves as parents: <strong>“Don’t rage over spilled milk”</strong>? It may be less damaging to our children and partners to let ourselves express our sadness rather than let our anger hide our vulnerability.</p>
+      </div>
+        </div>
+        <div class="mtabs-panel" id="mtabs-1" role="tabpanel" aria-labelledby="mtabs-t1" hidden>
+          <h3 class="masking__head">When your anger is masking fear or feeling threatened</h3>
+
+
+      <div class="prose" data-reveal>
+        <p>Anger can feel a lot more powerful and in control than being overwhelmed by fear. As psychotherapist and author David Lieberman explains in his book Never Get Angry Again:</p>
+      </div>
+
+      <blockquote class="pullquote" data-reveal>
+        “Emotionally, anger redirects our attention away from the fear/pain, which also mimics the sensation that we have seized control.”
+      </blockquote>
+
+      <div class="prose" data-reveal>
+        <p>Sometimes it’s hard to even know that we were afraid in the first place. Take the example of getting cut off while driving from psychologist <a class="inline-link" target="_blank" rel="noopener external" href="https://www.psychologytoday.com/us/contributors/leon-f-seltzer-phd">Leon F Seltzer</a>:</p>
+      </div>
+
+      <blockquote class="pullquote" data-reveal>
+        “<a class="inline-link" target="_blank" rel="noopener external" href="https://www.psychologytoday.com/us/blog/evolution-of-the-self/200807/what-your-anger-may-be-hiding">Virtually everyone I’ve ever asked</a> has responded emphatically that their immediate reaction to such an event is anger. But when I further inquire…they realize that in the fraction of a second before acting successfully to avert a collision, their emotion must certainly have been one of apprehension or fear.”
+      </blockquote>
+
+      <div class="prose" data-reveal>
+        <p>If you find yourself getting angry often in instances where there’s also fear involved, try meditating on some Biblical verse about fear and bravery, and where true courage comes from:</p>
+      </div>
+
+      <p class="verse-refs" data-reveal>Isaiah 41:10, Ephesians 6:10-18, Matthew 10:28-31, Psalm 56:3-4, 2 Timothy 1:7</p>
+        </div>
+        <div class="mtabs-panel" id="mtabs-2" role="tabpanel" aria-labelledby="mtabs-t2" hidden>
+          <h3 class="masking__head">When your anger is masking a sense of dread or general anxiety</h3>
+
+
+      <div class="prose" data-reveal>
+        <p>Whether it’s our access to news 24/7 or the political and cultural volatility in the last few years or a bunch of things all rolled into one, lots of folks are feeling worried and anxious, like something bad is always just about to happen. It’s not an uncommon phenomenon these days. Here’s one <a class="inline-link" target="_blank" rel="noopener external" href="https://www.reddit.com/r/AskWomenOver30/comments/151fq8p/constant_sense_of_dread_in_the_background/">Reddit conversation</a> as an example.</p>
+        <p>This doesn’t set a great foundation for mood and makes it more likely to turn smaller inconveniences and obstacles into major anger triggers.</p>
+        <p>If you’re dealing with general anxiety or a feeling of dread, stepping away from social media and going back to the promises in God’s Word can be steadying. And writing out or speaking your worries to God or a trusted ally is often helpful. If you want a starting point for those conversations, try the following from a <a class="inline-link" target="_blank" rel="noopener external" href="https://www.psychologytoday.com/us/blog/debunking-myths-of-the-mind/202303/how-to-overcome-the-sinking-feeling-of-dread">Psychology Today article</a>:</p>
+      </div>
+
+      <blockquote class="pullquote" data-reveal>
+        “<a class="inline-link" target="_blank" rel="noopener external" href="https://www.psychologytoday.com/us/blog/debunking-myths-of-the-mind/202303/how-to-overcome-the-sinking-feeling-of-dread">Remember three things</a>: order, meaning, and value. What brings order to your life? What brings meaning to your life? What do you value? Let those three things be your navigator’s components as you make your way through these wild waters.”
+      </blockquote>
+
+      <p class="statline" data-reveal>
+        <span class="statline__figure"><a target="_blank" rel="noopener external" href="https://www.statista.com/statistics/867055/anxiety-since-last-year-us-adults/">37%</a></span>
+        of respondents in the U.S. indicated that they were more anxious in 2023 than they were the year before.
+        <cite><a class="inline-link" target="_blank" rel="noopener external" href="https://www.statista.com/aboutus/our-research-commitment/2133/preeti-vankar">Preeti Vankar</a>, Statista</cite>
+      </p>
+        </div>
+        <div class="mtabs-panel" id="mtabs-3" role="tabpanel" aria-labelledby="mtabs-t3" hidden>
+          <h3 class="masking__head">When your anger is masking embarrassment</h3>
+
+
+      <div class="prose" data-reveal>
+        <p>Sometimes we explode around our children more easily when they don’t behave in a certain social setting. It’s easy to react more strongly than you would at home because of the added social pressure. Admitting, “Well, this is embarrassing” to yourself can be a way to release some of the tension directed at your child. Or finding <strong>some way to laugh at the situation</strong> rather than rage about it.</p>
+        <p>Being okay with being embarrassed is actually a skill we want our kids to have, so that they feel somewhat comfortable taking risks and trying new things without getting cowed by self-consciousness. If it’s a helpful motivator, you could try to remind yourself that, although irritating and uncomfortable, you’ve got a chance to model how to handle an embarrassing situation and move past it.</p>
+        <p>Try these tips for handling embarrassment from <a class="inline-link" target="_blank" rel="noopener external" href="https://psychcentral.com/blog/what-to-do-if-you-get-easily-embarrassed">this medically reviewed article from PsychCentral</a>:</p>
+      </div>
+
+      <ol class="tip-list" data-reveal>
+        <li><strong>Focus on the future:</strong> Will this matter to me in five years?</li>
+        <li><strong>Reroute your energies:</strong> What’s something I can do right now that’s productive?</li>
+        <li><strong>Rethink the situation:</strong> What can I learn from this?</li>
+      </ol>
+
+      <blockquote class="pullquote" data-reveal>
+        “Anger and embarrassment are often neighbors.”
+        <cite>Amy Poehler, <a class="inline-link" target="_blank" rel="noopener external" href="https://www.goodreads.com/work/quotes/40098620">Yes Please</a></cite>
+      </blockquote>
+        </div>
+    </div>
+  </div></div>
+
+  <div class="opt-label"><div class="container"><b>M2</b><span>Accordion — headings always visible, opens in place</span></div></div>
+  <div class="demo"><div class="container">
+        <details class="macc" open>
+          <summary><span class="macc__pre">When your anger is masking </span><b>grief, sadness, depression</b></summary>
+          <div class="macc__body">
+
+
+      <div class="prose" data-reveal>
+        <p>Many of us, especially men, learned in childhood that it was safer to hide feelings of sadness than express them and be rejected. Most parents probably say “Don’t cry” or “You don’t need to cry” as kind of a strange way of trying to make their kids feel better. Parents don’t want to see their kids sad (and often the crying is about something so small).</p>
+        <p>However, even if we learn to not show the emotion externally, it’s still there internally and will find a way to get expressed eventually. A lot of times <strong>anger feels like a safer expression</strong> than the vulnerability of crying.</p>
+        <p>As adults we end up saying “You always let me down” instead of <strong>“I feel very sad and disappointed that happened.”</strong> Or saying “How dare you say that to me!” instead of <strong>“That really hurt me.”</strong></p>
+      </div>
+
+      <blockquote class="pullquote" data-reveal>
+        “A lot of us go around feeling quite enraged, angry, privately, about the way our love lives have gone. My task…is to turn that anger into sadness. If we manage to turn rage into grief, we will have made psychological progress.”
+        <cite>Alain de Botton, <a class="inline-link" target="_blank" rel="noopener external" href="https://www.youtube.com/watch?v=-EvvPZFdjyk">Why You Will Marry the Wrong Person</a></cite>
+      </blockquote>
+
+      <div class="prose" data-reveal>
+        <p>Ask yourself: Is it easier for you to yell than to cry? We’ve all heard “Don’t cry over spilled milk.” But do we need to add a maxim for ourselves as parents: <strong>“Don’t rage over spilled milk”</strong>? It may be less damaging to our children and partners to let ourselves express our sadness rather than let our anger hide our vulnerability.</p>
+      </div>
+          </div>
+        </details>
+        <details class="macc">
+          <summary><span class="macc__pre">When your anger is masking </span><b>fear or feeling threatened</b></summary>
+          <div class="macc__body">
+
+
+      <div class="prose" data-reveal>
+        <p>Anger can feel a lot more powerful and in control than being overwhelmed by fear. As psychotherapist and author David Lieberman explains in his book Never Get Angry Again:</p>
+      </div>
+
+      <blockquote class="pullquote" data-reveal>
+        “Emotionally, anger redirects our attention away from the fear/pain, which also mimics the sensation that we have seized control.”
+      </blockquote>
+
+      <div class="prose" data-reveal>
+        <p>Sometimes it’s hard to even know that we were afraid in the first place. Take the example of getting cut off while driving from psychologist <a class="inline-link" target="_blank" rel="noopener external" href="https://www.psychologytoday.com/us/contributors/leon-f-seltzer-phd">Leon F Seltzer</a>:</p>
+      </div>
+
+      <blockquote class="pullquote" data-reveal>
+        “<a class="inline-link" target="_blank" rel="noopener external" href="https://www.psychologytoday.com/us/blog/evolution-of-the-self/200807/what-your-anger-may-be-hiding">Virtually everyone I’ve ever asked</a> has responded emphatically that their immediate reaction to such an event is anger. But when I further inquire…they realize that in the fraction of a second before acting successfully to avert a collision, their emotion must certainly have been one of apprehension or fear.”
+      </blockquote>
+
+      <div class="prose" data-reveal>
+        <p>If you find yourself getting angry often in instances where there’s also fear involved, try meditating on some Biblical verse about fear and bravery, and where true courage comes from:</p>
+      </div>
+
+      <p class="verse-refs" data-reveal>Isaiah 41:10, Ephesians 6:10-18, Matthew 10:28-31, Psalm 56:3-4, 2 Timothy 1:7</p>
+          </div>
+        </details>
+        <details class="macc">
+          <summary><span class="macc__pre">When your anger is masking </span><b>a sense of dread or general anxiety</b></summary>
+          <div class="macc__body">
+
+
+      <div class="prose" data-reveal>
+        <p>Whether it’s our access to news 24/7 or the political and cultural volatility in the last few years or a bunch of things all rolled into one, lots of folks are feeling worried and anxious, like something bad is always just about to happen. It’s not an uncommon phenomenon these days. Here’s one <a class="inline-link" target="_blank" rel="noopener external" href="https://www.reddit.com/r/AskWomenOver30/comments/151fq8p/constant_sense_of_dread_in_the_background/">Reddit conversation</a> as an example.</p>
+        <p>This doesn’t set a great foundation for mood and makes it more likely to turn smaller inconveniences and obstacles into major anger triggers.</p>
+        <p>If you’re dealing with general anxiety or a feeling of dread, stepping away from social media and going back to the promises in God’s Word can be steadying. And writing out or speaking your worries to God or a trusted ally is often helpful. If you want a starting point for those conversations, try the following from a <a class="inline-link" target="_blank" rel="noopener external" href="https://www.psychologytoday.com/us/blog/debunking-myths-of-the-mind/202303/how-to-overcome-the-sinking-feeling-of-dread">Psychology Today article</a>:</p>
+      </div>
+
+      <blockquote class="pullquote" data-reveal>
+        “<a class="inline-link" target="_blank" rel="noopener external" href="https://www.psychologytoday.com/us/blog/debunking-myths-of-the-mind/202303/how-to-overcome-the-sinking-feeling-of-dread">Remember three things</a>: order, meaning, and value. What brings order to your life? What brings meaning to your life? What do you value? Let those three things be your navigator’s components as you make your way through these wild waters.”
+      </blockquote>
+
+      <p class="statline" data-reveal>
+        <span class="statline__figure"><a target="_blank" rel="noopener external" href="https://www.statista.com/statistics/867055/anxiety-since-last-year-us-adults/">37%</a></span>
+        of respondents in the U.S. indicated that they were more anxious in 2023 than they were the year before.
+        <cite><a class="inline-link" target="_blank" rel="noopener external" href="https://www.statista.com/aboutus/our-research-commitment/2133/preeti-vankar">Preeti Vankar</a>, Statista</cite>
+      </p>
+          </div>
+        </details>
+        <details class="macc">
+          <summary><span class="macc__pre">When your anger is masking </span><b>embarrassment</b></summary>
+          <div class="macc__body">
+
+
+      <div class="prose" data-reveal>
+        <p>Sometimes we explode around our children more easily when they don’t behave in a certain social setting. It’s easy to react more strongly than you would at home because of the added social pressure. Admitting, “Well, this is embarrassing” to yourself can be a way to release some of the tension directed at your child. Or finding <strong>some way to laugh at the situation</strong> rather than rage about it.</p>
+        <p>Being okay with being embarrassed is actually a skill we want our kids to have, so that they feel somewhat comfortable taking risks and trying new things without getting cowed by self-consciousness. If it’s a helpful motivator, you could try to remind yourself that, although irritating and uncomfortable, you’ve got a chance to model how to handle an embarrassing situation and move past it.</p>
+        <p>Try these tips for handling embarrassment from <a class="inline-link" target="_blank" rel="noopener external" href="https://psychcentral.com/blog/what-to-do-if-you-get-easily-embarrassed">this medically reviewed article from PsychCentral</a>:</p>
+      </div>
+
+      <ol class="tip-list" data-reveal>
+        <li><strong>Focus on the future:</strong> Will this matter to me in five years?</li>
+        <li><strong>Reroute your energies:</strong> What’s something I can do right now that’s productive?</li>
+        <li><strong>Rethink the situation:</strong> What can I learn from this?</li>
+      </ol>
+
+      <blockquote class="pullquote" data-reveal>
+        “Anger and embarrassment are often neighbors.”
+        <cite>Amy Poehler, <a class="inline-link" target="_blank" rel="noopener external" href="https://www.goodreads.com/work/quotes/40098620">Yes Please</a></cite>
+      </blockquote>
+          </div>
+        </details>
+  </div></div>
+
+  <div class="opt-label"><div class="container"><b>M3</b><span>Swipeable cards with a heading strip above</span></div></div>
+  <div class="demo"><div class="container">
+    <div class="mcar" data-mcar>
+      <div class="mcar__nav">
+            <button class="mcar__jump" type="button" data-go="0" aria-current="true">grief, sadness, depression</button>
+            <button class="mcar__jump" type="button" data-go="1">fear or feeling threatened</button>
+            <button class="mcar__jump" type="button" data-go="2">a sense of dread or general anxiety</button>
+            <button class="mcar__jump" type="button" data-go="3">embarrassment</button>
+      </div>
+      <div class="mcar__viewport" tabindex="0">
+            <article class="mslide" aria-label="When your anger is masking grief, sadness, depression">
+              <h3 class="masking__head">When your anger is masking grief, sadness, depression</h3>
+
+
+      <div class="prose" data-reveal>
+        <p>Many of us, especially men, learned in childhood that it was safer to hide feelings of sadness than express them and be rejected. Most parents probably say “Don’t cry” or “You don’t need to cry” as kind of a strange way of trying to make their kids feel better. Parents don’t want to see their kids sad (and often the crying is about something so small).</p>
+        <p>However, even if we learn to not show the emotion externally, it’s still there internally and will find a way to get expressed eventually. A lot of times <strong>anger feels like a safer expression</strong> than the vulnerability of crying.</p>
+        <p>As adults we end up saying “You always let me down” instead of <strong>“I feel very sad and disappointed that happened.”</strong> Or saying “How dare you say that to me!” instead of <strong>“That really hurt me.”</strong></p>
+      </div>
+
+      <blockquote class="pullquote" data-reveal>
+        “A lot of us go around feeling quite enraged, angry, privately, about the way our love lives have gone. My task…is to turn that anger into sadness. If we manage to turn rage into grief, we will have made psychological progress.”
+        <cite>Alain de Botton, <a class="inline-link" target="_blank" rel="noopener external" href="https://www.youtube.com/watch?v=-EvvPZFdjyk">Why You Will Marry the Wrong Person</a></cite>
+      </blockquote>
+
+      <div class="prose" data-reveal>
+        <p>Ask yourself: Is it easier for you to yell than to cry? We’ve all heard “Don’t cry over spilled milk.” But do we need to add a maxim for ourselves as parents: <strong>“Don’t rage over spilled milk”</strong>? It may be less damaging to our children and partners to let ourselves express our sadness rather than let our anger hide our vulnerability.</p>
+      </div>
+            </article>
+            <article class="mslide" aria-label="When your anger is masking fear or feeling threatened">
+              <h3 class="masking__head">When your anger is masking fear or feeling threatened</h3>
+
+
+      <div class="prose" data-reveal>
+        <p>Anger can feel a lot more powerful and in control than being overwhelmed by fear. As psychotherapist and author David Lieberman explains in his book Never Get Angry Again:</p>
+      </div>
+
+      <blockquote class="pullquote" data-reveal>
+        “Emotionally, anger redirects our attention away from the fear/pain, which also mimics the sensation that we have seized control.”
+      </blockquote>
+
+      <div class="prose" data-reveal>
+        <p>Sometimes it’s hard to even know that we were afraid in the first place. Take the example of getting cut off while driving from psychologist <a class="inline-link" target="_blank" rel="noopener external" href="https://www.psychologytoday.com/us/contributors/leon-f-seltzer-phd">Leon F Seltzer</a>:</p>
+      </div>
+
+      <blockquote class="pullquote" data-reveal>
+        “<a class="inline-link" target="_blank" rel="noopener external" href="https://www.psychologytoday.com/us/blog/evolution-of-the-self/200807/what-your-anger-may-be-hiding">Virtually everyone I’ve ever asked</a> has responded emphatically that their immediate reaction to such an event is anger. But when I further inquire…they realize that in the fraction of a second before acting successfully to avert a collision, their emotion must certainly have been one of apprehension or fear.”
+      </blockquote>
+
+      <div class="prose" data-reveal>
+        <p>If you find yourself getting angry often in instances where there’s also fear involved, try meditating on some Biblical verse about fear and bravery, and where true courage comes from:</p>
+      </div>
+
+      <p class="verse-refs" data-reveal>Isaiah 41:10, Ephesians 6:10-18, Matthew 10:28-31, Psalm 56:3-4, 2 Timothy 1:7</p>
+            </article>
+            <article class="mslide" aria-label="When your anger is masking a sense of dread or general anxiety">
+              <h3 class="masking__head">When your anger is masking a sense of dread or general anxiety</h3>
+
+
+      <div class="prose" data-reveal>
+        <p>Whether it’s our access to news 24/7 or the political and cultural volatility in the last few years or a bunch of things all rolled into one, lots of folks are feeling worried and anxious, like something bad is always just about to happen. It’s not an uncommon phenomenon these days. Here’s one <a class="inline-link" target="_blank" rel="noopener external" href="https://www.reddit.com/r/AskWomenOver30/comments/151fq8p/constant_sense_of_dread_in_the_background/">Reddit conversation</a> as an example.</p>
+        <p>This doesn’t set a great foundation for mood and makes it more likely to turn smaller inconveniences and obstacles into major anger triggers.</p>
+        <p>If you’re dealing with general anxiety or a feeling of dread, stepping away from social media and going back to the promises in God’s Word can be steadying. And writing out or speaking your worries to God or a trusted ally is often helpful. If you want a starting point for those conversations, try the following from a <a class="inline-link" target="_blank" rel="noopener external" href="https://www.psychologytoday.com/us/blog/debunking-myths-of-the-mind/202303/how-to-overcome-the-sinking-feeling-of-dread">Psychology Today article</a>:</p>
+      </div>
+
+      <blockquote class="pullquote" data-reveal>
+        “<a class="inline-link" target="_blank" rel="noopener external" href="https://www.psychologytoday.com/us/blog/debunking-myths-of-the-mind/202303/how-to-overcome-the-sinking-feeling-of-dread">Remember three things</a>: order, meaning, and value. What brings order to your life? What brings meaning to your life? What do you value? Let those three things be your navigator’s components as you make your way through these wild waters.”
+      </blockquote>
+
+      <p class="statline" data-reveal>
+        <span class="statline__figure"><a target="_blank" rel="noopener external" href="https://www.statista.com/statistics/867055/anxiety-since-last-year-us-adults/">37%</a></span>
+        of respondents in the U.S. indicated that they were more anxious in 2023 than they were the year before.
+        <cite><a class="inline-link" target="_blank" rel="noopener external" href="https://www.statista.com/aboutus/our-research-commitment/2133/preeti-vankar">Preeti Vankar</a>, Statista</cite>
+      </p>
+            </article>
+            <article class="mslide" aria-label="When your anger is masking embarrassment">
+              <h3 class="masking__head">When your anger is masking embarrassment</h3>
+
+
+      <div class="prose" data-reveal>
+        <p>Sometimes we explode around our children more easily when they don’t behave in a certain social setting. It’s easy to react more strongly than you would at home because of the added social pressure. Admitting, “Well, this is embarrassing” to yourself can be a way to release some of the tension directed at your child. Or finding <strong>some way to laugh at the situation</strong> rather than rage about it.</p>
+        <p>Being okay with being embarrassed is actually a skill we want our kids to have, so that they feel somewhat comfortable taking risks and trying new things without getting cowed by self-consciousness. If it’s a helpful motivator, you could try to remind yourself that, although irritating and uncomfortable, you’ve got a chance to model how to handle an embarrassing situation and move past it.</p>
+        <p>Try these tips for handling embarrassment from <a class="inline-link" target="_blank" rel="noopener external" href="https://psychcentral.com/blog/what-to-do-if-you-get-easily-embarrassed">this medically reviewed article from PsychCentral</a>:</p>
+      </div>
+
+      <ol class="tip-list" data-reveal>
+        <li><strong>Focus on the future:</strong> Will this matter to me in five years?</li>
+        <li><strong>Reroute your energies:</strong> What’s something I can do right now that’s productive?</li>
+        <li><strong>Rethink the situation:</strong> What can I learn from this?</li>
+      </ol>
+
+      <blockquote class="pullquote" data-reveal>
+        “Anger and embarrassment are often neighbors.”
+        <cite>Amy Poehler, <a class="inline-link" target="_blank" rel="noopener external" href="https://www.goodreads.com/work/quotes/40098620">Yes Please</a></cite>
+      </blockquote>
+            </article>
+      </div>
+    </div>
+  </div></div>
+
+  <div class="opt-label"><div class="container"><b>M4</b><span>Jump links — nothing hidden, everything stays readable</span></div></div>
+  <div class="demo"><div class="container">
+    <div class="mchips">
+          <a class="mchip" href="#m4-0">grief, sadness, depression</a>
+          <a class="mchip" href="#m4-1">fear or feeling threatened</a>
+          <a class="mchip" href="#m4-2">a sense of dread or general anxiety</a>
+          <a class="mchip" href="#m4-3">embarrassment</a>
+    </div>
+        <div class="m4block" id="m4-0">
+          <h3 class="masking__head">When your anger is masking grief, sadness, depression</h3>
+
+
+      <div class="prose" data-reveal>
+        <p>Many of us, especially men, learned in childhood that it was safer to hide feelings of sadness than express them and be rejected. Most parents probably say “Don’t cry” or “You don’t need to cry” as kind of a strange way of trying to make their kids feel better. Parents don’t want to see their kids sad (and often the crying is about something so small).</p>
+        <p>However, even if we learn to not show the emotion externally, it’s still there internally and will find a way to get expressed eventually. A lot of times <strong>anger feels like a safer expression</strong> than the vulnerability of crying.</p>
+        <p>As adults we end up saying “You always let me down” instead of <strong>“I feel very sad and disappointed that happened.”</strong> Or saying “How dare you say that to me!” instead of <strong>“That really hurt me.”</strong></p>
+      </div>
+
+      <blockquote class="pullquote" data-reveal>
+        “A lot of us go around feeling quite enraged, angry, privately, about the way our love lives have gone. My task…is to turn that anger into sadness. If we manage to turn rage into grief, we will have made psychological progress.”
+        <cite>Alain de Botton, <a class="inline-link" target="_blank" rel="noopener external" href="https://www.youtube.com/watch?v=-EvvPZFdjyk">Why You Will Marry the Wrong Person</a></cite>
+      </blockquote>
+
+      <div class="prose" data-reveal>
+        <p>Ask yourself: Is it easier for you to yell than to cry? We’ve all heard “Don’t cry over spilled milk.” But do we need to add a maxim for ourselves as parents: <strong>“Don’t rage over spilled milk”</strong>? It may be less damaging to our children and partners to let ourselves express our sadness rather than let our anger hide our vulnerability.</p>
+      </div>
+        </div>
+        <div class="m4block" id="m4-1">
+          <h3 class="masking__head">When your anger is masking fear or feeling threatened</h3>
+
+
+      <div class="prose" data-reveal>
+        <p>Anger can feel a lot more powerful and in control than being overwhelmed by fear. As psychotherapist and author David Lieberman explains in his book Never Get Angry Again:</p>
+      </div>
+
+      <blockquote class="pullquote" data-reveal>
+        “Emotionally, anger redirects our attention away from the fear/pain, which also mimics the sensation that we have seized control.”
+      </blockquote>
+
+      <div class="prose" data-reveal>
+        <p>Sometimes it’s hard to even know that we were afraid in the first place. Take the example of getting cut off while driving from psychologist <a class="inline-link" target="_blank" rel="noopener external" href="https://www.psychologytoday.com/us/contributors/leon-f-seltzer-phd">Leon F Seltzer</a>:</p>
+      </div>
+
+      <blockquote class="pullquote" data-reveal>
+        “<a class="inline-link" target="_blank" rel="noopener external" href="https://www.psychologytoday.com/us/blog/evolution-of-the-self/200807/what-your-anger-may-be-hiding">Virtually everyone I’ve ever asked</a> has responded emphatically that their immediate reaction to such an event is anger. But when I further inquire…they realize that in the fraction of a second before acting successfully to avert a collision, their emotion must certainly have been one of apprehension or fear.”
+      </blockquote>
+
+      <div class="prose" data-reveal>
+        <p>If you find yourself getting angry often in instances where there’s also fear involved, try meditating on some Biblical verse about fear and bravery, and where true courage comes from:</p>
+      </div>
+
+      <p class="verse-refs" data-reveal>Isaiah 41:10, Ephesians 6:10-18, Matthew 10:28-31, Psalm 56:3-4, 2 Timothy 1:7</p>
+        </div>
+        <div class="m4block" id="m4-2">
+          <h3 class="masking__head">When your anger is masking a sense of dread or general anxiety</h3>
+
+
+      <div class="prose" data-reveal>
+        <p>Whether it’s our access to news 24/7 or the political and cultural volatility in the last few years or a bunch of things all rolled into one, lots of folks are feeling worried and anxious, like something bad is always just about to happen. It’s not an uncommon phenomenon these days. Here’s one <a class="inline-link" target="_blank" rel="noopener external" href="https://www.reddit.com/r/AskWomenOver30/comments/151fq8p/constant_sense_of_dread_in_the_background/">Reddit conversation</a> as an example.</p>
+        <p>This doesn’t set a great foundation for mood and makes it more likely to turn smaller inconveniences and obstacles into major anger triggers.</p>
+        <p>If you’re dealing with general anxiety or a feeling of dread, stepping away from social media and going back to the promises in God’s Word can be steadying. And writing out or speaking your worries to God or a trusted ally is often helpful. If you want a starting point for those conversations, try the following from a <a class="inline-link" target="_blank" rel="noopener external" href="https://www.psychologytoday.com/us/blog/debunking-myths-of-the-mind/202303/how-to-overcome-the-sinking-feeling-of-dread">Psychology Today article</a>:</p>
+      </div>
+
+      <blockquote class="pullquote" data-reveal>
+        “<a class="inline-link" target="_blank" rel="noopener external" href="https://www.psychologytoday.com/us/blog/debunking-myths-of-the-mind/202303/how-to-overcome-the-sinking-feeling-of-dread">Remember three things</a>: order, meaning, and value. What brings order to your life? What brings meaning to your life? What do you value? Let those three things be your navigator’s components as you make your way through these wild waters.”
+      </blockquote>
+
+      <p class="statline" data-reveal>
+        <span class="statline__figure"><a target="_blank" rel="noopener external" href="https://www.statista.com/statistics/867055/anxiety-since-last-year-us-adults/">37%</a></span>
+        of respondents in the U.S. indicated that they were more anxious in 2023 than they were the year before.
+        <cite><a class="inline-link" target="_blank" rel="noopener external" href="https://www.statista.com/aboutus/our-research-commitment/2133/preeti-vankar">Preeti Vankar</a>, Statista</cite>
+      </p>
+        </div>
+        <div class="m4block" id="m4-3">
+          <h3 class="masking__head">When your anger is masking embarrassment</h3>
+
+
+      <div class="prose" data-reveal>
+        <p>Sometimes we explode around our children more easily when they don’t behave in a certain social setting. It’s easy to react more strongly than you would at home because of the added social pressure. Admitting, “Well, this is embarrassing” to yourself can be a way to release some of the tension directed at your child. Or finding <strong>some way to laugh at the situation</strong> rather than rage about it.</p>
+        <p>Being okay with being embarrassed is actually a skill we want our kids to have, so that they feel somewhat comfortable taking risks and trying new things without getting cowed by self-consciousness. If it’s a helpful motivator, you could try to remind yourself that, although irritating and uncomfortable, you’ve got a chance to model how to handle an embarrassing situation and move past it.</p>
+        <p>Try these tips for handling embarrassment from <a class="inline-link" target="_blank" rel="noopener external" href="https://psychcentral.com/blog/what-to-do-if-you-get-easily-embarrassed">this medically reviewed article from PsychCentral</a>:</p>
+      </div>
+
+      <ol class="tip-list" data-reveal>
+        <li><strong>Focus on the future:</strong> Will this matter to me in five years?</li>
+        <li><strong>Reroute your energies:</strong> What’s something I can do right now that’s productive?</li>
+        <li><strong>Rethink the situation:</strong> What can I learn from this?</li>
+      </ol>
+
+      <blockquote class="pullquote" data-reveal>
+        “Anger and embarrassment are often neighbors.”
+        <cite>Amy Poehler, <a class="inline-link" target="_blank" rel="noopener external" href="https://www.goodreads.com/work/quotes/40098620">Yes Please</a></cite>
+      </blockquote>
+        </div>
+  </div></div>
+
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <span class="footer__brand">Easy to Anger</span>
+    <a class="footer__link" href="/reflect/">Back to Reflect</a>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('[data-mtabs]').forEach(function (root) {
+  var tabs = [].slice.call(root.querySelectorAll('.mtab'));
+  var panels = [].slice.call(root.querySelectorAll('[role=tabpanel]'));
+  function show(i) {
+    tabs.forEach(function (t, n) { t.setAttribute('aria-selected', String(n === i)); });
+    panels.forEach(function (p, n) { p.hidden = n !== i; });
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { show(i); });
+    t.addEventListener('keydown', function (e) {
+      var n = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : null;
+      if (n === null) return;
+      e.preventDefault();
+      n = (n + tabs.length) % tabs.length;
+      tabs[n].focus(); show(n);
+    });
+  });
+});
+
+document.querySelectorAll('[data-mcar]').forEach(function (root) {
+  var vp = root.querySelector('.mcar__viewport');
+  var slides = [].slice.call(root.querySelectorAll('.mslide'));
+  var jumps = [].slice.call(root.querySelectorAll('.mcar__jump'));
+  function mark(i) {
+    jumps.forEach(function (b, n) {
+      if (n === i) b.setAttribute('aria-current', 'true');
+      else b.removeAttribute('aria-current');
+    });
+  }
+  jumps.forEach(function (b, i) {
+    b.addEventListener('click', function () {
+      vp.scrollLeft = slides[i].offsetLeft - vp.offsetLeft;
+      mark(i);   // don't wait on the scroll event; swiping still updates below
+    });
+  });
+  var queued = false;
+  vp.addEventListener('scroll', function () {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function () {
+      queued = false;
+      var mid = vp.scrollLeft + vp.clientWidth / 2, best = 0, bd = Infinity;
+      slides.forEach(function (s, i) {
+        var d = Math.abs(s.offsetLeft - vp.offsetLeft + s.offsetWidth / 2 - mid);
+        if (d < bd) { bd = d; best = i; }
+      });
+      mark(best);
+    });
+  }, { passive: true });
+});
+</script>
+</body>
+</html>
