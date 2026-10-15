@@ -1822,14 +1822,14 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
   text-align: center;
 }
 
-.cartoon-ref__caption { margin: 0; border: 0; padding: 0; }
+.cartoon-ref__frame { max-width: 400px; margin: 0 auto; }
 
-.cartoon-ref__caption p {
-  margin: 0;
-  font-family: 'Caveat', 'DM Sans', cursive;
-  font-size: clamp(1.4rem, calc(1.1rem + 1.1vw), 2.1rem);
-  line-height: 1.3;
-  letter-spacing: .01em;
+.cartoon-ref__embed {
+  display: block;
+  width: 100%;
+  height: 560px;
+  border: 0;
+  background: var(--white);
 }
 
 .cartoon-ref__credit {
