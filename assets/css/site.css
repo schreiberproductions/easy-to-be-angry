@@ -1495,9 +1495,12 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 .cycle__step p { margin: .35rem 0 0; }
 
 /* 12, 4 and 8 o'clock on a circle of radius 45 in a 100-unit box */
-.cycle__step--a { left: 50%; top: 5%;  --pos: translate(-50%, -50%); --step-tint: #fde4d2; }
-.cycle__step--b { left: 89%; top: 72%; --pos: translate(-50%, -50%); --step-tint: #fbd8e8; }
-.cycle__step--c { left: 11%; top: 72%; --pos: translate(-50%, -50%); --step-tint: #e3e0fb; }
+.cycle__step--a { left: 50%; top: 5%;  --pos: translate(-50%, -50%); --step-tint: #fde4d2;
+                  --out: translate(0, -7px); --in: translate(0, 3px); }
+.cycle__step--b { left: 89%; top: 72%; --pos: translate(-50%, -50%); --step-tint: #fbd8e8;
+                  --out: translate(6px, 4px); --in: translate(-3px, -2px); }
+.cycle__step--c { left: 11%; top: 72%; --pos: translate(-50%, -50%); --step-tint: #e3e0fb;
+                  --out: translate(-6px, 4px); --in: translate(3px, -2px); }
 
 
 /* Below phone width the ring has no room, so the steps become a plain column
@@ -1774,10 +1777,10 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 }
 
 /* Four-step variant of the cycle: steps at 12, 3, 6 and 9 o'clock. */
-.cycle--4 .cycle__step--n { left: 50%; top: 4%;  --pos: translate(-50%, -50%); --step-tint: #fde4d2; }
-.cycle--4 .cycle__step--e { left: 96%; top: 50%; --pos: translate(-50%, -50%); --step-tint: #fbd8e8; }
-.cycle--4 .cycle__step--s { left: 50%; top: 96%; --pos: translate(-50%, -50%); --step-tint: #e3e0fb; }
-.cycle--4 .cycle__step--w { left: 4%;  top: 50%; --pos: translate(-50%, -50%); --step-tint: #d6eef0; }
+.cycle--4 .cycle__step--n { left: 50%; top: 4%;  --pos: translate(-50%, -50%); --step-tint: #fde4d2;  --out: translate(0, -7px); --in: translate(0, 3px); }
+.cycle--4 .cycle__step--e { left: 96%; top: 50%; --pos: translate(-50%, -50%); --step-tint: #fbd8e8;  --out: translate(7px, 0); --in: translate(-3px, 0); }
+.cycle--4 .cycle__step--s { left: 50%; top: 96%; --pos: translate(-50%, -50%); --step-tint: #e3e0fb;  --out: translate(0, 7px); --in: translate(0, -3px); }
+.cycle--4 .cycle__step--w { left: 4%;  top: 50%; --pos: translate(-50%, -50%); --step-tint: #d6eef0;  --out: translate(-7px, 0); --in: translate(3px, 0); }
 
 @media (max-width: 560px) {
   .cycle--4 .cycle__step--n,
@@ -2033,19 +2036,35 @@ h1, h2, h3, h4,
    composes with the translate that positions each card on the ring instead of
    overwriting it. */
 .cycle__step {
-  /* position and hover ride in one chain, so the card grows about its own
-     centre instead of drifting off the ring */
-  transform: var(--pos, translate(0, 0)) scale(var(--lift, 1));
-  transition: transform .18s var(--ease), box-shadow .18s var(--ease);
+  /* position and nudge ride in one chain: the position is a percentage of the
+     card's own box, so anything applied after it would drag the card off the
+     ring */
+  transform: var(--pos, translate(0, 0)) var(--nudge, translate(0, 0));
+  transition: transform .22s var(--ease), box-shadow .22s var(--ease);
 }
 
-.cycle__step:hover {
-  --lift: 1.05;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, .15);
-  z-index: 2;
-}
+/* Like the bubble chart: the one under the pointer eases out along the ring
+   and the rest draw in a little, so the whole diagram reacts. */
+.cycle__step:hover { --nudge: var(--out); z-index: 2; box-shadow: 0 8px 22px rgba(0, 0, 0, .13); }
+.cycle:has(.cycle__step:hover) .cycle__step:not(:hover) { --nudge: var(--in); }
 
 @media (prefers-reduced-motion: reduce) {
   .cycle__step { transition: none; }
-  .cycle__step:hover { --lift: 1; }
+  .cycle__step:hover,
+  .cycle:has(.cycle__step:hover) .cycle__step:not(:hover) { --nudge: translate(0, 0); }
 }
+
+/* Section boundaries were varying from 150px to 260px because whatever
+   happened to be first or last inside a section added its own margin on top of
+   the section's padding. The padding alone governs the gap now. */
+.section > .container > *:first-child,
+.section > .container > *:first-child *:first-child { margin-top: 0; }
+
+.section > .container > *:last-child,
+.section > .container > *:last-child *:last-child { margin-bottom: 0; }
+
+/* Zeroing the outer children is not enough on its own: a margin deeper inside
+   can still collapse out through the container and reappear as extra gap.
+   flow-root makes the container its own formatting context, so nothing escapes
+   and the padding is the only thing setting the distance. */
+.section > .container { display: flow-root; }
