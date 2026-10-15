@@ -404,6 +404,32 @@
     select(0);
   });
 
+  // The shift list doubles as the way into the steps below it. The rows are
+  // real anchors, so without JS they still jump to the right step; this only
+  // opens that step first and flags it briefly so the jump is visible.
+  document.querySelectorAll('[data-step-jump] a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      var step = document.querySelector(a.getAttribute('href'));
+      if (!step) return;
+      step.open = true;
+      document.querySelectorAll('.step.is-target').forEach(function (s) {
+        s.classList.remove('is-target');
+      });
+      step.classList.add('is-target');
+      setTimeout(function () { step.classList.remove('is-target'); }, 1600);
+    });
+  });
+
+  // A step opened straight from a link in the address bar should be open.
+  (function openFromHash() {
+    var open = function () {
+      var el = location.hash && document.querySelector(location.hash);
+      if (el && el.classList.contains('step')) el.open = true;
+    };
+    window.addEventListener('hashchange', open);
+    open();
+  })();
+
   // Scroll reveal. The class is added here so content stays visible without JS.
   // A position sweep (rather than IntersectionObserver) is used deliberately: it
   // also reveals anything the reader jumped straight past via an anchor link, so

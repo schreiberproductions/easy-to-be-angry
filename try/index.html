@@ -15,7 +15,7 @@
 <link rel="icon" href="/assets/img/favicon-32x32.png" type="image/png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/DMSans-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/site.css?v=58">
+<link rel="stylesheet" href="/assets/css/site.css?v=61">
 </head>
 <body>
 
@@ -145,7 +145,8 @@
     </div>
   </section>
 
-  <section class="section" id="eGcg0D8jIK-" aria-labelledby="communicating">
+  <section class="section section--art" id="eGcg0D8jIK-" aria-labelledby="communicating"
+           style="background-image:url('/assets/img/bg-splat.webp?v=1'); --art-size:40%; --art-pos:96% 2%;">
     <div class="container">
       <h2 class="section__title" id="communicating" data-reveal>A new way of communicating</h2>
 
@@ -199,20 +200,27 @@
         <p>So we’re working toward communication that moves from:</p>
       </div>
 
-      <ol class="shift-list shift-list--numbered" data-reveal>
-        <li><span>Closed off</span><svg class="arrow" aria-hidden="true"><use href="#arr-right"/></svg><span>More open</span></li>
-        <li><span>Cryptic</span><svg class="arrow" aria-hidden="true"><use href="#arr-right"/></svg><span>More straightforward</span></li>
-        <li><span>Spiteful</span><svg class="arrow" aria-hidden="true"><use href="#arr-right"/></svg><span>More respectful</span></li>
+      <ol class="shift-list shift-list--numbered" data-step-jump data-reveal>
+        <li><a href="#step-1"><span>Closed off</span><svg class="arrow" aria-hidden="true"><use href="#arr-right"/></svg><span>More open</span></a></li>
+        <li><a href="#step-2"><span>Cryptic</span><svg class="arrow" aria-hidden="true"><use href="#arr-right"/></svg><span>More straightforward</span></a></li>
+        <li><a href="#step-3"><span>Spiteful</span><svg class="arrow" aria-hidden="true"><use href="#arr-right"/></svg><span>More respectful</span></a></li>
       </ol>
 
       <div class="prose" data-reveal>
         <p>Consider the following tactics and see what works for you.</p>
       </div>
 
-      <p class="step-lede" data-reveal><span class="step-num">1</span> Less closed off → more open</p>
-      <h3 class="subhead-major" data-reveal>Acknowledge your emotions early</h3>
-
-      <figure class="cartoon-ref" data-reveal>
+      <div class="steps" data-steps>
+        <details class="step" id="step-1" open>
+          <summary>
+            <span class="step-num">1</span>
+            <span class="step__names">
+              <span class="step__shift">Less closed off → more open</span>
+              <b class="step__title">Acknowledge your emotions early</b>
+            </span>
+          </summary>
+          <div class="step__body">
+<figure class="cartoon-ref" data-reveal>
         <div class="cartoon-ref__frame">
           <iframe class="cartoon-ref__embed"
                   src="https://www.instagram.com/p/C84aoocuXB-/embed/"
@@ -259,16 +267,18 @@
         <div class="prompt__line"></div>
         <div class="prompt__line"></div>
       </div>
-    </div>
-  </section>
-
-  <section class="section section--art" aria-labelledby="sayitplain"
-           style="background-image:url('/assets/img/bg-splat.webp?v=1'); --art-size:42%; --art-pos:5% 6%;">
-    <div class="container">
-      <p class="step-lede" data-reveal><span class="step-num">2</span> Less cryptic → more straightforward</p>
-      <h2 class="section__title" id="sayitplain" data-reveal>Say it plain</h2>
-
-      <div class="prose" data-reveal>
+          </div>
+        </details>
+        <details class="step" id="step-2">
+          <summary>
+            <span class="step-num">2</span>
+            <span class="step__names">
+              <span class="step__shift">Less cryptic → more straightforward</span>
+              <b class="step__title">Say it plain</b>
+            </span>
+          </summary>
+          <div class="step__body">
+<div class="prose" data-reveal>
         <p>The next step beyond just saying something early is, of course, <strong>how you say it</strong>. This section and the next two (<a class="inline-link" href="#emC0sP80a1_">here</a> and <a class="inline-link" href="#evcJeHKfo9j">here</a>) go into more detail about ways to communicate effectively while still being able to share your genuine feelings.</p>
         <p>We could have called this section “The surprising benefits of stating the obvious” because there’s something a bit magical about <strong>neutral</strong> (rather than emotionally charged), <strong>direct</strong> (rather than passive), and <strong>descriptive</strong> (rather than vague) language. But how often do we use passive-aggressive or cryptic language instead of transparent communication?</p>
       </div>
@@ -298,27 +308,27 @@
           </thead>
           <tbody>
             <tr>
-              <th scope="row">[Child crying for unknown reason]</th>
+              <th scope="row">Child crying for unknown reason</th>
               <td data-label="Language that makes a judgment">“There’s no need to cry right now.”</td>
               <td data-label="Neutral, descriptive language">“I see that you’re upset.”</td>
             </tr>
             <tr>
-              <th scope="row">[Child pulled the cheese off her pizza slice]</th>
+              <th scope="row">Child pulled the cheese off her pizza slice</th>
               <td data-label="Language that makes a judgment">“But the cheese on pizza is the best part!”</td>
               <td data-label="Neutral, descriptive language">“Cheese doesn’t taste good to you right now.”</td>
             </tr>
             <tr>
-              <th scope="row">[Child wanting to show parent a jump]</th>
+              <th scope="row">Child wanting to show parent a jump</th>
               <td data-label="Language that makes a judgment">“That was amazing!”</td>
               <td data-label="Neutral, descriptive language">“You jumped with both feet off the ground for the first time!”</td>
             </tr>
             <tr>
-              <th scope="row">[Child left her stuffed animal at home on accident]</th>
+              <th scope="row">Child left her stuffed animal at home on accident</th>
               <td data-label="Language that makes a judgment">“It’s okay”</td>
               <td data-label="Neutral, descriptive language">“It looks like you’re feeling disappointed that your stuffie was left at home.”</td>
             </tr>
             <tr>
-              <th scope="row">[Child messes up something the parent knows they can do]</th>
+              <th scope="row">Child messes up something the parent knows they can do</th>
               <td data-label="Language that makes a judgment">“You can do better.”</td>
               <td data-label="Neutral, descriptive language">“I would love to see you explore/try…”</td>
             </tr>
@@ -360,15 +370,18 @@
         <div class="prompt__line"></div>
         <div class="prompt__line"></div>
       </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="venom">
-    <div class="container">
-      <p class="step-lede" data-reveal><span class="step-num">3</span> Less spiteful → more respectful</p>
-      <h2 class="section__title" id="venom" data-reveal>Remove the venom</h2>
-
-      <div class="prose" data-reveal>
+          </div>
+        </details>
+        <details class="step" id="step-3">
+          <summary>
+            <span class="step-num">3</span>
+            <span class="step__names">
+              <span class="step__shift">Less spiteful → more respectful</span>
+              <b class="step__title">Remove the venom</b>
+            </span>
+          </summary>
+          <div class="step__body">
+<div class="prose" data-reveal>
         <p>Sometimes we can try and communicate early and calmly with descriptive and neutral language, before a lot of rage has built up. And that can <strong>help the pressure release</strong> and resolve small things before they get big.</p>
         <p>But what about when the emotions are already more intense? It doesn’t always work to say things neutrally, especially in tense and charged situations, or when you’re emotionally fried. We need a way to express ourselves fully without <strong>poisoning the air</strong> and the people around us. We need to remove the venom from our speech.</p>
         <p>In his book “<a class="inline-link" target="_blank" rel="noopener external" href="https://www.cnvc.org/store/nonviolent-communication-a-language-of-life">Nonviolent Communication</a>,” Dr. Marshall Rosenberg explained what he did to share his intense feelings without hurting his son in the process:</p>
@@ -400,8 +413,14 @@
         <div class="prompt__line"></div>
         <div class="prompt__line"></div>
       </div>
+          </div>
+        </details>
+      </div>
+
     </div>
   </section>
+
+
 
   <section class="section section--art" id="emC0sP80a1_" aria-labelledby="reconciliation"
            style="background-image:url('/assets/img/bg-leaf.webp?v=1'); --art-size:46%; --art-pos:94% 4%;">
@@ -671,10 +690,10 @@
             <path class="cycle__head" d="M11 18c1.2 4.6 2.6 8.6 4.2 12.4 4-1.4 8.2-2.4 12.6-3"></path>
           </g>
         </svg>
-        <div class="cycle__step cycle__step--n" role="listitem"><p>Remove the dopamine trigger</p></div>
-        <div class="cycle__step cycle__step--e" role="listitem"><p>Observe feelings</p></div>
-        <div class="cycle__step cycle__step--s" role="listitem"><p>Address underlying need (if possible)</p></div>
-        <div class="cycle__step cycle__step--w" role="listitem"><p>Turn attention outward</p></div>
+        <div class="cycle__step cycle__step--n" role="listitem"><p><strong>Remove</strong> the dopamine trigger</p></div>
+        <div class="cycle__step cycle__step--e" role="listitem"><p><strong>Observe</strong> feelings</p></div>
+        <div class="cycle__step cycle__step--s" role="listitem"><p><strong>Address</strong> underlying need (if possible)</p></div>
+        <div class="cycle__step cycle__step--w" role="listitem"><p><strong>Turn</strong> attention outward</p></div>
       </div>
 
       <div class="prose" data-reveal>
@@ -726,8 +745,8 @@
         <h2 class="share__title">Share this site:</h2>
         <ul class="share__list">
           <li><a class="share__link" target="_blank" rel="noopener external" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fanger.kayleenschreiber.com%2F">Facebook</a></li>
-          <li><a class="share__link" target="_blank" rel="noopener external" href="https://x.com/intent/post?url=https%3A%2F%2Fanger.kayleenschreiber.com%2F&amp;text=Easy%20to%20Be%20Angry">Share on X</a></li>
-          <li><a class="share__link" href="mailto:?subject=Easy%20to%20Be%20Angry&amp;body=https%3A%2F%2Fanger.kayleenschreiber.com%2F">Mail</a></li>
+          <li><a class="share__link" target="_blank" rel="noopener external" href="https://x.com/intent/post?url=https%3A%2F%2Fanger.kayleenschreiber.com%2F&amp;text=Easy%20to%20Be%20Angry%3A%20a%20collection%20of%20thoughts%2C%20ideas%20and%20tools%20for%20overcoming%20the%20easy%20urge%20to%20be%20irritable%20and%20angry.">Share on X</a></li>
+          <li><a class="share__link" href="mailto:?subject=Easy%20to%20Be%20Angry&amp;body=I%20thought%20you%20might%20find%20this%20helpful%20%E2%80%94%20a%20collection%20of%20thoughts%2C%20ideas%20and%20tools%20for%20overcoming%20the%20easy%20urge%20to%20be%20irritable%20and%20angry%3A%0A%0Ahttps%3A%2F%2Fanger.kayleenschreiber.com%2F%0A%0A">Mail</a></li>
           <li><a class="share__link" target="_blank" rel="noopener external" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fanger.kayleenschreiber.com%2F">LinkedIn</a></li>
         </ul>
       </div>
@@ -747,6 +766,6 @@
   </div>
 </footer>
 
-<script src="/assets/js/site.js?v=35" defer></script>
+<script src="/assets/js/site.js?v=36" defer></script>
 </body>
 </html>

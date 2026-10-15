@@ -1740,7 +1740,7 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
   border-bottom: 2px solid var(--accent);
 }
 
-.compare tbody th { font-weight: 500; opacity: .75; width: 28%; }
+.compare tbody th { font-weight: 600; width: 28%; }
 
 .visually-hidden {
   position: absolute;
@@ -1756,7 +1756,7 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
   .compare thead { display: none; }
   .compare tr { padding: .9rem 0; border-bottom: 1px solid rgba(0, 0, 0, .1); }
   .compare th, .compare td { border: 0; padding: .2rem 0; }
-  .compare tbody th { width: auto; font-weight: 700; opacity: 1; margin-bottom: .4rem; }
+  .compare tbody th { width: auto; font-weight: 700; margin-bottom: .4rem; }
   .compare td::before {
     content: attr(data-label);
     display: block;
@@ -1811,14 +1811,7 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
    artwork drops straight into this frame. */
 .cartoon-ref {
   margin: var(--block-gap) var(--inset);
-  padding: clamp(1.4rem, 4vw, 2.4rem) clamp(1.2rem, 3.5vw, 2rem) clamp(1rem, 2.5vw, 1.4rem);
-  border: 1px solid rgba(0, 0, 0, .16);
-  border-radius: 3px;
-  background:
-    linear-gradient(0deg, rgba(0, 0, 0, .02), rgba(0, 0, 0, .02)),
-    var(--white);
-  box-shadow: inset 0 0 0 clamp(.5rem, 1.6vw, .9rem) var(--white),
-              0 6px 24px rgba(0, 0, 0, .07);
+  padding: 0;
   text-align: center;
 }
 
@@ -1839,3 +1832,74 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 }
 
 .cartoon-ref__credit strong { font-weight: 700; }
+
+/* The three communication steps as an accordion, with the shift list above
+   acting as the way in: same numbers, and each row opens its step. */
+.shift-list--numbered a {
+  display: contents;
+  color: inherit;
+  text-decoration: none;
+}
+
+.shift-list--numbered li > a > span { padding-block: .4rem; font-size: var(--step-body); text-align: right; }
+.shift-list--numbered li > a > span:last-child { text-align: left; }
+.shift-list--numbered li:hover > a > span,
+.shift-list--numbered li:focus-within > a > span { color: var(--accent-deep); }
+.shift-list--numbered li:hover .arrow,
+.shift-list--numbered li:focus-within .arrow { color: var(--accent-deep); }
+
+/* the number gets a column of its own, otherwise right-aligning the left-hand
+   phrase staggers the numbers down the list */
+.shift-list--numbered { grid-template-columns: auto max-content auto max-content; }
+
+.shift-list--numbered li > a::before {
+  counter-increment: shift;
+  content: counter(shift) '.';
+  padding-block: .4rem;
+  font-size: var(--step-body);
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.steps { margin-top: var(--block-gap); }
+
+.step { border-top: 1px solid rgba(0, 0, 0, .14); scroll-margin-top: 5rem; }
+.step:last-of-type { border-bottom: 1px solid rgba(0, 0, 0, .14); }
+
+.step > summary {
+  display: flex;
+  align-items: center;
+  gap: clamp(.7rem, 2vw, 1rem);
+  padding: clamp(1rem, 2.5vw, 1.3rem) 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.step > summary::-webkit-details-marker { display: none; }
+
+.step > summary::after {
+  content: '+';
+  margin-left: auto;
+  padding-left: .75rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.step[open] > summary::after { content: '–'; }
+
+.step__names { display: grid; gap: .1rem; }
+.step__shift { font-size: .8125rem; font-weight: 700; color: var(--accent-deep); }
+
+.step__title {
+  font-size: clamp(1.25rem, calc(1.1rem + .6vw), 1.6rem);
+  font-weight: 500;
+  letter-spacing: -.03em;
+}
+
+.step__body { padding-bottom: clamp(1rem, 3vw, 1.75rem); }
+.step__body > *:first-child { margin-top: 0; }
+
+/* the step that was jumped to, so the link above clearly landed somewhere */
+.step.is-target > summary { background: var(--gold-light); }
