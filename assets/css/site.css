@@ -1496,11 +1496,11 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 
 /* 12, 4 and 8 o'clock on a circle of radius 45 in a 100-unit box */
 .cycle__step--a { left: 50%; top: 5%;  --pos: translate(-50%, -50%); --step-tint: #fde4d2;
-                  --out: translate(0, -7px); --in: translate(0, 3px); }
+                  --out: translate(0, -7px); }
 .cycle__step--b { left: 89%; top: 72%; --pos: translate(-50%, -50%); --step-tint: #fbd8e8;
-                  --out: translate(6px, 4px); --in: translate(-3px, -2px); }
+                  --out: translate(6px, 4px); }
 .cycle__step--c { left: 11%; top: 72%; --pos: translate(-50%, -50%); --step-tint: #e3e0fb;
-                  --out: translate(-6px, 4px); --in: translate(3px, -2px); }
+                  --out: translate(-6px, 4px); }
 
 
 /* Below phone width the ring has no room, so the steps become a plain column
@@ -1777,10 +1777,10 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 }
 
 /* Four-step variant of the cycle: steps at 12, 3, 6 and 9 o'clock. */
-.cycle--4 .cycle__step--n { left: 50%; top: 4%;  --pos: translate(-50%, -50%); --step-tint: #fde4d2;  --out: translate(0, -7px); --in: translate(0, 3px); }
-.cycle--4 .cycle__step--e { left: 96%; top: 50%; --pos: translate(-50%, -50%); --step-tint: #fbd8e8;  --out: translate(7px, 0); --in: translate(-3px, 0); }
-.cycle--4 .cycle__step--s { left: 50%; top: 96%; --pos: translate(-50%, -50%); --step-tint: #e3e0fb;  --out: translate(0, 7px); --in: translate(0, -3px); }
-.cycle--4 .cycle__step--w { left: 4%;  top: 50%; --pos: translate(-50%, -50%); --step-tint: #d6eef0;  --out: translate(-7px, 0); --in: translate(3px, 0); }
+.cycle--4 .cycle__step--n { left: 50%; top: 4%;  --pos: translate(-50%, -50%); --step-tint: #fde4d2;  --out: translate(0, -7px); }
+.cycle--4 .cycle__step--e { left: 96%; top: 50%; --pos: translate(-50%, -50%); --step-tint: #fbd8e8;  --out: translate(7px, 0); }
+.cycle--4 .cycle__step--s { left: 50%; top: 96%; --pos: translate(-50%, -50%); --step-tint: #e3e0fb;  --out: translate(0, 7px); }
+.cycle--4 .cycle__step--w { left: 4%;  top: 50%; --pos: translate(-50%, -50%); --step-tint: #d6eef0;  --out: translate(-7px, 0); }
 
 @media (max-width: 560px) {
   .cycle--4 .cycle__step--n,
@@ -1956,11 +1956,6 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 /* the second cycle leads straight into body copy, so it needs its own room */
 .cycle--calm { margin-bottom: calc(var(--block-gap) * 1.8); }
 
-/* A section whose previous block already drew its own closing rule: without the
-   divider that normally sits between two sections, the full double padding
-   reads as a hole. */
-main > .section + .section--tight-top { padding-top: clamp(1.5rem, 3.5vw, 2.75rem); }
-
 /* Avoid orphans. text-wrap: pretty keeps a last line from being a single word,
    balance evens out the lines of a heading. Both are progressive — anything
    that doesn't support them just wraps the way it did before. */
@@ -2043,15 +2038,12 @@ h1, h2, h3, h4,
   transition: transform .22s var(--ease), box-shadow .22s var(--ease);
 }
 
-/* Like the bubble chart: the one under the pointer eases out along the ring
-   and the rest draw in a little, so the whole diagram reacts. */
+/* Only the card under the pointer moves: it eases out along its own radius. */
 .cycle__step:hover { --nudge: var(--out); z-index: 2; box-shadow: 0 8px 22px rgba(0, 0, 0, .13); }
-.cycle:has(.cycle__step:hover) .cycle__step:not(:hover) { --nudge: var(--in); }
 
 @media (prefers-reduced-motion: reduce) {
   .cycle__step { transition: none; }
-  .cycle__step:hover,
-  .cycle:has(.cycle__step:hover) .cycle__step:not(:hover) { --nudge: translate(0, 0); }
+  .cycle__step:hover { --nudge: translate(0, 0); }
 }
 
 /* Section boundaries were varying from 150px to 260px because whatever
