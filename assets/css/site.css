@@ -1804,3 +1804,38 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 .share__link:hover { border-color: var(--accent); color: var(--accent-deep); }
 
 .section--close { background: var(--grey-light); }
+
+/* A cartoon we point to rather than reproduce. The drawing is Sofia Warren's
+   and belongs to The New Yorker, so the frame carries only the caption, the
+   credit and a link out. If the cartoon is ever licensed for this site, the
+   artwork drops straight into this frame. */
+.cartoon-ref {
+  margin: var(--block-gap) var(--inset);
+  padding: clamp(1.4rem, 4vw, 2.4rem) clamp(1.2rem, 3.5vw, 2rem) clamp(1rem, 2.5vw, 1.4rem);
+  border: 1px solid rgba(0, 0, 0, .16);
+  border-radius: 3px;
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, .02), rgba(0, 0, 0, .02)),
+    var(--white);
+  box-shadow: inset 0 0 0 clamp(.5rem, 1.6vw, .9rem) var(--white),
+              0 6px 24px rgba(0, 0, 0, .07);
+  text-align: center;
+}
+
+.cartoon-ref__caption { margin: 0; border: 0; padding: 0; }
+
+.cartoon-ref__caption p {
+  margin: 0;
+  font-family: 'Caveat', 'DM Sans', cursive;
+  font-size: clamp(1.4rem, calc(1.1rem + 1.1vw), 2.1rem);
+  line-height: 1.3;
+  letter-spacing: .01em;
+}
+
+.cartoon-ref__credit {
+  margin-top: clamp(.9rem, 2.4vw, 1.3rem);
+  font-size: .8125rem;
+  opacity: .72;
+}
+
+.cartoon-ref__credit strong { font-weight: 700; }
