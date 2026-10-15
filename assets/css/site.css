@@ -611,8 +611,6 @@ main > .section + .section:not(.section--no-rule)::after {
 }
 
 .hero--art > .container { position: relative; z-index: 1; }
-/* z-index only — the cue must stay absolutely positioned against the hero */
-.hero--art > .scroll-cue { z-index: 1; }
 
 .hero__title, .hero--art .hero__title {
   font-size: clamp(2.5rem, calc(1.4rem + 4.7vw), 4.5rem);
@@ -625,37 +623,10 @@ main > .section + .section:not(.section--no-rule)::after {
   line-height: 1.5;
 }
 
-.scroll-cue {
-  position: absolute;
-  left: 50%;
-  bottom: clamp(1rem, 3vw, 2rem);
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: .3rem;
-  font-size: .8125rem;
-  letter-spacing: .06em;
-  color: var(--ink);
-  opacity: .75;
-  text-decoration: none;
-}
-
-.scroll-cue::after {
-  content: '';
-  width: 1px;
-  height: 26px;
-  background: currentColor;
-  animation: cue 1.8s var(--ease) infinite;
-  transform-origin: top;
-}
-
 @keyframes cue {
   0%, 100% { transform: scaleY(.45); opacity: .4; }
   50%      { transform: scaleY(1);   opacity: 1; }
 }
-
-@media (prefers-reduced-motion: reduce) { .scroll-cue::after { animation: none; } }
 
 /* Section artwork — decorative, sits on the section's solid colour */
 .section--art {
@@ -682,13 +653,6 @@ main > .section + .section:not(.section--no-rule)::after {
   .section--art::before { opacity: .88; }
 }
 
-
-/* Opening epigraphs */
-.epigraph { max-width: 52ch; margin-bottom: 2rem; }
-.epigraph:last-child { margin-bottom: 0; }
-.epigraph p { font-weight: 700; margin-bottom: .2rem; }
-.epigraph cite { font-style: normal; opacity: .75; font-size: .9375em; }
-
 /* The epigraphs lead straight into the intro rather than forming their own
    scroll stop, so they sit as a band above it with a rule between. */
 .quote-overlap {
@@ -713,10 +677,6 @@ main > .section + .section:not(.section--no-rule)::after {
 
 .qcard p { margin: 0 0 .25rem; font-size: .9375rem; font-weight: 700; line-height: 1.5; }
 .qcard cite { font-style: normal; font-size: .8125rem; opacity: .7; }
-
-.quote-band .epigraph { margin: 0; max-width: none; }
-.quote-band .epigraph p { font-size: .9375rem; line-height: 1.5; margin-bottom: .15rem; }
-.quote-band .epigraph cite { font-size: .875rem; }
 
 /* "You are not alone" — the artwork sits behind the questions rather than
    below them, scaled down and softened so the text stays the focus. */
@@ -1181,24 +1141,6 @@ main > .section + .section:not(.section--no-rule)::after {
   .trigger-key__row { grid-template-columns: 1fr; }
 }
 
-/* Responsive third-party embed (Flourish) */
-.embed {
-  position: relative;
-  width: 100%;
-  aspect-ratio: var(--embed-ratio, 10 / 9);
-  margin-block: 1rem;
-}
-
-.embed iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-
-.embed__caption { font-size: .875rem; opacity: .75; margin-top: .5rem; }
-
 /* Two-column prose split */
 .split {
   display: grid;
@@ -1290,12 +1232,11 @@ main > .section + .section:not(.section--no-rule)::after {
 @media (max-width: 760px) {
   .annotated { grid-template-columns: 1fr; }
   .annotated .arrow--annot { display: none; }
-  /* single column, so drop the explicit placement or everything piles into row 1 */
-  .annotated > .bubbles,
-  .annotated > .section__subtitle,
-  .annotated > .trigger-key { grid-row: auto; grid-column: 1; }
-  .annotated > .section__subtitle { align-self: auto; }
-  .annotated > .trigger-key { display: block; }
+  /* single column, and the sentence leads rather than follows: with no arrow
+     to tie it to the chart it has to sit where it will be read first */
+  .annotated > .section__subtitle { grid-row: 1; grid-column: 1; align-self: auto; margin-bottom: 1.1rem; }
+  .annotated > .bubbles { grid-row: 2; grid-column: 1; }
+  .annotated > .trigger-key { grid-row: 3; grid-column: 1; display: block; }
 }
 
 /* Next-page call to action */
@@ -1330,15 +1271,6 @@ main > .section + .section:not(.section--no-rule)::after {
     radial-gradient(42% 58% at 14% 94%, rgba(248, 206, 74, .80) 0%, rgba(248, 206, 74, 0) 70%),
     radial-gradient(38% 54% at 2% 48%, rgba(242, 130, 48, .70) 0%, rgba(242, 130, 48, 0) 72%),
     #f5f4f3;
-}
-
-.hero__eyebrow {
-  margin-bottom: .5rem;
-  font-size: .75rem;
-  font-weight: 700;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--accent-deep);
 }
 
 /* A figure carried by one number. */
@@ -1489,7 +1421,6 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
                   --out: translate(6px, 4px); }
 .cycle__step--c { left: 11%; top: 72%; --pos: translate(-50%, -50%); --step-tint: #e3e0fb;
                   --out: translate(-6px, 4px); }
-
 
 /* Below phone width the ring has no room, so the steps become a plain column
    and a bracket carries the return instead. */
@@ -1670,19 +1601,6 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
     #f5f4f3;
 }
 
-/* The three communication steps: number and the shift it makes, above the
-   heading that names the tactic. */
-.step-lede {
-  display: flex;
-  align-items: center;
-  gap: .7rem;
-  margin-top: clamp(2.5rem, 5vw, 3.75rem);
-  margin-bottom: .3rem;
-  font-size: .9375rem;
-  font-weight: 700;
-  color: var(--accent-deep);
-}
-
 .step-num {
   display: grid;
   place-items: center;
@@ -1694,8 +1612,6 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
   color: var(--white);
   font-size: .875rem;
 }
-
-.step-lede + .section__title { margin-top: 0; }
 
 .shift-list--numbered { counter-reset: shift; }
 .shift-list--numbered li > span:first-child::before {
@@ -1755,15 +1671,6 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
   .says__line--neutral { margin-left: 0; }
 }
 
-.visually-hidden {
-  position: absolute;
-  width: 1px; height: 1px;
-  margin: -1px; padding: 0;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
 /* Four-step variant of the cycle: steps at 12, 3, 6 and 9 o'clock. */
 .cycle--4 .cycle__step--n { left: 50%; top: 4%;  --pos: translate(-50%, -50%); --step-tint: #fde4d2;  --out: translate(0, -7px); }
 .cycle--4 .cycle__step--e { left: 96%; top: 50%; --pos: translate(-50%, -50%); --step-tint: #fbd8e8;  --out: translate(7px, 0); }
@@ -1798,8 +1705,6 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 }
 
 .share__link:hover { border-color: var(--accent); color: var(--accent-deep); background: var(--white); }
-
-
 
 /* A cartoon we point to rather than reproduce. The drawing is Sofia Warren's
    and belongs to The New Yorker, so the frame carries only the caption, the
@@ -1949,10 +1854,6 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
    that doesn't support them just wraps the way it did before. */
 p, li, dd, figcaption, blockquote, .prose, .says__line { text-wrap: pretty; }
 
-h1, h2, h3, h4,
-.hero__title, .section__title, .section__subtitle,
-.subhead-major, .step__title, .masking__head, .chart-row__note { text-wrap: balance; }
-
 /* the standfirst is a paragraph, not a heading: balance would even the lines
    by narrowing the measure, which is the opposite of what it wants */
 .hero__standfirst { text-wrap: pretty; }
@@ -2078,7 +1979,6 @@ h1, h2, h3, h4,
 @media (max-width: 640px) {
   .swap { grid-template-columns: 1fr; gap: 0; }
   .swap .arrow { display: none; }
-  .swap__from { font-weight: 500; }
   .swap > p:last-child {
     margin-top: .55rem;
     padding-left: clamp(.8rem, 3.5vw, 1.1rem);
