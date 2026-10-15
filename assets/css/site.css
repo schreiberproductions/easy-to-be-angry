@@ -2038,3 +2038,8 @@ p, li, dd, figcaption, blockquote, .prose, .says__line { text-wrap: pretty; }
 @media (max-width: 560px) {
   .subhead-major--blob::before { width: min(20rem, 110%); }
 }
+
+/* A section that continues the one above it rather than starting a new idea.
+   The questions and the examples that answer them are one unit, so they get a
+   single gap between them instead of each contributing its own. */
+main > .section + .section--continues { padding-top: 0; }
