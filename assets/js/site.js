@@ -337,6 +337,73 @@
     });
   });
 
+  // The four "masking" panels as tabs. The strip is built from the panels'
+  // own headings rather than duplicated in the markup, and it is only added
+  // here — so with JS off the page keeps all four headings and all the text.
+  document.querySelectorAll('[data-masking]').forEach(function (root) {
+    var panels = Array.prototype.slice.call(root.querySelectorAll('.masking__panel'));
+    if (panels.length < 2) return;
+
+    var prefix = root.dataset.maskingPrefix || '';
+
+    var lead = document.createElement('p');
+    lead.className = 'masking__lead';
+    lead.textContent = prefix.trim() + '\u2026';
+
+    var strip = document.createElement('div');
+    strip.className = 'masking__tabs';
+    strip.setAttribute('role', 'tablist');
+    strip.setAttribute('aria-label', 'What your anger may be masking');
+
+    var tabs = panels.map(function (panel, i) {
+      var heading = panel.querySelector('.subhead-major');
+      var full = heading ? heading.textContent.trim() : 'Section ' + (i + 1);
+      var label = full.indexOf(prefix) === 0 ? full.slice(prefix.length) : full;
+
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'masking__tab';
+      b.id = 'mask-tab-' + i;
+      b.textContent = label;
+      b.setAttribute('role', 'tab');
+      b.setAttribute('aria-controls', panel.id);
+      strip.appendChild(b);
+
+      panel.setAttribute('role', 'tabpanel');
+      panel.setAttribute('aria-labelledby', b.id);
+      panel.tabIndex = 0;
+      return b;
+    });
+
+    function select(i, moveFocus) {
+      tabs.forEach(function (t, n) {
+        t.setAttribute('aria-selected', String(n === i));
+        // roving tabindex: one stop for the strip, arrows move within it
+        t.tabIndex = n === i ? 0 : -1;
+      });
+      panels.forEach(function (p, n) { p.hidden = n !== i; });
+      if (moveFocus) tabs[i].focus();
+    }
+
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { select(i); });
+      t.addEventListener('keydown', function (e) {
+        var n = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? i + 1
+              : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? i - 1
+              : e.key === 'Home' ? 0
+              : e.key === 'End' ? tabs.length - 1 : null;
+        if (n === null) return;
+        e.preventDefault();
+        select((n + tabs.length) % tabs.length, true);
+      });
+    });
+
+    root.insertBefore(strip, panels[0]);
+    root.insertBefore(lead, strip);
+    root.classList.add('is-tabbed');
+    select(0);
+  });
+
   // Scroll reveal. The class is added here so content stays visible without JS.
   // A position sweep (rather than IntersectionObserver) is used deliberately: it
   // also reveals anything the reader jumped straight past via an anchor link, so

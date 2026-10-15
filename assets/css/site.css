@@ -1616,3 +1616,42 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 @media (max-width: 720px) {
   .chart-row { grid-template-columns: 1fr; }
 }
+
+/* The four "masking" sections as tabs. The strip is built by JS and starts
+   hidden, so without JS the page is simply the four headings and all their
+   content in a row — nothing is lost, and nothing has to be kept in sync
+   between the markup and the labels. */
+.masking__tabs { display: none; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.6rem; }
+.masking__lead { display: none; font-size: var(--step-body); opacity: .6; margin-bottom: .6rem; }
+
+.masking.is-tabbed .masking__tabs { display: flex; }
+.masking.is-tabbed .masking__lead { display: block; }
+/* the panel heading repeats the tab, so it only shows when there are no tabs */
+.masking.is-tabbed .masking__panel .subhead-major { position: absolute; width: 1px; height: 1px;
+  margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.masking__tab {
+  border: 1px solid rgba(0, 0, 0, .18);
+  border-radius: 999px;
+  background: var(--white);
+  padding: .5rem 1rem;
+  font: inherit;
+  font-size: .875rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background .15s linear, color .15s linear, border-color .15s linear;
+}
+
+.masking__tab:hover { border-color: var(--accent); color: var(--accent-deep); }
+
+.masking__tab[aria-selected="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--white);
+  font-weight: 700;
+}
+
+.masking.is-tabbed .masking__panel { padding-top: .25rem; }
+.masking.is-tabbed .masking__panel > *:first-child { margin-top: 0; }
+.masking__panel:focus { outline: none; }
+.masking__panel:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
