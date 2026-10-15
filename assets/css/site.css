@@ -1711,36 +1711,55 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
   color: var(--accent);
 }
 
-/* Judgment vs neutral language. A real table on wide screens; on narrow ones
-   each row becomes a small stack with its column name as a label, which keeps
-   the pairing readable without side-scrolling. */
-.table-wrap { margin: var(--block-gap) 0; }
+/* Judgment versus neutral language. The examples are things people say to a
+   child, so they are set as dialogue: the judging line, then the neutral reply
+   indented under it. The label sits in the margin on wide screens and drops
+   under the line when there is no margin to put it in. */
+.says { margin: var(--block-gap) 0; }
+.says__row + .says__row { margin-top: clamp(1.5rem, 3.5vw, 2.25rem); }
 
-.compare {
-  width: 100%;
-  border-collapse: collapse;
+.says__scene {
+  margin: 0 0 .7rem;
+  font-size: .8125rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.says__line {
+  position: relative;
+  max-width: 38rem;
+  margin: 0;
+  padding: .8rem 1.1rem;
+  border-radius: 16px;
+  border-bottom-left-radius: 4px;
   font-size: var(--step-link);
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
-.compare th,
-.compare td {
-  padding: .8rem .9rem;
-  text-align: left;
-  vertical-align: top;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-}
+.says__line + .says__line { margin-top: .6rem; }
+.says__line--judge { background: #efeeec; }
+.says__line--neutral { background: #fbdcea; margin-left: clamp(1rem, 4vw, 3rem); }
 
-.compare thead th {
-  font-size: .72rem;
+.says__line::after {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + .6rem);
+  transform: translateY(-50%);
+  font-size: .68rem;
   font-weight: 700;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--accent-deep);
-  border-bottom: 2px solid var(--accent);
 }
 
-.compare tbody th { font-weight: 600; width: 28%; }
+.says__line--judge::after { content: 'judging'; color: #7a7a7a; }
+.says__line--neutral::after { content: 'neutral'; color: var(--accent-deep); }
+
+@media (max-width: 760px) {
+  .says__line::after { position: static; transform: none; display: block; margin-top: .3rem; opacity: .85; }
+  .says__line--neutral { margin-left: 0; }
+}
 
 .visually-hidden {
   position: absolute;
@@ -1749,24 +1768,6 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
-}
-
-@media (max-width: 760px) {
-  .compare, .compare tbody, .compare tr, .compare td, .compare th { display: block; }
-  .compare thead { display: none; }
-  .compare tr { padding: .9rem 0; border-bottom: 1px solid rgba(0, 0, 0, .1); }
-  .compare th, .compare td { border: 0; padding: .2rem 0; }
-  .compare tbody th { width: auto; font-weight: 700; margin-bottom: .4rem; }
-  .compare td::before {
-    content: attr(data-label);
-    display: block;
-    font-size: .68rem;
-    font-weight: 700;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--accent-deep);
-    margin-top: .5rem;
-  }
 }
 
 /* Four-step variant of the cycle: steps at 12, 3, 6 and 9 o'clock. */
@@ -1864,7 +1865,9 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 .steps { margin-top: var(--block-gap); }
 
 .step { border-top: 1px solid rgba(0, 0, 0, .14); scroll-margin-top: 5rem; }
-.step:last-of-type { border-bottom: 1px solid rgba(0, 0, 0, .14); }
+/* no closing rule on the last one: the accordion ends the section here, and the
+   section divider below it was reading as a second bar */
+.step:last-of-type { border-bottom: 0; }
 
 .step > summary {
   display: flex;
