@@ -2073,3 +2073,17 @@ main > .section:has(+ .section--continues) { padding-bottom: clamp(1.25rem, 4vw,
 
   #start { padding-top: clamp(1.75rem, 6vw, 2.5rem); }
 }
+
+/* Chrome focuses an <svg> itself when you tap inside it and paints its own
+   amber focus ring, which looked like a gold border round the whole chart.
+   These are decorative containers, not controls: drop the ring for pointer
+   focus and keep the site's own one for keyboard users. */
+.bubbles__svg:focus,
+.bars__svg:focus,
+.cycle__ring:focus { outline: none; }
+
+.bubbles__svg:focus-visible,
+.bars__svg:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
