@@ -1971,7 +1971,15 @@ p, li, dd, figcaption, blockquote, .prose, .says__line { text-wrap: pretty; }
    custom property, which no rule can outrank, so this sets background-size
    itself. .section--art-keep opts a section out. */
 @media (max-width: 760px) {
-  .section--art:not(.section--art-keep) { background-size: 150% auto; }
+  /* 100%, not more: anything wider than the screen is necessarily cut off at
+     both edges, which is what made these read as stray strips rather than
+     background. At 100% the artwork spans the full width and stops there. */
+  .section--art:not(.section--art-keep) { background-size: 100% auto; }
+
+  /* This section's artwork landed behind the embedded cartoon on a phone,
+     where the column is tall enough to put the two in the same place. The
+     inline --art-pos cannot be overridden, so set the position directly. */
+  #eGcg0D8jIK- { background-position: 96% 88%; }
 }
 
 /* The tendency/consider pairs: an arrow pointing sideways makes no sense once
