@@ -2028,10 +2028,14 @@ p, li, dd, figcaption, blockquote, .prose, .says__line { text-wrap: pretty; }
   translate: 0 -50%;
   width: min(26rem, 72%);
   aspect-ratio: 1.9 / 1;
-  background: radial-gradient(ellipse at 42% 50%,
-    rgba(214, 48, 34, .26) 0%,
-    rgba(222, 86, 60, .14) 45%,
-    rgba(230, 120, 90, 0) 72%);
+  /* closest-side makes the ellipse inscribe its box, so the gradient reaches
+     full transparency exactly at every edge. The default farthest-corner
+     sizing left it still coloured where the box ended, which showed as a hard
+     vertical cut down the left. */
+  background: radial-gradient(ellipse closest-side at 50% 50%,
+    rgba(214, 48, 34, .28) 0%,
+    rgba(222, 86, 60, .15) 55%,
+    rgba(230, 120, 90, 0) 100%);
   pointer-events: none;
 }
 
