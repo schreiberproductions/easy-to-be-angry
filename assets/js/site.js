@@ -408,9 +408,35 @@
   document.querySelectorAll('[data-steps]').forEach(function (group) {
     var steps = Array.prototype.slice.call(group.querySelectorAll('.step'));
     steps.forEach(function (step) {
+      var summary = step.querySelector('summary');
+      var openedByClick = false;
+
+      summary.addEventListener('click', function () { openedByClick = true; });
+
       step.addEventListener('toggle', function () {
-        if (!step.open) return;
+        if (!step.open) { openedByClick = false; return; }
         steps.forEach(function (other) { if (other !== step) other.open = false; });
+
+        // A closed <details> still gives its contents a layout position, so the
+        // reveal sweep leaves them pending far below the fold and they would
+        // open blank. Anything just opened is shown at once.
+        step.querySelectorAll('[data-reveal]').forEach(function (el) {
+          el.classList.add('is-visible');
+        });
+
+        if (!openedByClick) return;
+        openedByClick = false;
+
+        // Closing a step can remove thousands of pixels from above this one,
+        // so trying to hold the row where it was is a losing game — the page
+        // often isn't long enough to scroll back that far. Instead always put
+        // the step that was opened just under the bar, which is one
+        // predictable outcome rather than several unpredictable ones.
+        // toggle fires asynchronously, so this runs after the closing above.
+        requestAnimationFrame(function () {
+          var y = window.scrollY + step.getBoundingClientRect().top - 72;
+          window.scrollTo({ top: Math.max(0, y), behavior: 'auto' });
+        });
       });
     });
   });
