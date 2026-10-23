@@ -777,11 +777,17 @@ main > .section + .section:not(.section--no-rule)::after {
 }
 
 /* Wash over the artwork so the text carries rather than competes with it */
+/* Scrim over the photograph so the white quote stays readable. .45 rather
+   than a lighter wash because the text sits on six different images: measured
+   against the brightest pixels under the text box, .34 left three of them
+   between 3.4:1 and 4.3:1, short of the 4.5:1 this text size needs. At .45 the
+   worst point on any card is 4.7:1. The text-shadow below helps the eye but
+   does not count towards the ratio. */
 .quote-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, .34);
+  background: rgba(0, 0, 0, .45);
 }
 
 /* The controls sit inside the card, where the source button used to be */
