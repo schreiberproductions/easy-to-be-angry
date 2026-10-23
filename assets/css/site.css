@@ -1147,8 +1147,13 @@ main > .section + .section:not(.section--no-rule)::after {
 .bars__tip[data-show='true'] { opacity: 1; }
 .bubbles__tip p,
 .bars__tip p { margin: 0; }
-.bubbles__tip-head,
-.bars__tip-head { font-weight: 700; margin-bottom: .3rem !important; }
+.bubbles__tip .bubbles__tip-head,
+.bars__tip .bars__tip-head {
+  /* scoped to the tooltip so it outranks `.bubbles__tip p, .bars__tip p
+     { margin: 0 }` above, which is otherwise the more specific of the two */
+  font-weight: 700;
+  margin-bottom: .3rem;
+}
 .bubbles__tip-needs,
 .bars__tip-need { opacity: .75; }
 
