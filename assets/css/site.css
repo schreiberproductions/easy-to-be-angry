@@ -628,7 +628,12 @@ main > .section + .section:not(.section--no-rule)::after {
   50%      { transform: scaleY(1);   opacity: 1; }
 }
 
-/* Section artwork — decorative, sits on the section's solid colour */
+/* Section artwork — decorative, sits on the section's solid colour.
+   A percentage --art-pos Y is resolved against (section height - image
+   height), so in a section that can change height — one holding an
+   accordion or a set of tabs — the artwork slides down as the section
+   grows. Those sections give --art-pos a length instead, which is measured
+   from the section's top edge and therefore stays put. */
 .section--art {
   position: relative;
   background-repeat: no-repeat;
@@ -1976,11 +1981,6 @@ p, li, dd, figcaption, blockquote, .prose, .says__line { text-wrap: pretty; }
      the width of the screen, so the only place it can be cut is the screen
      edge — never partway in. */
   .section--art:not(.section--art-keep) { background-size: 150% auto; }
-
-  /* This section's artwork landed behind the embedded cartoon on a phone,
-     where the column is tall enough to put the two in the same place. The
-     inline --art-pos cannot be overridden, so set the position directly. */
-  #eGcg0D8jIK- { background-position: 96% 88%; }
 }
 
 /* The tendency/consider pairs: an arrow pointing sideways makes no sense once
