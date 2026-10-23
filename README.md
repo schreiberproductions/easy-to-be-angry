@@ -15,8 +15,7 @@ try/index.html           Try
 resources/index.html     Explore more (resources)
 404.html                 Not-found page, built from the same shell
 
-assets/css/site.css      All shared styling
-assets/css/fonts.css     Self-hosted @font-face declarations
+assets/css/site.css      All shared styling, @font-face declarations included
 assets/fonts/            DM Sans (variable) + Caveat (variable)
 assets/js/site.js        Nav, scroll reveal, carousel, charts, tabs, accordion
 assets/img/              Section artwork and favicons
@@ -47,8 +46,13 @@ whatever that path happened to be. It is therefore only styled correctly once
 the site is at a domain root.
 
 **Assets are cache-busted by hand.** `site.css?v=NN` and `site.js?v=NN` appear
-in all five HTML files. Bump every one of them together or you will be looking
-at a stale stylesheet.
+in all five HTML files. When you change one of those two files, bump its number
+in all five, or you will be looking at a stale copy. The two numbers count
+independently — they are not meant to match.
+
+The `@font-face` rules are kept inside `site.css` on purpose. An `@import`
+cannot begin downloading until the importing stylesheet has arrived and been
+parsed, which left the font files two round trips behind the HTML.
 
 **Nothing depends on JavaScript to be readable.** `site.js` only ever *adds*
 behaviour: the scroll reveal, the tab strips, the accordions. With it disabled

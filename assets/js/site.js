@@ -1,56 +1,61 @@
 (function () {
   'use strict';
 
-  var nav = document.querySelector('.nav');
-  if (!nav) return;
+  // The nav is self-contained. Its early return must not skip the carousel,
+  // charts, accordions and scroll reveal that follow, so it gets its own
+  // scope rather than returning out of the whole file.
+  (function () {
+    var nav = document.querySelector('.nav');
+    if (!nav) return;
 
-  var toggle = nav.querySelector('.nav__toggle');
-  var list = nav.querySelector('.nav__list');
-  var mq = window.matchMedia('(max-width: 860px)');
+    var toggle = nav.querySelector('.nav__toggle');
+    var list = nav.querySelector('.nav__list');
+    var mq = window.matchMedia('(max-width: 860px)');
 
-  // Bar is transparent at the top of the page and gains a frosted panel once
-  // content would otherwise scroll underneath it.
-  var onNavScroll = function () {
-    nav.classList.toggle('nav--scrolled', window.scrollY > 8);
-  };
-  window.addEventListener('scroll', onNavScroll, { passive: true });
-  onNavScroll();
+    // Bar is transparent at the top of the page and gains a frosted panel once
+    // content would otherwise scroll underneath it.
+    var onNavScroll = function () {
+      nav.classList.toggle('nav--scrolled', window.scrollY > 8);
+    };
+    window.addEventListener('scroll', onNavScroll, { passive: true });
+    onNavScroll();
 
-  function setMenu(open) {
-    list.setAttribute('data-open', String(open));
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.querySelector('.nav__toggle-label').textContent = open ? 'Close' : 'Menu';
-  }
-
-  toggle.addEventListener('click', function () {
-    setMenu(list.getAttribute('data-open') !== 'true');
-  });
-
-  // Submenus open on hover/focus on desktop (CSS). On mobile they are simply
-  // shown, so tapping "Learn" goes to the Learn page rather than being eaten
-  // by a toggle — the sections underneath are still one tap away.
-  function syncSubmenus() {
-    nav.querySelectorAll('.nav__item--has-menu').forEach(function (item) {
-      var trigger = item.querySelector('.nav__link');
-      var submenu = item.querySelector('.nav__submenu');
-      submenu.setAttribute('data-open', String(mq.matches));
-      trigger.setAttribute('aria-expanded', String(mq.matches));
-    });
-  }
-
-  syncSubmenus();
-
-  mq.addEventListener('change', function (e) {
-    if (!e.matches) setMenu(false);
-    syncSubmenus();
-  });
-
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && list.getAttribute('data-open') === 'true') {
-      setMenu(false);
-      toggle.focus();
+    function setMenu(open) {
+      list.setAttribute('data-open', String(open));
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.querySelector('.nav__toggle-label').textContent = open ? 'Close' : 'Menu';
     }
-  });
+
+    toggle.addEventListener('click', function () {
+      setMenu(list.getAttribute('data-open') !== 'true');
+    });
+
+    // Submenus open on hover/focus on desktop (CSS). On mobile they are simply
+    // shown, so tapping "Learn" goes to the Learn page rather than being eaten
+    // by a toggle — the sections underneath are still one tap away.
+    function syncSubmenus() {
+      nav.querySelectorAll('.nav__item--has-menu').forEach(function (item) {
+        var trigger = item.querySelector('.nav__link');
+        var submenu = item.querySelector('.nav__submenu');
+        submenu.setAttribute('data-open', String(mq.matches));
+        trigger.setAttribute('aria-expanded', String(mq.matches));
+      });
+    }
+
+    syncSubmenus();
+
+    mq.addEventListener('change', function (e) {
+      if (!e.matches) setMenu(false);
+      syncSubmenus();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && list.getAttribute('data-open') === 'true') {
+        setMenu(false);
+        toggle.focus();
+      }
+    });
+  }());
 
   // Carousel. Scroll-snap already gives native swipe and keyboard scrolling;
   // this only wires up the buttons, dots and the live count. Without JS the
@@ -128,10 +133,12 @@
   document.querySelectorAll('[data-bubbles]').forEach(function (root) {
     var svg = root.querySelector('.bubbles__svg');
     var tip = root.querySelector('.bubbles__tip');
-    var head = tip.querySelector('.bubbles__tip-head');
-    var needs = tip.querySelector('.bubbles__tip-needs');
+    var head = tip && tip.querySelector('.bubbles__tip-head');
+    var needs = tip && tip.querySelector('.bubbles__tip-needs');
     var bubbles = Array.prototype.slice.call(root.querySelectorAll('.bub'));
-    if (!bubbles.length) return;
+    // bail rather than throw: same reason as the bar chart below — a missing
+    // tooltip here would take down every listener set up after it
+    if (!bubbles.length || !svg || !tip || !head || !needs) return;
 
     var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
