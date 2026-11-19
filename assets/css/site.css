@@ -67,12 +67,19 @@
 
   /* Each step interpolates linearly between its size at 375px and at 1200px,
      so mid-range widths get a real value instead of sitting on the floor. */
-  --step-hero: clamp(1.875rem, calc(1.4773rem + 1.697vw), 2.75rem);   /* 30 → 44 */
-  --step-h2: clamp(1.875rem, calc(1.4773rem + 1.697vw), 2.75rem);
+  --step-h2: clamp(1.875rem, calc(1.4773rem + 1.697vw), 2.75rem);     /* 30 → 44 */
   --step-h3: clamp(1.0625rem, calc(1.0057rem + 0.242vw), 1.1875rem);  /* 17 → 19 */
   --step-body: clamp(1rem, calc(0.9432rem + 0.242vw), 1.125rem);      /* 16 → 18 */
   --step-link: clamp(0.9375rem, calc(0.9091rem + 0.121vw), 1rem);     /* 15 → 16 */
   --step-nav: clamp(0.8125rem, calc(0.7841rem + 0.121vw), 0.875rem);  /* 13 → 14 */
+
+  /* Small print. Fixed rather than fluid: at these sizes interpolation only
+     puts neighbouring labels a fraction of a pixel apart, which is the drift
+     these two steps exist to remove, and neither should shrink further on a
+     phone. --step-fine is the ordinary small size — credits, captions, counts,
+     eyebrows; --step-label is the tracked uppercase label. */
+  --step-fine: 0.8125rem;                                             /* 13 */
+  --step-label: 0.72rem;                                              /* 11.5 */
 
   --ease: cubic-bezier(.22, .61, .36, 1);
 }
@@ -392,7 +399,9 @@ main > .section + .section:not(.section--no-rule)::after {
 }
 
 .hero__meta {
-  font-size: clamp(1rem, 1.5vw, 1.375rem);
+  /* was a bare-vw clamp, the only one on the site, so it grew on a different
+     curve from every size beside it */
+  font-size: var(--step-h3);
   font-weight: 500;
   letter-spacing: 0;
 }
@@ -450,14 +459,14 @@ main > .section + .section:not(.section--no-rule)::after {
   padding-bottom: .5rem;
   border-bottom: 2px solid color-mix(in srgb, var(--tone) 28%, transparent);
   color: var(--tone);
-  font-size: .8125rem;
+  font-size: var(--step-fine);
   font-weight: 700;
   letter-spacing: .14em;
   text-transform: uppercase;
 }
 
 .resource-count {
-  font-size: .6875rem;
+  font-size: var(--step-label);
   font-weight: 500;
   letter-spacing: 0;
   opacity: .55;
@@ -649,14 +658,10 @@ main > .section + .section:not(.section--no-rule)::after {
 
 .hero--art > .container { position: relative; z-index: 1; }
 
-.hero__title, .hero--art .hero__title {
-  font-size: clamp(2.5rem, calc(1.4rem + 4.7vw), 4.5rem);
-  margin-bottom: .75rem;
-}
 
 .hero__standfirst {
   max-width: min(72ch, 100%);
-  font-size: clamp(1rem, calc(.93rem + .3vw), 1.1875rem);
+  font-size: var(--step-h3);
   line-height: 1.5;
 }
 
@@ -718,12 +723,11 @@ main > .section + .section:not(.section--no-rule)::after {
 }
 
 .qcard p { margin: 0 0 .25rem; font-size: .9375rem; font-weight: 700; line-height: 1.5; }
-.qcard cite { font-style: normal; font-size: .8125rem; opacity: .7; }
+.qcard cite { font-style: normal; font-size: var(--step-fine); opacity: .7; }
 
 /* "You are not alone" — the artwork sits behind the questions rather than
    below them, scaled down and softened so the text stays the focus. */
 .not-alone { position: relative; }
-}
 
 /* "You are not alone" question list */
 .question-list { list-style: none; margin: 0; padding: 0; max-width: none; }
@@ -846,13 +850,16 @@ main > .section + .section:not(.section--no-rule)::after {
 .carousel__dot[aria-selected='true'] { background: var(--accent); transform: scale(1.3); }
 .carousel__dot:hover { background: var(--accent-deep); }
 
-.carousel__count { margin: 0; font-size: .8125rem; opacity: .65; }
+.carousel__count { margin: 0; font-size: var(--step-fine); opacity: .65; }
 
 .quote-card > * { position: relative; }
 
 .quote-card blockquote {
   margin: 0;
-  font-size: clamp(.9375rem, calc(.88rem + .25vw), 1.0625rem);
+  /* same 0.2424vw slope as the rest of the scale, so at 375px this lands
+     on exactly 15px instead of a hundredth above it and reading as a
+     second, slightly different size next to the quotes around it */
+  font-size: clamp(.9375rem, calc(.8794rem + .2424vw), 1.0625rem);
   line-height: 1.5;
   text-shadow: 0 1px 10px rgba(0, 0, 0, .35);
 }
@@ -862,7 +869,10 @@ main > .section + .section:not(.section--no-rule)::after {
 .quote-card__cite {
   display: block;
   margin-top: .75rem;
-  font-size: .875em;
+  /* a fixed step, not an em: as an em this sized itself off the quote it sat
+     in and landed on 14.9px on a desktop and 13.1px on a phone, neither of
+     them a size used anywhere else */
+  font-size: var(--step-fine);
   font-style: normal;
   opacity: .92;
 }
@@ -965,7 +975,7 @@ main > .section + .section:not(.section--no-rule)::after {
 .scripture cite {
   grid-column: 1;
   color: var(--teal);
-  font-size: .72rem;
+  font-size: var(--step-label);
   font-style: normal;
   font-weight: 700;
   letter-spacing: .13em;
@@ -1008,7 +1018,9 @@ main > .section + .section:not(.section--no-rule)::after {
 .pullquote cite {
   display: block;
   margin-top: .5rem;
-  font-size: .7em;
+  /* likewise an em before, which put it at 11.2px against the 13px every
+     other credit on the site uses */
+  font-size: var(--step-fine);
   font-style: normal;
   font-weight: 500;
   opacity: .7;
@@ -1142,7 +1154,7 @@ main > .section + .section:not(.section--no-rule)::after {
   background: #fff;
   color: var(--ink);
   box-shadow: 0 6px 22px rgba(0, 0, 0, .13);
-  font-size: .8125rem;
+  font-size: var(--step-fine);
   line-height: 1.45;
   pointer-events: none;
   opacity: 0;
@@ -1187,7 +1199,7 @@ main > .section + .section:not(.section--no-rule)::after {
 }
 
 .trigger-key__row dt { font-weight: 700; }
-.trigger-key__row dt span { display: block; font-weight: 500; opacity: .55; font-size: .8125rem; }
+.trigger-key__row dt span { display: block; font-weight: 500; opacity: .55; font-size: var(--step-fine); }
 .trigger-key__row dd { margin: 0; opacity: .8; line-height: 1.5; }
 
 @media (max-width: 640px) {
@@ -1345,7 +1357,7 @@ main > .section + .section:not(.section--no-rule)::after {
 
 .statline__figure a { color: inherit; text-decoration: none; }
 .statline__figure a:hover { text-decoration: underline; }
-.statline cite { display: block; margin-top: .5rem; font-style: normal; font-size: .8125rem; opacity: .7; }
+.statline cite { display: block; margin-top: .5rem; font-style: normal; font-size: var(--step-fine); opacity: .7; }
 
 /* Two quotes set against each other. The number is the only furniture that
    says they are a pair, so it sits in the margin rather than in the text. */
@@ -1461,7 +1473,9 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
   background: var(--step-tint, var(--white));
   box-shadow: 0 4px 18px rgba(0, 0, 0, .08);
   text-align: center;
-  font-size: clamp(.8125rem, calc(.77rem + .19vw), .9375rem);
+  /* retuned to the common slope for the same reason as the carousel quote:
+     it used to land on 13.03px against the 13px beside it */
+  font-size: clamp(.8125rem, calc(.7544rem + .2424vw), .9375rem);
   line-height: 1.35;
 }
 
@@ -1573,7 +1587,7 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 
 .bars__caption {
   margin-top: .6rem;
-  font-size: .8125rem;
+  font-size: var(--step-fine);
   text-align: center;
   opacity: .65;
 }
@@ -1683,7 +1697,7 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 
 .says__scene {
   margin: 0 0 .7rem;
-  font-size: .8125rem;
+  font-size: var(--step-fine);
   font-weight: 700;
   letter-spacing: .04em;
   text-transform: uppercase;
@@ -1781,7 +1795,7 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 
 .cartoon-ref__credit {
   margin-top: clamp(.9rem, 2.4vw, 1.3rem);
-  font-size: .8125rem;
+  font-size: var(--step-fine);
   opacity: .72;
 }
 
@@ -1847,7 +1861,7 @@ body.js-reveal .cycle.is-visible .cycle__arrow:nth-of-type(3) .cycle__head { ani
 .step[open] > summary::after { content: '–'; }
 
 .step__names { display: grid; gap: .1rem; }
-.step__shift { font-size: .8125rem; font-weight: 700; color: var(--accent-deep); }
+.step__shift { font-size: var(--step-fine); font-weight: 700; color: var(--accent-deep); }
 
 .step__title {
   font-size: clamp(1.25rem, calc(1.1rem + .6vw), 1.6rem);
@@ -1964,7 +1978,7 @@ p, li, dd, figcaption, blockquote, .prose, .says__line { text-wrap: pretty; }
 .clip__credit {
   max-width: 44rem;
   margin: .7rem auto 0;
-  font-size: .8125rem;
+  font-size: var(--step-fine);
   text-align: center;
   opacity: .75;
 }
