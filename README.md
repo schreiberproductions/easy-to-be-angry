@@ -75,8 +75,39 @@ is taken down.
 ## Content
 
 Text, quotations and scripture references were migrated from the Vev site and
-checked against a full archive of it, sentence by sentence. The archive lives
-outside this repository.
+checked against a full archive of it, phrase by phrase, in both directions.
+The archive lives outside this repository.
+
+### Where this deliberately differs from the Vev site
+
+Everything else matches. These were asked for, so a content check should not
+treat them as regressions:
+
+- **Two corrections.** "Galations" is spelled Galatians. The "unwholesome
+  talk" verse on Try is cited as Ephesians 4:29; the Vev site said 4:20, which
+  is a different passage.
+- **Cut.** "The tools experts use" from the Reflect, Try and Resources
+  titles, and the "Explore this section…" / "Explore the following sections…"
+  sentences under them.
+- **Renamed.** "Resources" is "Explore more", and the separate "Explore more"
+  heading that used to sit above Videos is gone. The footer reads "Easy to Be
+  Angry"; the Vev footer said "Easy to Anger".
+- **Added.** Scripture references Exodus 34:6, Psalm 18:35, Matthew 14:14 and
+  Nehemiah 8:10, for consistency with the other quotations. The Grove under
+  Apps. Credits for the cartoon and the dopamine clip, which are framed here
+  rather than merely linked.
+- **Screen readers only.** "Relatable examples from books and media" was
+  visible above the quote carousel on the Vev site. It is the section's
+  accessible name here and is not drawn on the page.
+- **Now drawn by CSS rather than written as text.** The 1. / 2. / 3. on the
+  "Closed off → More open" list come from a CSS counter, and the old table's
+  column headings are per-line "judging" / "neutral" tags. Both disappear if
+  the stylesheet fails to load, and neither can be selected or searched.
+
+The two charts hold data that was never in the page text — it lived in the
+Flourish embeds. Both were checked against the source visualisations: the
+bubble chart's 11 labels, counts and needs all match, and the column chart's
+34 segments and 8 / 9 / 14 / 3 totals match.
 
 The New Yorker cartoon is embedded from the artist's own Instagram post rather
 than copied, so it stays attributed and under her control.
