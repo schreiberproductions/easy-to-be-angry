@@ -16,8 +16,41 @@
     // content would otherwise scroll underneath it.
     var onNavScroll = function () {
       nav.classList.toggle('nav--scrolled', window.scrollY > 8);
+      queueProgress();
     };
+
+    // Reading progress along the bottom edge of the bar. Measured each frame
+    // rather than cached, because the page can change height underneath us:
+    // opening one of the steps on Try takes it from 2,000px to 11,000px.
+    var progress = nav.querySelector('.nav__progress');
+    var queued = false;
+
+    function paintProgress() {
+      queued = false;
+      var doc = document.documentElement;
+      var travel = doc.scrollHeight - doc.clientHeight;
+      // a page shorter than the window has nothing to track
+      var read = travel > 0 ? window.scrollY / travel : 0;
+      nav.style.setProperty('--read', Math.min(1, Math.max(0, read)).toFixed(4));
+    }
+
+    function queueProgress() {
+      if (!progress || queued) return;
+      queued = true;
+      // one read and one write per frame, in that order, so scrolling never
+      // forces a second layout
+      requestAnimationFrame(paintProgress);
+    }
+
     window.addEventListener('scroll', onNavScroll, { passive: true });
+    window.addEventListener('resize', queueProgress, { passive: true });
+
+    // Accordions, tab panels and late-loading images all change how far there
+    // is left to scroll without the page having moved.
+    if (progress && window.ResizeObserver) {
+      new ResizeObserver(queueProgress).observe(document.body);
+    }
+
     onNavScroll();
 
     function setMenu(open) {

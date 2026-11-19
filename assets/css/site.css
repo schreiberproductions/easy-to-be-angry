@@ -165,6 +165,23 @@ a { color: inherit; }
   box-shadow: 0 1px 0 rgba(0, 0, 0, .07);
 }
 
+/* Reading progress: a hairline on the bar's bottom edge that fills as the
+   page scrolls, so the length of a long page is legible at a glance. It is
+   decorative — assistive tech already has the scrollbar and the heading
+   outline, so it is hidden from them. scaleX rather than width, because a
+   transform composites without laying the page out again on every frame. */
+.nav__progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--accent);
+  transform: scaleX(var(--read, 0));
+  transform-origin: left center;
+  pointer-events: none;
+}
+
 .nav__inner {
   display: flex;
   align-items: center;
